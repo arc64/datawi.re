@@ -2,30 +2,28 @@
 datawi.re - flowing data, hidden story
 --------------------------------------
 
-Aims: World Domination, within 4-5 yrs. 
-
 Optional: talk to some journalists. 
 
 What tasks would this help with? 
 
 * Keeping an eye on...
-  ... parliaments, 
-  ... procurement, 
-  ... grants,
-  ... air traffic, 
-  ... scientific research publications, 
-  ... patent applications,
-  ... crime and punishment,
-  ... obituaries,
-  ... gas prices,
-  ... movie release dates,
-  ... the sky,
-  ... the volcano,
-  ... lobbyists signing up to a register,
-  ... company statements coming out,
-  ... changes in company ownership,
-  ... local elections,
-  ... food prices, commodity prices, harvests.
+*  ... parliaments, 
+*  ... procurement, 
+*  ... grants,
+*  ... air traffic, 
+*  ... scientific research publications, 
+*  ... patent applications,
+*  ... crime and punishment,
+*  ... obituaries,
+*  ... gas prices,
+*  ... movie release dates,
+*  ... the sky,
+*  ... the volcano,
+*  ... lobbyists signing up to a register,
+*  ... company statements coming out,
+*  ... changes in company ownership,
+*  ... local elections,
+*  ... food prices, commodity prices, harvests.
 
 
 Explain it to me, I'm a normal person: I want to be able to reduce the amount of manual labour
@@ -45,11 +43,13 @@ automated killer drone which then eradicates a medium-sized village. We're hopin
 good data quality on the last one. 
 
 
+Revised pitch
+-------------
 
-
-
-Alternatively: whereisangelinajolienow.com (will get 13000x the traffic, takes about 20 mins to make).
-
+* datawi.re is a streaming service for monitoring misc data feeds.
+* datawi.re is just another thing you connect your scrapers to, allows for quick and simple submission of a data frame. 
+* datawi.re has a twitter-like UI. each service defines a template with which a data frame is rendered.
+* instead of following a user or a hashtag, you follow search terms by adding them to one of your four watchlists.
 
 
 
