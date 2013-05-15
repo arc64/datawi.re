@@ -1,6 +1,32 @@
 
-datawi.re - flowing data, hidden story
---------------------------------------
+datawi.re - a wire service for data
+-----------------------------------
+
+The goal of datawi.re is to provide journalists and other researchers with an
+easy-to-use way to subscribe to a feed of data records that may be of
+interest. To effectively track topics, people, organisations and places of 
+interest, datawi.re will help its users to create semantic, structured
+watchlists.
+
+Matching records will be sent to users via e-mail and retained on a match list
+for later analysis. The service itself will not infinitely store data, i.e. 
+the system will not be able to perform aggregate analysis (e.g. trends) itself. 
+
+In many ways, datawi.re is adapting the model of twitter's activity feed,
+replacing status updates with data records and the users which you follow 
+with your entity watchlist.
+
+Developers will be able to submit data records to datawi.re by specifying 
+a service profile, enabling the easy integration with existing scrapers or 
+streaming data services. 
+
+
+
+
+
+
+Older explanation
+=================
 
 Optional: talk to some journalists. 
 
