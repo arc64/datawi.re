@@ -2,6 +2,7 @@ from flask.ext.script import Manager
 
 from datawire.core import app, db
 from datawire.model import Service
+from datawire.views import index
 
 manager = Manager(app)
 
