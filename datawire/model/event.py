@@ -9,6 +9,15 @@ class Event(db.Model, ModelCore):
     label = db.Column(db.Unicode())
     service_id = db.Column(db.Integer(), db.ForeignKey('service.id'))
 
+    @classmethod
+    def create(cls, data):
+        obj = cls()
+        obj.key = data.get('key')
+        obj.label = data.get('label')
+        obj.service = data.get('service')
+        db.session.add(obj)
+        return obj
+
     def to_dict(self):
         return {
             'id': self.id,

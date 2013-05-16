@@ -8,8 +8,23 @@ class Service(db.Model, ModelCore):
     key = db.Column(db.Unicode())
     label = db.Column(db.Unicode())
 
-    frames = db.relationship('Frame', backref='service', lazy='dynamic', order_by='Frame.created_at.desc()')
-    events = db.relationship('Event', backref='service', lazy='dynamic', order_by='Event.key.asc()')
+    frames = db.relationship('Frame', backref='service', lazy='dynamic',
+                             cascade='all, delete-orphan', order_by='Frame.created_at.desc()')
+    events = db.relationship('Event', backref='service', lazy='dynamic',
+                             cascade='all, delete-orphan', order_by='Event.key.asc()')
+
+    @classmethod
+    def create(cls, data):
+        obj = cls()
+        obj.key = data.get('key')
+        obj.label = data.get('label')
+        db.session.add(obj)
+        return obj
+
+    @classmethod
+    def by_key(cls, key):
+        q = db.session.query(cls).filter_by(key=key)
+        return q.first()
 
     def to_dict(self):
         return {

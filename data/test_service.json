@@ -1,0 +1,8 @@
+{
+    "key": "test",
+    "label": "Testing Service",
+    "events": [{
+        "key": "default",
+        "label": "Something happened"
+    }]
+}
