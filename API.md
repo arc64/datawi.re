@@ -3,31 +3,36 @@ Technical Description
 
 The key element of datawi.re are frames, which are unmodelled data 
 records submitted to the service. Each ``Frame`` also carries some
-metadata, such as a hash, uuid and temporal information. Frames 
+metadata, such as a ``hash``, ``uuid`` and a ``timestamp``. Frames 
 are not stored in the database, but in an external storage service
-(e.g. Amazon S3), but a small reference is kept in the database. 
+(e.g. Amazon S3), while only a small reference is kept in the
+database. 
 
 Each frame is created by submitting data to an ``Event`` endpoint,
 which belongs to a ``Service``. For example, a registration of a new
-company could be an event of a company register service. Services
-are to be curated and will represent the only point of
-authorization checks in the system.
+company could be an event of a company register data service.
+``Services`` are to be curated before they become part of the public
+firehore and will represent the only point of authorization checks
+in the system.
 
 When a ``User`` signs in, they will see an overview of which
-``Frames`` match the names ``Entities`` they have subscribed to. 
-``Entities`` are classified into a ``category``, which is either 
-Person, Organisation, Place or Topic. We're looking for text 
+``Frames`` match the names of ``Entities`` which they have subscribed
+to. ``Entities`` are part of a ``category``, which is either 
+Person, Organisation, Place or Topic. We're looking for text/regex
 matches only at the moment - more complicated match types can be
-implemented via an API, e.g. using lookups against external services
+implemented via an API, e.g. by using lookups against external services
 or by aggregating data to analyse trends. Whenever an ``Entity``
-name is found, a ``Match`` is created to bookmark the matching
-``Frame``.
+name is found to match a ``Frame``, a ``Match`` is created to store
+the connection.
 
 A ``Frame`` is identified by a ``urn`` of the form
 ``urn:dwre:SERVICE:EVENT:UUID``. This is also the file name stored 
 on a remote backend, so that ``Frames`` can be retrieved directly 
 (e.g. via S3 CORS).
 
+
+API thoughts
+------------
 
 http://api.datawi.re/
 
@@ -45,6 +50,7 @@ http://api.datawi.re/
                     
                     
 Domain Model
+------------
 
     Service [key, label, ]
         Event [key, label, template, service_id]
@@ -56,7 +62,8 @@ Domain Model
 
 
 
-Components: 
+System Components 
+-----------------
 
 * Ingest - just take the inbound frame(s) and queue them.
 * Validation and Upload - create database and storage representations, check validity.
