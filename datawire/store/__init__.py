@@ -1,0 +1,23 @@
+from urlparse import urlparse
+
+from datawire.core import app
+from datawire.store.file import FileStore
+
+STORES = {
+    'file': FileStore
+}
+
+
+def get_backend(instance={'_': None}):
+    if instance['_'] is None:
+        parsed = urlparse(app.config.get('STORE_URL'))
+        instance['_'] = STORES.get(parsed.scheme)(parsed)
+    return instance['_']
+
+
+def store_frame(frame):
+    return get_backend().store(frame)
+
+
+def load_frame(urn):
+    return get_backend().load(urn)
