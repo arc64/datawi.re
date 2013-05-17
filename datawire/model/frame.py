@@ -13,8 +13,6 @@ class Frame(db.Model):
 
     @classmethod
     def create(cls, service, data):
-        # TODO: ensure this is the only event on this service with
-        # this key.
         obj = cls()
         obj.urn = data.get('urn')
         obj.hash = data.get('hash')
