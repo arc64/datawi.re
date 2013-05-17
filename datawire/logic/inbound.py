@@ -7,6 +7,7 @@ from datawire.model import Service, Event, Frame
 from datawire.model.util import make_token, data_hash
 from datawire.store import store_frame
 
+
 def generate_frame(service_key, event_key, data):
     service = Service.by_key(service_key)
     if service is None:
@@ -33,4 +34,6 @@ def generate_frame(service_key, event_key, data):
     Frame.create(service, frame)
     store_frame(frame)
     db.session.commit()
+
+    # TODO: actually queue this :)
     pprint(frame)
