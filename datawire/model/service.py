@@ -15,6 +15,7 @@ class Service(db.Model, ModelCore):
 
     @classmethod
     def create(cls, data):
+        # TODO: ensure this is the only service with this key.
         obj = cls()
         obj.key = data.get('key')
         obj.label = data.get('label')

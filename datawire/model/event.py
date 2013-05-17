@@ -11,12 +11,20 @@ class Event(db.Model, ModelCore):
 
     @classmethod
     def create(cls, data):
+        # TODO: ensure this is the only event on this service with 
+        # this key.
         obj = cls()
         obj.key = data.get('key')
         obj.label = data.get('label')
         obj.service = data.get('service')
         db.session.add(obj)
         return obj
+
+    @classmethod
+    def by_key(cls, service, key):
+        q = db.session.query(cls)
+        q = q.filter_by(service=service).filter_by(key=key)
+        return q.first()
 
     def to_dict(self):
         return {

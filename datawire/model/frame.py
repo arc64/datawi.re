@@ -10,3 +10,8 @@ class Frame(db.Model):
     hash = db.Column(db.Unicode())
     service_id = db.Column(db.Integer(), db.ForeignKey('service.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    @classmethod
+    def to_urn(cls, frame):
+        return 'urn:dwre:%(service)s:%(event)s:%(id)s' % frame
+
