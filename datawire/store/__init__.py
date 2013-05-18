@@ -2,9 +2,11 @@ from urlparse import urlparse
 
 from datawire.core import app
 from datawire.store.file import FileStore
+from datawire.store.s3 import S3Store
 
 STORES = {
-    'file': FileStore
+    'file': FileStore,
+    's3': S3Store
 }
 
 
