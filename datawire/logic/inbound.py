@@ -21,8 +21,8 @@ def generate_frame(service_key, event_key, data):
         'event': event_key,
         'data': data
     }
-    frame['hash'] = data_hash(frame)
     frame.update({
+        'hash': data_hash(frame),
         'id': make_token(),
         'created_at': datetime.utcnow()
     })
