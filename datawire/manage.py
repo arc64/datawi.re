@@ -31,6 +31,8 @@ def createservice(filename):
         for event_data in events:
             event_data['service'] = service
             Event.create(event_data)
+        user = User.by_screen_name('admin')
+        service.editors.append(user)
         db.session.commit()
 
 

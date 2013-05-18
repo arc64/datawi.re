@@ -1,6 +1,11 @@
 from datawire.core import db
 from datawire.model.util import ModelCore
 
+editors = db.Table('editor',
+                   db.Column('service_id', db.Integer(), db.ForeignKey('service.id')),
+                   db.Column('user_id', db.Integer(), db.ForeignKey('user.id'))
+)
+
 
 class Service(db.Model, ModelCore):
     __tablename__ = 'service'
@@ -12,6 +17,8 @@ class Service(db.Model, ModelCore):
                              cascade='all, delete-orphan', order_by='Frame.created_at.desc()')
     events = db.relationship('Event', backref='service', lazy='dynamic',
                              cascade='all, delete-orphan', order_by='Event.key.asc()')
+    editors = db.relationship('User', secondary=editors,
+                              backref=db.backref('services', lazy='dynamic'))
 
     @classmethod
     def create(cls, data):
@@ -34,5 +41,8 @@ class Service(db.Model, ModelCore):
             'label': self.display_name,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
-            'events': self.events
+            'events': self.events,
+            'editors': self.editors
         }
+
+
