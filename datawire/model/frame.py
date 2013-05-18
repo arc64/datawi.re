@@ -1,4 +1,4 @@
-from datawire.core import db
+from datawire.core import db, app
 from datawire.model.util import make_token
 
 
@@ -23,7 +23,9 @@ class Frame(db.Model):
     @classmethod
     def to_urn(cls, frame):
         uuid = make_token()
-        return 'urn:dwre:%s:%s:%s' % (frame['service'], frame['event'], uuid)
+        instance = app.config.get('INSTANCE', 'dwre')
+        return 'urn:%s:%s:%s:%s' % (instance, frame['service'],
+                                    frame['event'], uuid)
 
     @classmethod
     def by_hash(cls, hash):
