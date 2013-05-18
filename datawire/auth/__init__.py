@@ -1,7 +1,7 @@
 import inspect
 from flask import request
 
-from datahub.exc import Forbidden
+from datawire.exc import Forbidden
 import services
 
 
