@@ -4,11 +4,11 @@ from datawire.exc import BadRequest
 from datawire.views.util import jsonify
 from datawire.logic.inbound import generate_frame
 
-inbound = Blueprint('inbound', __name__)
+frames = Blueprint('frames', __name__)
 
 
-@inbound.route('/submit/<service_key>/<event_key>',
-               methods=['PUT', 'POST'])
+@frames.route('/submit/<service_key>/<event_key>',
+              methods=['PUT', 'POST'])
 def submit(service_key, event_key):
     if request.json is None:
         raise BadRequest('Data must be submitted as JSON.')
