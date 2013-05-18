@@ -1,8 +1,8 @@
-from flask import request, render_template
+from flask import request, session, render_template
 
 from datawire.core import app
 from datawire.exc import Unauthorized
-#from datawire.model import User
+from datawire.model import User
 from datawire.views.frames import frames
 from datawire.views.sessions import sessions
 from datawire.views.util import jsonify
@@ -14,15 +14,19 @@ app.register_blueprint(frames, url_prefix='/api/1')
 
 
 @app.before_request
-def basic_authentication():
+def authentication():
     """ Attempt HTTP authentication via API keys on a per-request basis. """
     auth_header = request.headers.get('Authorization')
     if auth_header is not None:
         try:
             auth_type, api_key = auth_header.split(' ', 1)
-            
+            request.user = User.by_api_key(api_key)
         except:
-            raise Unauthorized('Invalid username or password.')
+            raise Unauthorized('Invalid API key.')
+    elif 'user_id' in session:
+        request.user = User.by_id(session['user_id'])
+    else:
+        request.user = None
 
 
 @app.errorhandler(400)
