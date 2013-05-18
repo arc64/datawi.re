@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 
 from datawire.exc import BadRequest, NotFound
-from datawire.store import load_frame
+from datawire.store import load_frame, frame_url
 from datawire.views.util import jsonify
 from datawire.logic.inbound import generate_frame
 
@@ -23,4 +23,5 @@ def get(urn):
     data = load_frame(urn)
     if data is None:
         raise NotFound('Frame: %s' % urn)
-    return jsonify(data)
+    headers = {'X-Backend-Location': frame_url(urn)}
+    return jsonify(data, headers=headers)

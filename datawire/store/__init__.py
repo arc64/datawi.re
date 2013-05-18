@@ -23,3 +23,7 @@ def store_frame(frame):
 
 def load_frame(urn):
     return get_backend().load(urn)
+
+
+def frame_url(urn):
+    return get_backend().frame_url(urn)

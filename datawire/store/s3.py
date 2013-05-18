@@ -26,7 +26,7 @@ class S3Store(Store):
         return self._bucket
 
     def get_key(self, urn):
-        parts = urn.split(':')[1:]
+        parts = urn.split(':')[2:]
         key_name = '%s.json' % '/'.join(parts)
         key = Key(self.bucket, key_name)
         return key
@@ -46,3 +46,8 @@ class S3Store(Store):
             'Cache-Control': 'public; max-age=846000'
         })
         key.set_acl('public-read')
+
+    def frame_url(self, urn):
+        parts = urn.split(':')[2:]
+        key = '%s.json' % '/'.join(parts)
+        return 'http://%s/%s' % (self.url.hostname, key)

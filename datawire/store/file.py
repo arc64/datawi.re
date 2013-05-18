@@ -1,4 +1,5 @@
 import os
+from flask import url_for
 
 from datawire.store.common import Store
 
@@ -21,3 +22,6 @@ class FileStore(Store):
         path = self.urn_path(urn)
         with open(path, 'wb') as fh:
             fh.write(frame)
+
+    def frame_url(self, urn):
+        return url_for('frames.get', urn=urn)
