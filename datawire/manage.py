@@ -12,7 +12,7 @@ manager = Manager(app)
 def createdb():
     """ Create the database entities. """
     db.create_all()
-    admin_data = {'screen_name': 'admin', 'display_name': 'Systems Admin'}
+    admin_data = {'screen_name': 'admin', 'name': 'Systems Admin'}
     if User.by_screen_name(admin_data.get('screen_name')) is None:
         User.create(admin_data)
     db.session.commit()

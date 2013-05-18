@@ -4,6 +4,7 @@ from hashlib import sha1
 
 from datawire.core import db
 
+
 class ModelCore(object):
     id = db.Column(db.Integer, primary_key=True)
 
