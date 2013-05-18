@@ -4,10 +4,12 @@ from datawire.core import app
 from datawire.exc import Unauthorized
 #from datawire.model import User
 from datawire.views.inbound import inbound
+from datawire.views.sessions import sessions
 from datawire.views.util import jsonify
 
 app.template_folder = '../templates'
 
+app.register_blueprint(sessions)
 app.register_blueprint(inbound, url_prefix='/api/1')
 
 
