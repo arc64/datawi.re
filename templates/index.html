@@ -10,13 +10,12 @@
 
     <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="http://assets.pudo.org/libs/Flat-UI-20130517/css/flat-ui.css" rel="stylesheet">
 
     <link rel="stylesheet" href="/static/style.css">
     <link rel="shortcut icon" href="http://assets.pudo.org/img/opennews-favicon.ico" type="image/x-icon" />
 </head>
 <body>
-    <div class="navbar navbar-inverse">
+    <div class="navbar navbar-static-top">
         <div class="navbar-inner">
             <div class="container">
                 <a class="brand">datawi.re</a>
@@ -31,7 +30,7 @@
     </div>
 
     <div class="container">
-        <h1>welcome to the datawi.re</h1>
+        <h1>welcome to the datawi.re, {{request.user.name}}</h1>
 
         <p>login to get updates blah blah.</p>
 
