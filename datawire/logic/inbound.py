@@ -4,7 +4,7 @@ from datetime import datetime
 from datawire.exc import NotFound, BadRequest
 from datawire.core import db
 from datawire.model import Service, Event, Frame
-from datawire.model.util import make_token, data_hash
+from datawire.model.util import data_hash
 from datawire.store import store_frame
 
 
@@ -23,7 +23,6 @@ def generate_frame(service_key, event_key, data):
     }
     frame.update({
         'hash': data_hash(frame),
-        'id': make_token(),
         'created_at': datetime.utcnow()
     })
     frame['urn'] = Frame.to_urn(frame)
