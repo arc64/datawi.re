@@ -44,5 +44,3 @@ class Service(db.Model, ModelCore):
             'events': self.events,
             'editors': self.editors
         }
-
-

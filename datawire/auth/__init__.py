@@ -6,7 +6,7 @@ import services
 
 
 def logged_in():
-    return request.user is None
+    return request.user is not None
 
 
 class Requirement(object):
