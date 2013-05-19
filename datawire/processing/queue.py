@@ -8,24 +8,17 @@ exchange = Exchange(app.config.get('INSTANCE', 'dwre'),
                     'topic', durable=True)
 
 inbound_queue = Queue('inbound', exchange=exchange, routing_key='inbound.#')
+matching_queue = Queue('matching', exchange=exchange, routing_key='matching.#')
 
 
 def connect():
     return Connection(app.config.get('AMQP_QUEUE_URI'))
 
 
-def handle_message(body, message):
-    queue, service_key, event_key = message.delivery_info.get('routing_key').split('.')
-    log.info('%s - received: %s / %s', queue, service_key, event_key)
-    from pprint import pprint
-    pprint(body)
-    message.ack()
-    print message.delivery_info
-
-
-def process():
+def process_queue(queue, callback):
     conn = connect()
-    with conn.Consumer([inbound_queue], callbacks=[handle_message]):
+    log.info("Listening on: %s", queue)
+    with conn.Consumer([queue], callbacks=[callback]):
         while True:
             conn.drain_events()
 

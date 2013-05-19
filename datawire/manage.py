@@ -52,7 +52,7 @@ def deleteservice(key):
 @manager.command
 def process():
     """ Process background tasks from the queue. """
-    from datawire.processing.queue import process
+    from datawire.processing import process
     process()
 
 

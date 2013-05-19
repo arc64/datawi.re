@@ -1,4 +1,4 @@
-from pprint import pprint
+import logging
 from datetime import datetime
 
 from datawire.exc import NotFound, BadRequest
@@ -6,12 +6,19 @@ from datawire.core import db
 from datawire.model import Service, Event, Frame
 from datawire.model.util import data_hash
 from datawire.store import store_frame
-from datawire.processing.queue import inbound_queue, publish
+
+log = logging.getLogger(__name__)
 
 
-def generate_frame_async(service_key, event_key, data):
-    routing_key = 'inbound.%s.%s' % (service_key, event_key)
-    publish(inbound_queue, routing_key, data)
+def handle_inbound(body, message):
+    queue, service_key, event_key = message.delivery_info.get('routing_key').split('.')
+    log.info('%s - received: %s / %s', queue, service_key, event_key)
+    try:
+        generate_frame(service_key, event_key, body)
+    except Exception, exc:
+        log.exception(exc)
+    finally:
+        message.ack()
 
 
 def generate_frame(service_key, event_key, data):
@@ -40,5 +47,6 @@ def generate_frame(service_key, event_key, data):
     store_frame(frame)
     db.session.commit()
 
-    # TODO: actually queue this :)
-    pprint(frame)
+    log.info("created: %(urn)s (%(hash)s)", frame)
+    #pprint(frame)
+    return frame['urn']
