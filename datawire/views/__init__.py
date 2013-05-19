@@ -17,9 +17,11 @@ app.register_blueprint(frames, url_prefix='/api/1')
 def authentication():
     """ Attempt HTTP authentication via API keys on a per-request basis. """
     auth_header = request.headers.get('Authorization')
+    api_key = request.args.get('api_key')
     if auth_header is not None:
+        auth_type, api_key = auth_header.split(' ', 1)
+    if api_key is not None:
         try:
-            auth_type, api_key = auth_header.split(' ', 1)
             request.user = User.by_api_key(api_key)
         except:
             raise Unauthorized('Invalid API key.')
