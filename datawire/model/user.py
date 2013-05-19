@@ -47,7 +47,7 @@ class User(db.Model, ModelCore):
         return {
             'id': self.id,
             'screen_name': self.screen_name,
-            'display_name': self.display_name,
+            'name': self.name,
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }

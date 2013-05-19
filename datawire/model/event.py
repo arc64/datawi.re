@@ -32,8 +32,8 @@ class Event(db.Model, ModelCore):
     def to_dict(self):
         return {
             'id': self.id,
-            'key': self.screen_name,
-            'label': self.display_name,
+            'key': self.key,
+            'label': self.label,
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
