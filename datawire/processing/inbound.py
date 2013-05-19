@@ -43,7 +43,7 @@ def generate_frame(service_key, event_key, data):
     if Frame.by_hash(frame['hash']) is not None:
         raise BadRequest('Duplicate content, hash: %(hash)s' % frame)
 
-    Frame.create(service, frame)
+    Frame.create(service, event, frame)
     store_frame(frame)
     db.session.commit()
 

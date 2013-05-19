@@ -8,15 +8,17 @@ class Frame(db.Model):
     urn = db.Column(db.Unicode(), primary_key=True)
     hash = db.Column(db.Unicode(), index=True)
     service_id = db.Column(db.Integer(), db.ForeignKey('service.id'))
-    created_at = db.Column(db.DateTime)
+    event_id = db.Column(db.Integer(), db.ForeignKey('event.id'))
+    created_at = db.Column(db.DateTime, index=True)
 
     @classmethod
-    def create(cls, service, data):
+    def create(cls, service, event, data):
         obj = cls()
         obj.urn = data.get('urn')
         obj.hash = data.get('hash')
         obj.created_at = data.get('created_at')
         obj.service = service
+        obj.event = event
         db.session.add(obj)
         return obj
 

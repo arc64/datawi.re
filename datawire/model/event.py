@@ -9,9 +9,12 @@ class Event(db.Model, ModelCore):
     label = db.Column(db.Unicode())
     service_id = db.Column(db.Integer(), db.ForeignKey('service.id'))
 
+    frames = db.relationship('Frame', backref='event', lazy='dynamic',
+                             cascade='all, delete-orphan', order_by='Frame.created_at.desc()')
+
     @classmethod
     def create(cls, data):
-        # TODO: ensure this is the only event on this service with 
+        # TODO: ensure this is the only event on this service with
         # this key.
         obj = cls()
         obj.key = data.get('key')
