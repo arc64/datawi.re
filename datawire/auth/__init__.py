@@ -2,7 +2,7 @@ import inspect
 from flask import request
 
 from datawire.exc import Forbidden
-import services
+import service
 
 
 def logged_in():
