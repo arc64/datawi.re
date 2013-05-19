@@ -3,3 +3,4 @@
 *.egg-info
 datawire/development.db
 settings.py
+env/*
