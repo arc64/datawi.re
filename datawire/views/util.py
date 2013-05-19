@@ -2,7 +2,15 @@ from datetime import datetime
 from flask import Response, request
 import json
 
+from datawire.exc import NotFound
+
 BOOL_TRUISH = ['true', '1', 'yes', 'y', 't']
+
+
+def obj_or_404(obj):
+    if obj is None:
+        NotFound()
+    return obj
 
 
 def arg_bool(name, default=False):
