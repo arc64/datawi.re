@@ -37,6 +37,8 @@ def frameset(q, data=None):
 @frames.route('/frames/<service_key>')
 @frames.route('/frames/<service_key>/<event_key>')
 def index(service_key=None, event_key=None):
+    # TODO: Do we want service streams here or under the
+    # service entity, e.g. /service/<service_key>/frames?
     q = Frame.all()
     if service_key is not None:
         service = obj_or_404(Service.by_key(service_key))
@@ -47,8 +49,9 @@ def index(service_key=None, event_key=None):
     return frameset(q)
 
 
-@frames.route('/frames/<urn>')
+@frames.route('/frames/urn:<urn>')
 def get(urn):
+    urn = 'urn:' + urn
     # TODO: Cache headers, authz checks.
     data = load_frame(urn)
     if data is None:
