@@ -1,5 +1,7 @@
+import os
+
 DEBUG = True
-SECRET_KEY = None
+SECRET_KEY = os.environ.get('DATAWIRE_SECRET')
 
 INSTANCE = 'dwre'
 

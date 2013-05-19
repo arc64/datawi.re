@@ -17,7 +17,9 @@ def createdb():
     db.create_all()
     admin_data = {'screen_name': 'admin', 'name': 'Systems Admin'}
     if User.by_screen_name(admin_data.get('screen_name')) is None:
-        User.create(admin_data)
+        user = User.create(admin_data)
+        db.session.flush()
+        user.api_key = app.config.get('SECRET_KEY')
     db.session.commit()
 
 
