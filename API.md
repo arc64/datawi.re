@@ -12,12 +12,12 @@ Each frame is created by submitting data to an ``Event`` endpoint,
 which belongs to a ``Service``. For example, a registration of a new
 company could be an event of a company register data service.
 ``Services`` are to be curated before they become part of the public
-firehore and will represent the only point of authorization checks
+firehose and will represent the only point of authorization checks
 in the system.
 
 When a ``User`` signs in, they will see an overview of which
 ``Frames`` match the names of ``Entities`` which they have subscribed
-to. ``Entities`` are part of a ``category``, which is either 
+to. ``Entities`` are part of a ``facet``, which is either 
 Person, Organisation, Place or Topic. We're looking for text/regex
 matches only at the moment - more complicated match types can be
 implemented via an API, e.g. by using lookups against external services
