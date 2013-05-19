@@ -5,6 +5,7 @@ from flask.ext.assets import ManageAssets
 from datawire.core import app, db, assets
 from datawire.model import User, Service, Event
 from datawire.views import index
+from datawire.logs import logger
 
 manager = Manager(app)
 manager.add_command("assets", ManageAssets(assets))

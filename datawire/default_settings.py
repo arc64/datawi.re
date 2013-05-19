@@ -3,6 +3,10 @@ SECRET_KEY = None
 
 INSTANCE = 'dwre'
 
+SMTP_SENDER = 'info@datawi.re'
+SMTP_SERVER = 'datawi.re'
+SYSADMINS = ['friedrich@pudo.org']
+
 SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
 
 STORE_URL = 'file:///tmp/datawi.re/frames/'

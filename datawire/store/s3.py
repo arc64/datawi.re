@@ -1,3 +1,5 @@
+import logging
+
 from boto.s3.connection import S3Connection
 from boto.s3.connection import Location
 from boto.s3.cors import CORSConfiguration
@@ -6,6 +8,8 @@ from boto.s3.key import Key
 
 from datawire.core import app
 from datawire.store.common import Store
+
+log = logging.getLogger(__name__)
 
 
 class S3Store(Store):
@@ -36,6 +40,7 @@ class S3Store(Store):
             key = self.get_key(urn)
             return key.get_contents_as_string()
         except S3ResponseError:
+            log.info("Key not found: %s", urn)
             return None
 
     def _store(self, urn, frame):
