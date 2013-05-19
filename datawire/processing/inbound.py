@@ -6,6 +6,12 @@ from datawire.core import db
 from datawire.model import Service, Event, Frame
 from datawire.model.util import data_hash
 from datawire.store import store_frame
+from datawire.processing.queue import inbound_queue, publish
+
+
+def generate_frame_async(service_key, event_key, data):
+    routing_key = 'inbound.%s.%s' % (service_key, event_key)
+    publish(inbound_queue, routing_key, data)
 
 
 def generate_frame(service_key, event_key, data):

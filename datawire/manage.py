@@ -49,5 +49,12 @@ def deleteservice(key):
     db.session.commit()
 
 
+@manager.command
+def process():
+    """ Process background tasks from the queue. """
+    from datawire.processing.queue import process
+    process()
+
+
 if __name__ == "__main__":
     manager.run()
