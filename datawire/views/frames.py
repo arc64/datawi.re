@@ -2,8 +2,9 @@ from flask import Blueprint, request
 
 from datawire.exc import BadRequest, NotFound
 from datawire.store import load_frame, frame_url
-from datawire.views.util import jsonify
-from datawire.processing.inbound import generate_frame_async
+from datawire.views.util import jsonify, arg_bool
+from datawire.processing.inbound import generate_frame
+from datawire.processing.queue import publish, inbound_queue
 
 frames = Blueprint('frames', __name__)
 
@@ -13,8 +14,13 @@ frames = Blueprint('frames', __name__)
 def submit(service_key, event_key):
     if request.json is None:
         raise BadRequest('Data must be submitted as JSON.')
-    generate_frame_async(service_key, event_key, request.json)
-    return jsonify({'status': 'ok'})
+    if arg_bool('sync'):
+        urn = generate_frame(service_key, event_key, request.json)
+        return jsonify({'status': 'ok', 'urn': urn})
+    else:
+        routing_key = 'inbound.%s.%s' % (service_key, event_key)
+        publish(inbound_queue, routing_key, request.json)
+        return jsonify({'status': 'queued'})
 
 
 @frames.route('/frames/<urn>')

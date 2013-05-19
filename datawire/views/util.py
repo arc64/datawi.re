@@ -2,6 +2,31 @@ from datetime import datetime
 from flask import Response, request
 import json
 
+BOOL_TRUISH = ['true', '1', 'yes', 'y', 't']
+
+
+def arg_bool(name, default=False):
+    v = request.args.get(name, '')
+    if not len(v):
+        return default
+    return v in BOOL_TRUISH
+
+
+def arg_int(name, default=None):
+    try:
+        v = request.args.get(name)
+        return int(v)
+    except (ValueError, TypeError):
+        return default
+
+
+def get_limit(default=50):
+    return max(0, min(50000, arg_int('limit', default=default)))
+
+
+def get_offset(default=0):
+    return max(0, arg_int('offset', default=default))
+
 
 class JSONEncoder(json.JSONEncoder):
     """ This encoder will serialize all entities that have a to_dict
