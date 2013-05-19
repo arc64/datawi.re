@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import Response, request
+from sqlalchemy.orm.query import Query
 import json
 
 from datawire.exc import NotFound
@@ -29,7 +30,7 @@ def arg_int(name, default=None):
 
 
 def get_limit(default=50):
-    return max(0, min(50000, arg_int('limit', default=default)))
+    return max(0, min(1000, arg_int('limit', default=default)))
 
 
 def get_offset(default=0):
@@ -48,6 +49,8 @@ class JSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime):
             return obj.isoformat()
+        if isinstance(obj, Query):
+            return list(obj)
         if hasattr(obj, 'to_dict'):
             return obj.to_dict()
         raise TypeError("%r is not JSON serializable" % obj)

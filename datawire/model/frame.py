@@ -33,3 +33,7 @@ class Frame(db.Model):
     def by_hash(cls, hash):
         q = db.session.query(cls).filter_by(hash=hash)
         return q.first()
+
+    @classmethod
+    def all(cls):
+        return db.session.query(cls)

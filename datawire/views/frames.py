@@ -1,14 +1,60 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, url_for
 
 from datawire.auth import require
-from datawire.model import Service
+from datawire.model import Service, Event, Frame
 from datawire.exc import BadRequest, NotFound
 from datawire.store import load_frame, frame_url
 from datawire.views.util import jsonify, arg_bool, obj_or_404
+from datawire.views.util import get_limit, get_offset
 from datawire.processing.inbound import generate_frame
 from datawire.processing.queue import publish, inbound_queue
 
 frames = Blueprint('frames', __name__)
+
+
+def frameset(q, data=None):
+    # TODO: add argument for RSS support.
+    data = data or {}
+    q = q.order_by(Frame.created_at.desc())
+    data['total'] = q.count()
+    q = q.limit(get_limit())
+    q = q.offset(get_offset())
+    data['frames'] = []
+    data['services'] = {}
+    for frame in q:
+        data['services'][frame.service.key] = frame.service
+        data['frames'].append({
+            'urn': frame.urn,
+            'canonical_uri': url_for('.get', urn=frame.urn, _external=True),
+            'fetch_uri': frame_url(frame.urn),
+            'service': frame.service.key,
+            'created_at': frame.created_at,
+        })
+    return jsonify(data)
+
+
+@frames.route('/frames')
+@frames.route('/frames/<service_key>')
+@frames.route('/frames/<service_key>/<event_key>')
+def index(service_key=None, event_key=None):
+    q = Frame.all()
+    if service_key is not None:
+        service = obj_or_404(Service.by_key(service_key))
+        q = q.filter_by(service=service)
+        if event_key is not None:
+            event = obj_or_404(Event.by_key(event_key))
+            q = q.filter_by(event=event)
+    return frameset(q)
+
+
+@frames.route('/frames/<urn>')
+def get(urn):
+    # TODO: Cache headers, authz checks.
+    data = load_frame(urn)
+    if data is None:
+        raise NotFound('Frame: %s' % urn)
+    headers = {'X-Backend-Location': frame_url(urn)}
+    return jsonify(data, headers=headers)
 
 
 @frames.route('/frames/<service_key>/<event_key>',
@@ -27,13 +73,3 @@ def submit(service_key, event_key):
         routing_key = 'inbound.%s.%s' % (service_key, event_key)
         publish(inbound_queue, routing_key, request.json)
         return jsonify({'status': 'queued'})
-
-
-@frames.route('/frames/<urn>')
-def get(urn):
-    # TODO: Cache headers, authz checks.
-    data = load_frame(urn)
-    if data is None:
-        raise NotFound('Frame: %s' % urn)
-    headers = {'X-Backend-Location': frame_url(urn)}
-    return jsonify(data, headers=headers)
