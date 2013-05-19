@@ -1,11 +1,13 @@
 import json
 from flask.ext.script import Manager
+from flask.ext.assets import ManageAssets
 
-from datawire.core import app, db
+from datawire.core import app, db, assets
 from datawire.model import User, Service, Event
 from datawire.views import index
 
 manager = Manager(app)
+manager.add_command("assets", ManageAssets(assets))
 
 
 @manager.command

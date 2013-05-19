@@ -2,4 +2,5 @@ Flask==0.9
 SQLAlchemy==0.8.1
 Flask-Script==0.5.3
 Flask-OAuth==0.12
+Flask-Assets==0.8
 boto==2.9.3
