@@ -1,7 +1,26 @@
 from flask import url_for
 
-from datawire.core import db
+from datawire.core import db, app
 from datawire.model.util import ModelCore
+
+FACETS = app.config.get('FACETS')
+
+
+class Facet(object):
+
+    @classmethod
+    def by_key(cls, key):
+        for facet in cls.all():
+            if facet['key'] == key:
+                return facet
+
+    @classmethod
+    def all(cls):
+        facets = []
+        for facet in FACETS:
+            facet['uri'] = url_for('entities.facet_get', key=facet['key'], _external=True)
+            facets.append(facet)
+        return facets
 
 
 class Entity(db.Model, ModelCore):

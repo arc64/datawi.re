@@ -23,3 +23,10 @@ FACEBOOK_APP_SECRET = ''
 
 S3_ACCESS_KEY = ''
 S3_SECRET_KEY = ''
+
+FACETS = [
+    {'key': 'persons', 'label': 'Persons'},
+    {'key': 'orgs', 'label': 'Organisations'},
+    {'key': 'topics', 'label': 'Topics'},
+    {'key': 'places', 'label': 'Places'},
+]

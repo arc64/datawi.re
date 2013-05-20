@@ -1,11 +1,26 @@
 from flask import Blueprint, request, url_for
 
 from datawire.auth import require
-from datawire.model import Entity
+from datawire.model import Entity, Facet
 from datawire.views.util import jsonify, obj_or_404
 from datawire.views.util import query_pager
 
 entities = Blueprint('entities', __name__)
+
+
+@entities.route('/facets')
+def facet_index():
+    facets = Facet.all()
+    return jsonify({
+        'results': facets,
+        'count': len(facets)
+    })
+
+
+@entities.route('/facets/<key>')
+def facet_get(key):
+    facet = obj_or_404(Facet.by_key(key))
+    return jsonify(facet)
 
 
 @entities.route('/users/<int:id>/entities')
