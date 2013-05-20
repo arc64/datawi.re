@@ -1,7 +1,7 @@
 from flask import Blueprint, request, url_for
 
 from datawire.auth import require
-from datawire.model import Service, Event, Frame
+from datawire.model import Service, Frame
 from datawire.exc import BadRequest, NotFound
 from datawire.store import load_frame, frame_url
 from datawire.views.util import jsonify, arg_bool, obj_or_404
