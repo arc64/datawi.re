@@ -7,12 +7,14 @@ from datawire.views.frames import frames
 from datawire.views.sessions import sessions
 from datawire.views.services import services
 from datawire.views.events import events
+from datawire.views.users import users
 from datawire.views.util import jsonify
 
 app.register_blueprint(sessions)
 app.register_blueprint(frames, url_prefix='/api/1')
 app.register_blueprint(services, url_prefix='/api/1')
 app.register_blueprint(events, url_prefix='/api/1')
+app.register_blueprint(users, url_prefix='/api/1')
 
 
 @app.before_request

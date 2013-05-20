@@ -1,3 +1,5 @@
+from flask import url_for
+
 from datawire.core import db
 from datawire.model.util import ModelCore, make_token
 
@@ -11,6 +13,9 @@ class User(db.Model, ModelCore):
     twitter_id = db.Column(db.Unicode())
     facebook_id = db.Column(db.Unicode())
     api_key = db.Column(db.Unicode(), default=make_token)
+
+    entities = db.relationship('Entity', backref='user', lazy='dynamic',
+                               cascade='all, delete-orphan')
 
     @classmethod
     def create(cls, data):
@@ -43,11 +48,19 @@ class User(db.Model, ModelCore):
         q = db.session.query(cls).filter_by(facebook_id=facebook_id)
         return q.first()
 
-    def to_dict(self):
+    def to_ref(self):
         return {
             'id': self.id,
             'screen_name': self.screen_name,
-            'name': self.name,
+            'uri': url_for('users.get', id=self.id, _external=True),
+            'name': self.name
+        }
+
+    def to_dict(self):
+        # TODO: Do we want to expose entities?
+        data = self.to_ref()
+        data.update({
             'created_at': self.created_at,
             'updated_at': self.updated_at
-        }
+        })
+        return data

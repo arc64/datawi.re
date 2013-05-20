@@ -16,6 +16,7 @@ def connect():
 
 
 def process_queue(queue, callback):
+    # TODO: threads :)
     conn = connect()
     log.info("Listening on: %s", queue)
     with conn.Consumer([queue], callbacks=[callback]):
