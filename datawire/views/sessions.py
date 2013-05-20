@@ -5,9 +5,22 @@ from flask import url_for
 
 from datawire.core import db
 from datawire.model import User
+from datawire.auth import logged_in
 from datawire.auth.providers import twitter, facebook
+from datawire.views.util import jsonify
 
 sessions = Blueprint('sessions', __name__)
+
+
+@sessions.route('/sessions')
+def status():
+    return jsonify({
+        'logged_in': logged_in(),
+        'logout_uri': url_for('.logout', _external=True),
+        'twitter_uri': url_for('.twitter_login', _external=True),
+        'facebook_uri': url_for('.facebook_login', _external=True),
+        'user': request.user
+    })
 
 
 @sessions.route('/sessions/logout')
