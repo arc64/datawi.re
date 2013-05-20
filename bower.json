@@ -1,0 +1,13 @@
+{
+  "name": "datawire",
+  "version": "0.1.0",
+  "main": "datwire/static/css/main.css",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "jquery": "~1.9.1",
+    "angular": "~1.0.6"
+  }
+}
