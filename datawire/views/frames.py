@@ -5,38 +5,35 @@ from datawire.model import Service, Event, Frame
 from datawire.exc import BadRequest, NotFound
 from datawire.store import load_frame, frame_url
 from datawire.views.util import jsonify, arg_bool, obj_or_404
-from datawire.views.util import get_limit, get_offset
+from datawire.views.util import query_pager
 from datawire.processing.inbound import generate_frame
 from datawire.processing.queue import publish, inbound_queue
 
 frames = Blueprint('frames', __name__)
 
 
-def frameset(q, data=None):
+def frameset(q, route, data=None):
     # TODO: add argument for RSS support.
     data = data or {}
-    q = q.order_by(Frame.created_at.desc())
-    data['total'] = q.count()
-    q = q.limit(get_limit())
-    q = q.offset(get_offset())
-    data['frames'] = []
     data['services'] = {}
-    for frame in q:
-        data['services'][frame.service.key] = frame.service
-        data['frames'].append({
+    q = q.order_by(Frame.created_at.desc())
+
+    def transform(frame):
+        data['services'][frame.service.key] = frame.service.to_dict()
+        return {
             'urn': frame.urn,
             'api_uri': url_for('.get', urn=frame.urn, _external=True),
             'store_uri': frame_url(frame.urn),
             'service': frame.service.key,
-            'created_at': frame.created_at,
-        })
-    return jsonify(data)
+            'created_at': frame.created_at
+        }
+    return query_pager(q, route, data=data, transform=transform)
 
 
 @frames.route('/frames')
 def index():
     q = Frame.all()
-    return frameset(q)
+    return frameset(q, 'frames.index')
 
 
 @frames.route('/frames/<urn>')
