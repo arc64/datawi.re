@@ -35,6 +35,9 @@ to isolate the project):
   we recommend using PostgreSQL.
 * [RabbitMQ](http://www.rabbitmq.com/) 2.7.1 or newer
 * Python 2.7 and [virtualenv](http://www.virtualenv.org/en/latest/)
+* Twitter's [bower](https://github.com/bower/bower) for installing JS dependencies.
+* [UglifyJS](https://github.com/mishoo/UglifyJS/)
+* [SASS](http://sass-lang.com/download.html)
 
 As well as installing these packages, you also need the following services
 set up to work with:
