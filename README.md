@@ -57,6 +57,8 @@ create a virtual environment and install the Python dependencies:
 	virtualenv env
 	source env/bin/activate
 	pip install -r requirements.txt
+	python setup.py develop 
+	bower install
 	
 If you're unfamiliar with virtualenv, be aware that you will need to 
 execute the ``source env/bin/activate`` command each time you're working with
