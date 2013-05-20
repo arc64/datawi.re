@@ -9,6 +9,10 @@ def logged_in():
     return request.user is not None
 
 
+def user_id(id):
+    return logged_in() and request.user.id == id
+
+
 class Requirement(object):
     """ Checks a function call and raises an exception if the
     function returns a non-True value. """

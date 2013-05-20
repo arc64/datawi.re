@@ -14,7 +14,7 @@ def index():
     return query_pager(q, 'users.index')
 
 
-@users.route('/users/<id>')
+@users.route('/users/<int:id>')
 def get(id):
     user = obj_or_404(User.by_id(id))
     #require.service.view(service)
