@@ -11,7 +11,7 @@ from datawire.views.users import users
 from datawire.views.entities import entities
 from datawire.views.util import jsonify
 
-app.register_blueprint(sessions)
+app.register_blueprint(sessions, url_prefix='/api/1')
 app.register_blueprint(frames, url_prefix='/api/1')
 app.register_blueprint(services, url_prefix='/api/1')
 app.register_blueprint(events, url_prefix='/api/1')
@@ -53,5 +53,6 @@ def handle_exceptions(exc):
 
 
 @app.route("/")
+@app.route("/profile")
 def index():
     return render_template('index.html')

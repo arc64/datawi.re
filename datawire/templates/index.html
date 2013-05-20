@@ -24,8 +24,16 @@
     <div class="container">
         <nav ng-controller="NavigationCntl">
             {% raw %}
-                <div ng-show="session.logged_in">You are logged in. <a ng-href="{{ session.logout_uri }}">Logout</a></div>
-                <div ng-hide="session.logged_in">You need to log in. <a ng-href="{{ session.twitter_uri }}">Twitter</a></div>
+                <div ng-show="session.logged_in">
+                    You are logged in.
+                    <a href="/profile">Profile</a>
+                    <a ng-href="{{ session.logout_uri }}">Logout</a>
+                </div>
+                <div ng-hide="session.logged_in">
+                    You need to log in.
+                    <a ng-href="{{ session.twitter_uri }}">Twitter</a>
+                    <a ng-href="{{ session.facebook_uri }}">Facebook</a>
+                </div>
                 <h1>welcome to the datawi.re, {{ session.user.name }}</h1>
             {% endraw %}    
         </nav>
@@ -35,14 +43,8 @@
         <p>{{ 'This is Angular!' }}</p>
         {% endraw %}
 
-        <div class="row">
-            <div class="span3">
-                <a class="btn btn-large btn-block" href="{{url_for('sessions.twitter_login')}}">Sign in with Twitter</a>
-            </div>
-            <div class="span3">
-                <a class="btn btn-large btn-block" href="{{url_for('sessions.facebook_login')}}">Sign in with Facebook</a>
-            </div>
-        </div>
+        <div ng-view></div>
+
     </div>
 
     {% assets filter="uglifyjs", output="gen/app.%(version)s.js",

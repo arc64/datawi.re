@@ -1,16 +1,15 @@
 
 angular.module('ngView', [], function($routeProvider, $locationProvider) {
-  $routeProvider.when('/status', {
-    templateUrl: '/static/partials/book.html',
-    controller: StatusCntl
+  $routeProvider.when('/profile', {
+    templateUrl: '/static/partials/profile.html',
+    controller: ProfileCntl
   });
 
   $locationProvider.html5Mode(true);
 });
 
-function StatusCntl($scope, $routeParams) {
-  $scope.name = "StatusCntl";
-  $scope.params = $routeParams;
+function ProfileCntl($scope, $routeParams) {
+  $scope.message = 'I am a banana!';
 }
 
 function NavigationCntl($scope, $routeParams, $http) {
