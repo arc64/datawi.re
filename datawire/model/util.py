@@ -35,4 +35,4 @@ def data_hash(data):
     if isinstance(data, dict):
         d = [(k, data_hash(v)) for k, v in sorted(data.items())]
         return sha1(data_hash(d)).hexdigest()
-    return unicode(data)
+    return unicode(data).encode('ascii', 'ignore')
