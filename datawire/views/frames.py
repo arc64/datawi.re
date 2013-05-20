@@ -25,8 +25,8 @@ def frameset(q, data=None):
         data['services'][frame.service.key] = frame.service
         data['frames'].append({
             'urn': frame.urn,
-            'canonical_uri': url_for('.get', urn=frame.urn, _external=True),
-            'fetch_uri': frame_url(frame.urn),
+            'api_uri': url_for('.get', urn=frame.urn, _external=True),
+            'store_uri': frame_url(frame.urn),
             'service': frame.service.key,
             'created_at': frame.created_at,
         })
@@ -34,24 +34,13 @@ def frameset(q, data=None):
 
 
 @frames.route('/frames')
-@frames.route('/frames/<service_key>')
-@frames.route('/frames/<service_key>/<event_key>')
-def index(service_key=None, event_key=None):
-    # TODO: Do we want service streams here or under the
-    # service entity, e.g. /service/<service_key>/frames?
+def index():
     q = Frame.all()
-    if service_key is not None:
-        service = obj_or_404(Service.by_key(service_key))
-        q = q.filter_by(service=service)
-        if event_key is not None:
-            event = obj_or_404(Event.by_key(event_key))
-            q = q.filter_by(event=event)
     return frameset(q)
 
 
-@frames.route('/frames/urn:<urn>')
+@frames.route('/frames/<urn>')
 def get(urn):
-    urn = 'urn:' + urn
     # TODO: Cache headers, authz checks.
     data = load_frame(urn)
     if data is None:

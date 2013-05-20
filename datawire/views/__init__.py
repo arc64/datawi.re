@@ -5,12 +5,14 @@ from datawire.exc import Unauthorized
 from datawire.model import User
 from datawire.views.frames import frames
 from datawire.views.sessions import sessions
+from datawire.views.services import services
 from datawire.views.util import jsonify
 
 app.template_folder = '../templates'
 
 app.register_blueprint(sessions)
 app.register_blueprint(frames, url_prefix='/api/1')
+app.register_blueprint(services, url_prefix='/api/1')
 
 
 @app.before_request
