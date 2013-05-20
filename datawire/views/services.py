@@ -15,11 +15,11 @@ def index():
     q = q.limit(get_limit())
     q = q.offset(get_offset())
     result['results'] = q
-    return jsonify(result)
+    return jsonify(result, refs=True)
 
 
 @services.route('/services/<key>')
 def get(key):
     service = obj_or_404(Service.by_key(key))
-    require.service.publish(service)
+    require.service.view(service)
     return jsonify(service)
