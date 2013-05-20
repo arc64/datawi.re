@@ -10,7 +10,7 @@ class Store(object):
 
     def store(self, frame):
         urn = frame.get('urn')
-        data = json.dumps(frame, cls=JSONEncoder)
+        data = JSONEncoder().encode(frame)
         return self._store(urn, data)
 
     def load(self, urn):
