@@ -1,3 +1,5 @@
+from flask import url_for
+
 from datawire.core import db
 from datawire.model.util import ModelCore
 
@@ -29,11 +31,20 @@ class Event(db.Model, ModelCore):
         q = q.filter_by(service=service).filter_by(key=key)
         return q.first()
 
-    def to_dict(self):
+    def to_ref(self):
         return {
             'id': self.id,
             'key': self.key,
-            'label': self.label,
+            'uri': url_for('events.get',
+                service_key=self.service.key,
+                event_key=self.key, _external=True),
+            'label': self.label
+        }
+
+    def to_dict(self):
+        data = self.to_ref()
+        data.update({
             'created_at': self.created_at,
             'updated_at': self.updated_at
-        }
+        })
+        return data
