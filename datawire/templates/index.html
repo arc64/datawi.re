@@ -8,7 +8,7 @@
     <meta name="description" content="An act of data journalism.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {% assets output="gen/bootstrap.%(version)s.css",
+    {% assets filter="cssmin", output="gen/bootstrap.%(version)s.css",
           "vendor/bootstrap/docs/assets/css/bootstrap.css",
           "vendor/bootstrap/docs/assets/css/bootstrap-responsive.css" %}
         <link type="text/css" href="{{ ASSET_URL }}" rel="stylesheet">

@@ -7,3 +7,4 @@ boto==2.9.3
 colorlog==1.6
 kombu==2.5.10
 librabbitmq==1.0.1
+cssmin==0.1.4
