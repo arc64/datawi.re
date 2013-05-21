@@ -1,4 +1,28 @@
 
 <h3>User profile</h3>
 
-{{ message }}
+<form class="form-horizontal">
+  <div class="control-group">
+    <label class="control-label" for="name">Name</label>
+    <div class="controls">
+      <input ng-model="profile.name" type="text" id="name" placeholder="Your name">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="email">Email</label>
+    <div class="controls">
+      <input ng-model="profile.email" type="email" id="email" placeholder="Email">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="api_key">API Key</label>
+    <div class="controls">
+      <input ng-model="profile.api_key" type="text" id="api_key" disabled>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn" ng-click="save()">Update</button>
+    </div>
+  </div>
+</form>

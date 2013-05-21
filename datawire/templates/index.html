@@ -37,6 +37,12 @@
                 <h1>welcome to the datawi.re</h1>
             {% endraw %}    
         </nav>
+        {% raw %}
+            <div ng-show="currentFlash.visible" class="alert" ng-class="'alert-' + currentFlash.type" >
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ currentFlash.message }}
+            </div>
+        {% endraw %}    
 
         <div ng-view></div>
 
