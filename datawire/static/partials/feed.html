@@ -1,7 +1,17 @@
 
 <div ng-repeat="frame in frames">
-    
-    <pre>{{frame.raw}}</pre>
-    <p>{{ services[frame.service].label }} &middot; <code>{{ frame.urn }}</code></p>
+    <pre ng-show="!frame.renderedView">{{frame.raw}}</pre>
+    <table ng-show="frame.renderedView" class="table table-condensed">
+        <tr ng-repeat="(key, value) in frame.data.data">
+            <th>{{key}}</th>
+            <td>{{value}}</td>
+        </tr>
+    </table>
+    <p>
+        {{ services[frame.service].label }} &middot;
+        <code>{{ frame.urn }}</code> &middot;
+        <a ng-click="frame.renderedView=false;" ng-show="frame.renderedView">raw</a>
+        <a ng-click="frame.renderedView=true;" ng-show="!frame.renderedView">text</a>
+    </p>
     <hr>
 </div>

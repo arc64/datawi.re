@@ -24,7 +24,7 @@ function ProfileCntl($scope, $routeParams) {
 }
 
 function NavigationCntl($scope, $window, $routeParams, $http) {
-    $http.get('/api/1/sessions').success(function(data) {
+    $http.get('/api/1/sessions?limit=20').success(function(data) {
         console.log(data);
         $scope.session = data;
     });
@@ -41,6 +41,7 @@ function FeedCntl($scope, $routeParams, $http) {
         angular.forEach($scope.frames, function(frame, i) {
             $http.get(frame.api_uri).success(function(fd) {
                 frame.data = fd;
+                frame.renderedView = true;
                 frame.raw = JSON.stringify(fd.data, null, 2);
             });
         });
