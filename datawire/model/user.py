@@ -1,7 +1,15 @@
 from flask import url_for
 
+from formencode import Schema, validators
+
 from datawire.core import db
 from datawire.model.util import ModelCore, make_token
+
+
+class UserSchema(Schema):
+    allow_extra_fields = True
+    name = validators.String(min=3, max=255)
+    email = validators.Email()
 
 
 class User(db.Model, ModelCore):
@@ -26,6 +34,12 @@ class User(db.Model, ModelCore):
         obj.facebook_id = data.get('facebook_id')
         db.session.add(obj)
         return obj
+
+    def update(self, data):
+        data = UserSchema().to_python(data)
+        self.name = data['name']
+        self.email = data['email']
+        db.session.add(self)
 
     @classmethod
     def by_screen_name(cls, screen_name):

@@ -1,4 +1,5 @@
 from flask import request, session, render_template
+from formencode import Invalid
 
 from datawire.core import app
 from datawire.exc import Unauthorized
@@ -37,6 +38,16 @@ def authentication():
         request.user = None
 
 
+@app.before_request
+def json_post():
+    if request.method in ['POST', 'PUT']:
+        content_type = request.headers.get('Content-Type', '')
+        content_type = content_type.split(';')[0]
+        if content_type == 'application/json':
+            request.form = request.json
+        print [request.form]
+
+
 @app.errorhandler(400)
 @app.errorhandler(401)
 @app.errorhandler(403)
@@ -50,6 +61,15 @@ def handle_exceptions(exc):
             'description': exc.get_description(request.environ)}
     return jsonify(body, status=exc.code,
                    headers=exc.get_headers(request.environ))
+
+
+@app.errorhandler(Invalid)
+def handle_invalid(exc):
+    body = {'status': 400,
+            'name': 'Invalid Data',
+            'description': unicode(exc),
+            'errors': exc.unpack_errors()}
+    return jsonify(body, status=400)
 
 
 @app.route("/")
