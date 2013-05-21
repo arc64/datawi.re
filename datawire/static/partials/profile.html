@@ -5,13 +5,13 @@
   <div class="control-group">
     <label class="control-label" for="name">Name</label>
     <div class="controls">
-      <input ng-model="profile.name" type="text" id="name" placeholder="Your name">
+      <input ng-model="profile.name" required ng-minlength="3" type="text" id="name" placeholder="Your name">
     </div>
   </div>
   <div class="control-group">
     <label class="control-label" for="email">Email</label>
     <div class="controls">
-      <input ng-model="profile.email" type="email" id="email" placeholder="Email">
+      <input ng-model="profile.email" required type="email" id="email" placeholder="Email">
     </div>
   </div>
   <div class="control-group">
