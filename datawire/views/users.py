@@ -14,6 +14,12 @@ def index():
     return query_pager(q, 'users.index')
 
 
+@users.route('/users')
+def index():
+    q = User.all()
+    return query_pager(q, 'users.index')
+
+
 @users.route('/users/<int:id>')
 def get(id):
     user = obj_or_404(User.by_id(id))
