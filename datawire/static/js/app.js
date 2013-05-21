@@ -38,5 +38,11 @@ function FeedCntl($scope, $routeParams, $http) {
         console.log(data);
         $scope.frames = data.results;
         $scope.services = data.services;
+        angular.forEach($scope.frames, function(frame, i) {
+            $http.get(frame.api_uri).success(function(fd) {
+                frame.data = fd;
+                frame.raw = JSON.stringify(fd.data, null, 2);
+            });
+        });
     });
 }

@@ -1,6 +1,7 @@
 
 <div ng-repeat="frame in frames">
-    <code>{{ frame.urn }}</code>
-    <p>{{ services[frame.service].label }}</p>
+    
+    <pre>{{frame.raw}}</pre>
+    <p>{{ services[frame.service].label }} &middot; <code>{{ frame.urn }}</code></p>
     <hr>
 </div>
