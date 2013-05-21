@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="ngView">
+<html lang="en" ng-app="datawire">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -25,23 +25,18 @@
         <nav ng-controller="NavigationCntl">
             {% raw %}
                 <div ng-show="session.logged_in">
-                    You are logged in.
+                    {{ session.user.name }}, you are logged in.
                     <a href="/profile">Profile</a>
-                    <a ng-href="{{ session.logout_uri }}">Logout</a>
+                    <a href="#" ng-click="visit(session.logout_uri)">Logout</a>
                 </div>
                 <div ng-hide="session.logged_in">
                     You need to log in.
-                    <a ng-href="{{ session.twitter_uri }}">Twitter</a>
-                    <a ng-href="{{ session.facebook_uri }}">Facebook</a>
+                    <a href="#" ng-click="visit(session.twitter_uri);">Twitter</a>
+                    <a href="#" ng-click="visit(session.facebook_uri);">Facebook</a>
                 </div>
-                <h1>welcome to the datawi.re, {{ session.user.name }}</h1>
+                <h1>welcome to the datawi.re</h1>
             {% endraw %}    
         </nav>
-        
-
-        {% raw %}
-        <p>{{ 'This is Angular!' }}</p>
-        {% endraw %}
 
         <div ng-view></div>
 
