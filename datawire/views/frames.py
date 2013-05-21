@@ -38,11 +38,15 @@ def index():
 
 @frames.route('/frames/<urn>')
 def get(urn):
-    # TODO: Cache headers, authz checks.
+    # TODO: authz checks.
     data = load_frame(urn)
     if data is None:
         raise NotFound('Frame: %s' % urn)
-    headers = {'X-Backend-Location': frame_url(urn)}
+    headers = {
+        'X-Backend-Location': frame_url(urn),
+        'ETag': data['hash'],
+        'Cache-Control': 'public; max-age: 8460000'
+    }
     return jsonify(data, headers=headers)
 
 
