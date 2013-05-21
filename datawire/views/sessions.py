@@ -53,7 +53,7 @@ def twitter_authorized(resp):
         resp['oauth_token_secret']
     )
     res = twitter.get('users/show.json',
-                      data={'user_id': resp['user_id']})
+                      data={'user_id': resp['user_id']}).data
     user = User.by_twitter_id(res['id_str'])
     if user is None:
         user_data = {
