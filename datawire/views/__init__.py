@@ -54,5 +54,6 @@ def handle_exceptions(exc):
 
 @app.route("/")
 @app.route("/profile")
+@app.route("/feed")
 def index():
     return render_template('index.html')
