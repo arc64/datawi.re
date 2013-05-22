@@ -45,7 +45,6 @@ def json_post():
         content_type = content_type.split(';')[0]
         if content_type == 'application/json':
             request.form = request.json
-        print [request.form]
 
 
 @app.errorhandler(400)

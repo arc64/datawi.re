@@ -14,6 +14,8 @@ class Service(db.Model, ModelCore):
 
     key = db.Column(db.Unicode())
     label = db.Column(db.Unicode())
+    description = db.Column(db.Unicode())
+    url = db.Column(db.Unicode())
 
     frames = db.relationship('Frame', backref='service', lazy='dynamic',
                              cascade='all, delete-orphan', order_by='Frame.created_at.desc()')
@@ -28,11 +30,15 @@ class Service(db.Model, ModelCore):
         obj = cls()
         obj.key = data.get('key')
         obj.label = data.get('label')
+        obj.description = data.get('description')
+        obj.url = data.get('url')
         db.session.add(obj)
         return obj
 
     def update(self, data):
         self.label = data.get('label')
+        self.description = data.get('description')
+        self.url = data.get('url')
         db.session.add(self)
 
     @classmethod
@@ -53,6 +59,8 @@ class Service(db.Model, ModelCore):
         data.update({
             'created_at': self.created_at,
             'updated_at': self.updated_at,
+            'description': self.description,
+            'url': self.url,
             'events': [e.to_ref() for e in self.events],
             'editors': self.editors
         })
