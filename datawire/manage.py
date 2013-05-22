@@ -42,6 +42,28 @@ def createservice(filename):
 
 
 @manager.command
+def updateservice(filename):
+    """ Update a service configuration form a JSON configuration. """
+    with open(filename, 'rb') as fh:
+        data = json.load(fh)
+        service = Service.by_key(data.get('key'))
+        if service is None:
+            raise ValueError("Service doesn't exist: %s" % data.get('key'))
+        service.update(data)
+        events = []
+        for event_data in data.get('events', []):
+            event_data['service'] = service
+            event = Event.by_key(service, event_data['key'])
+            if event is None:
+                event = Event.create(event_data)
+            else:
+                event.update(event_data)
+            events.append(event)
+        service.events = events
+        db.session.commit()
+
+
+@manager.command
 def deleteservice(key):
     """ Delete a service configuration from the database. """
     service = Service.by_key(key)

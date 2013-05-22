@@ -25,6 +25,10 @@ class Event(db.Model, ModelCore):
         db.session.add(obj)
         return obj
 
+    def update(self, data):
+        self.label = data.get('label')
+        db.session.add(self)
+
     @classmethod
     def by_key(cls, service, key):
         q = db.session.query(cls)
