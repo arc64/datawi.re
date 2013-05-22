@@ -1,8 +1,10 @@
 
 <div ng-repeat="frame in frames">
-    <pre ng-show="!frame.renderedView">{{frame.raw}}</pre>
-    <table ng-show="frame.renderedView" class="table table-condensed table-striped">
-        <tr ng-repeat="(key, value) in tableObject(frame.data.data)">
+    <div ng-show="frame.renderedView">
+        <p ng-bind-html-unsafe="frame.rendered"></p>
+    </div>
+    <table ng-show="!frame.renderedView" class="table table-condensed table-striped">
+        <tr ng-repeat="(key, value) in tableObject(frame.data)">
             <th>{{key}}</th>
             <td>{{value}}</td>
         </tr>

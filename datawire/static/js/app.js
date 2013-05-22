@@ -72,14 +72,25 @@ function NavigationCntl($scope, $window, $routeParams, identity) {
 
 function FeedCntl($scope, $routeParams, $http) {
     $http.get('/api/1/frames?limit=20').success(function(data) {
-        console.log(data);
         $scope.frames = data.results;
         $scope.services = data.services;
+        $scope.templates = {};
+        angular.forEach(data.services, function(service, key) {
+            angular.forEach(service.events, function(event, i) {
+                if (!$scope.templates[service.key]) {
+                    $scope.templates[service.key] = {};
+                }
+                var tmpl = Handlebars.compile(event.template);
+                $scope.templates[service.key][event.key] = tmpl;
+            });
+        });
+        console.log($scope.templates);
         angular.forEach($scope.frames, function(frame, i) {
             $http.get(frame.api_uri).success(function(fd) {
-                frame.data = fd;
+                frame.data = fd.data;
                 frame.renderedView = true;
-                frame.raw = JSON.stringify(fd.data, null, 2);
+                var tmpl = $scope.templates[fd.service][fd.event];
+                frame.rendered = tmpl(fd.data);
             });
         });
     });

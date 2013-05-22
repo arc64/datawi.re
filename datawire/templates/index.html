@@ -52,6 +52,7 @@
     {% assets filter="uglifyjs", output="gen/app.%(version)s.js",
           "vendor/angular/angular.js",
           "vendor/jquery/jquery.js",
+          "vendor/handlebars/handlebars.js",
           "vendor/bootstrap/docs/assets/js/bootstrap.js",
           "js/app.js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
