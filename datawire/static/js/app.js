@@ -2,45 +2,34 @@
 var datawire = angular.module('datawire', [], function($routeProvider, $locationProvider) {
   $routeProvider.when('/profile', {
     templateUrl: '/static/partials/profile.html',
-    controller: ProfileCntl
+    controller: ProfileCtrl
   });
 
   $routeProvider.when('/feed', {
     templateUrl: '/static/partials/feed.html',
-    controller: FeedCntl
+    controller: FeedCtrl
   });
 
   $locationProvider.html5Mode(true);
+});
+
+datawire.directive('xlink', function ($window) {
+    return {
+        restrict: 'E',
+        template: '<a href=""><span ng-transclude></span></a>',
+        transclude: true,
+        link: function(scope, element, attrs) {
+            element.bind('click', function() {
+                $window.location.href = attrs.href;
+            });
+        }
+    };
 });
 
 Handlebars.registerHelper('entity', function(text) {
     text = Handlebars.Utils.escapeExpression(text);
     var result = '<strong>' + text + '</strong>';
     return new Handlebars.SafeString(result);
-});
-
-datawire.run(function($rootScope) {
-    $rootScope.visit = function(url) {
-        $window.location.href = url;
-    };
-
-    $rootScope.tableObject = function(obj) {
-        var table = {};
-        angular.forEach(obj, function(v, k) {
-            if (v && v.length) {
-                table[k] = v;
-            }
-        });
-        return table;
-    };
-
-    $rootScope.flash = function(type, message) {
-        $rootScope.currentFlash = {
-            visible: true,
-            type: type,
-            message: message
-        };
-    };
 });
 
 datawire.factory('identity', function($http) {
@@ -50,7 +39,7 @@ datawire.factory('identity', function($http) {
     };
 });
 
-function ProfileCntl($scope, $routeParams, $http) {
+function ProfileCtrl($scope, $routeParams, $http) {
     $http.get('/api/1/profile').success(function(data) {
         $scope.profile = data;
     });
@@ -67,16 +56,32 @@ function ProfileCntl($scope, $routeParams, $http) {
     };
 }
 
-function NavigationCntl($scope, $window, $routeParams, identity) {
+function AppCtrl($scope, $window, $routeParams, identity) {
     identity.session(function(data) {
         $scope.session = data;
     });
-    $scope.visit = function(url) {
-        $window.location.href = url;
+
+
+    $scope.flash = function(type, message) {
+        $scope.currentFlash = {
+            visible: true,
+            type: type,
+            message: message
+        };
     };
 }
 
-function FeedCntl($scope, $routeParams, $http) {
+function FeedCtrl($scope, $routeParams, $http) {
+    $scope.tableObject = function(obj) {
+        var table = {};
+        angular.forEach(obj, function(v, k) {
+            if (v && v.length) {
+                table[k] = v;
+            }
+        });
+        return table;
+    };
+
     $http.get('/api/1/frames?limit=20').success(function(data) {
         $scope.frames = data.results;
         $scope.services = data.services;
@@ -90,7 +95,6 @@ function FeedCntl($scope, $routeParams, $http) {
                 $scope.templates[service.key][event.key] = tmpl;
             });
         });
-        console.log($scope.templates);
         angular.forEach($scope.frames, function(frame, i) {
             $http.get(frame.api_uri).success(function(fd) {
                 frame.data = fd.data;
