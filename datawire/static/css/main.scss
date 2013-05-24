@@ -3,3 +3,18 @@ $background: #eee;
 body {
     background-color: $background;
 }
+
+.frame {
+    background-color: white;
+    padding: 0.4em;
+    margin: 0 0 1em 0;
+
+    p.frame-body {
+        font-size: 1.3em;
+        line-height: 1.5em;
+    }
+
+    p.frame-context {
+        color: #999;
+    }
+}

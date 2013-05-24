@@ -13,6 +13,12 @@ var datawire = angular.module('datawire', [], function($routeProvider, $location
   $locationProvider.html5Mode(true);
 });
 
+Handlebars.registerHelper('entity', function(text) {
+    text = Handlebars.Utils.escapeExpression(text);
+    var result = '<strong>' + text + '</strong>';
+    return new Handlebars.SafeString(result);
+});
+
 datawire.run(function($rootScope) {
     $rootScope.visit = function(url) {
         $window.location.href = url;

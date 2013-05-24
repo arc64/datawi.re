@@ -1,7 +1,7 @@
 
-<div ng-repeat="frame in frames">
+<div ng-repeat="frame in frames" class="frame">
     <div ng-show="frame.renderedView">
-        <p ng-bind-html-unsafe="frame.rendered"></p>
+        <p class='frame-body' ng-bind-html-unsafe="frame.rendered"></p>
     </div>
     <table ng-show="!frame.renderedView" class="table table-condensed table-striped">
         <tr ng-repeat="(key, value) in tableObject(frame.data)">
@@ -9,11 +9,10 @@
             <td>{{value}}</td>
         </tr>
     </table>
-    <p>
+    <p class='frame-context'>
         {{ services[frame.service].label }} &middot;
-        <code>{{ frame.urn }}</code> &middot;
+        {{ frame.urn }} &middot;
         <a ng-click="frame.renderedView=false;" ng-show="frame.renderedView">raw</a>
         <a ng-click="frame.renderedView=true;" ng-show="!frame.renderedView">text</a>
     </p>
-    <hr>
 </div>
