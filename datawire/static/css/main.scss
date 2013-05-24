@@ -4,6 +4,13 @@ body {
     background-color: $background;
 }
 
+/* Housekeeping in extension of bootstrap. */
+input.ng-invalid {
+    border-color: #B94A49;
+    color: #b94a48;
+}
+
+
 .frame {
     background-color: white;
     padding: 0.4em;
