@@ -54,46 +54,6 @@ datawire.factory('identity', function($http) {
     };
 });
 
-function ProfileCtrl($scope, $routeParams, $http) {
-    $http.get('/api/1/profile').success(function(data) {
-        $scope.profile = data;
-    });
-
-    $scope.save = function() {
-        var dfd = $http.post('/api/1/profile', $scope.profile);
-        dfd.success(function(data) {
-            $scope.profile = data;
-            $scope.flash('success', 'Your profile has been updated.');
-        });
-        dfd.error(function(data) {
-            $scope.flash('error', 'There was an error saving your profile.');
-        });
-    };
-}
-
-function AppCtrl($scope, $window, $routeParams, $location, identity) {
-    identity.session(function(data) {
-        $scope.session = data;
-    });
-
-    $scope.$on("$routeChangeStart", function (event, next, current) {
-        if (next && next.$$route.accessPolicy==='user') {
-            identity.checkSession(function(data) {
-                $location.path('/');
-                $scope.flash('error', 'Sorry, you need to be logged in to view this page.');
-            });
-        }
-    });
-
-    $scope.flash = function(type, message) {
-        $scope.currentFlash = {
-            visible: true,
-            type: type,
-            message: message
-        };
-    };
-}
-
 function FeedCtrl($scope, $routeParams, $http) {
     $scope.tableObject = function(obj) {
         var table = {};
