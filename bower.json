@@ -10,6 +10,7 @@
     "jquery": "~1.9.1",
     "angular": "~1.0.6",
     "bootstrap": "~2.3.2",
-    "handlebars": "~1.0.0-rc.4"
+    "handlebars": "~1.0.0-rc.4",
+    "underscore": "1.4.4"
   }
 }

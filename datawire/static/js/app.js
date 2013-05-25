@@ -54,7 +54,40 @@ datawire.factory('identity', function($http) {
     };
 });
 
-function FeedCtrl($scope, $routeParams, $http) {
+datawire.factory('services', function($q, $http) {
+    var serviceDfds = {};
+
+    function getService(name, callback) {
+        if(!serviceDfds[name]) {
+            serviceDfds[name] = $http.get('/api/1/services/' + name);
+        }
+        serviceDfds[name].success(callback);
+        return serviceDfds[name];
+    }
+
+    function getFrame(ref) {
+        $http.get(ref.store_uri).success(function(frame) {
+            getService(frame.service, function(service) {
+                ref.event = _.find(service.events, function(e) {
+                    return e.key == frame.event;
+                });
+                if(ref.event.tmpl===undefined) {
+                    ref.event.tmpl = Handlebars.compile(ref.event.template);
+                }
+                ref.service = service;
+                ref.data = frame.data;
+                ref.message = event.tmpl(frame.data);
+            });
+        });
+    }
+
+    return {
+        getService: getService,
+        getFrame: getFrame
+    };
+});
+
+function FeedCtrl($scope, $routeParams, $http, services) {
     $scope.tableObject = function(obj) {
         var table = {};
         angular.forEach(obj, function(v, k) {
@@ -67,25 +100,8 @@ function FeedCtrl($scope, $routeParams, $http) {
 
     $http.get('/api/1/frames?limit=20').success(function(data) {
         $scope.frames = data.results;
-        $scope.services = data.services;
-        $scope.templates = {};
-        angular.forEach(data.services, function(service, key) {
-            angular.forEach(service.events, function(event, i) {
-                if (!$scope.templates[service.key]) {
-                    $scope.templates[service.key] = {};
-                }
-                var tmpl = Handlebars.compile(event.template);
-                $scope.templates[service.key][event.key] = tmpl;
-            });
-        });
         angular.forEach($scope.frames, function(frame, i) {
-            $http.get(frame.api_uri).success(function(fd) {
-                frame.service = $scope.services[fd.service];
-                frame.data = fd.data;
-                frame.renderedView = true;
-                var tmpl = $scope.templates[fd.service][fd.event];
-                frame.rendered = tmpl(fd.data);
-            });
+            services.getFrame(frame);
         });
     });
 }

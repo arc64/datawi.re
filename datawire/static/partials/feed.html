@@ -1,10 +1,10 @@
 
 
 <div ng-repeat="frame in frames" class="frame">
-    <div ng-show="frame.renderedView">
-        <p class='frame-body' ng-bind-html-unsafe="frame.rendered"></p>
+    <div ng-show="!frame.showRaw">
+        <p class='frame-body' ng-bind-html-unsafe="frame.message"></p>
     </div>
-    <table ng-show="!frame.renderedView" class="table table-condensed table-striped">
+    <table ng-show="frame.showRaw" class="table table-condensed table-striped">
         <tr ng-repeat="(key, value) in tableObject(frame.data)">
             <th>{{key}}</th>
             <td>{{value}}</td>
@@ -13,7 +13,7 @@
     <p class='frame-context'>
         <a href="{{frame.service.url}}">{{ frame.service.label }}</a> &middot;
         {{ frame.urn }} &middot;
-        <a href="" ng-click="frame.renderedView=false;" ng-show="frame.renderedView">raw</a>
-        <a href="" ng-click="frame.renderedView=true;" ng-show="!frame.renderedView">text</a>
+        <a href="" ng-click="frame.showRaw=true;" ng-show="!frame.showRaw">raw</a>
+        <a href="" ng-click="frame.showRaw=false;" ng-show="frame.showRaw">text</a>
     </p>
 </div>
