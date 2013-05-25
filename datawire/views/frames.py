@@ -15,13 +15,8 @@ frames = Blueprint('frames', __name__)
 def frameset(q, route, data=None):
     # TODO: add argument for RSS support.
     data = data or {}
-    data['services'] = {}
     q = q.order_by(Frame.created_at.desc())
-
-    def transform(frame):
-        data['services'][frame.service.key] = frame.service.to_dict()
-        return frame
-    return query_pager(q, route, data=data, transform=transform)
+    return query_pager(q, route, data=data)
 
 
 @frames.route('/frames')
