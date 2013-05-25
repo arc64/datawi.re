@@ -1,10 +1,9 @@
 from flask import url_for
 from formencode import Schema, FancyValidator, Invalid, validators
 
-from datawire.core import db, app
+from datawire.core import db
 from datawire.model.util import ModelCore
-
-FACETS = app.config.get('FACETS')
+from datawire.model.facet import Facet
 
 
 class ValidFacetName(FancyValidator):
@@ -19,23 +18,6 @@ class EntitySchema(Schema):
     allow_extra_fields = True
     text = validators.String(min=3, max=512)
     facet = ValidFacetName()
-
-
-class Facet(object):
-
-    @classmethod
-    def by_key(cls, key):
-        for facet in cls.all():
-            if facet['key'] == key:
-                return facet
-
-    @classmethod
-    def all(cls):
-        facets = []
-        for facet in FACETS:
-            facet['uri'] = url_for('entities.facet_get', key=facet['key'], _external=True)
-            facets.append(facet)
-        return facets
 
 
 class Entity(db.Model, ModelCore):
