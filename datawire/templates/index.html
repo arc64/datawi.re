@@ -8,13 +8,9 @@
     <meta name="description" content="An act of data journalism.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {% assets filters="cssmin", output="gen/bootstrap.%(version)s.css",
+    {% assets filters="scss,cssmin", output="gen/style.%(version)s.css",
           "vendor/bootstrap/docs/assets/css/bootstrap.css",
-          "vendor/bootstrap/docs/assets/css/bootstrap-responsive.css" %}
-        <link type="text/css" href="{{ ASSET_URL }}" rel="stylesheet">
-    {% endassets %}
-
-    {% assets filters="scss", output="gen/main.%(version)s.css",
+          "vendor/bootstrap/docs/assets/css/bootstrap-responsive.css",
           "css/main.scss" %}
         <link type="text/css" href="{{ ASSET_URL }}" rel="stylesheet">
     {% endassets %}
