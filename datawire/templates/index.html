@@ -36,9 +36,9 @@
         </nav>
 
         {% raw %}
-            <div ng-show="currentFlash.visible" class="alert" ng-class="'alert-' + currentFlash.type" >
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ currentFlash.message }}
+            <div ng-hide="!alert.visible" class="alert-hidden alert" ng-class="'alert-' + alert.type" >
+                <button type="button" class="close" ng-click="hideAlert()">&times;</button>
+                {{ alert.message }}
             </div>
         {% endraw %}    
 
@@ -52,14 +52,13 @@
 
     {% assets filters="uglifyjs", output="gen/deps.%(version)s.js",
           "vendor/angular/angular.js",
-          "vendor/jquery/jquery.js",
           "vendor/handlebars/handlebars.js",
-          "vendor/underscore/underscore.js",
-          "vendor/bootstrap/docs/assets/js/bootstrap.js" %}
+          "vendor/underscore/underscore.js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
     {% assets output="gen/app.%(version)s.js",
           "js/app.js",
+          "js/alertService.svc.js",
           "js/app.ctrl.js",
           "js/home.ctrl.js",
           "js/profile.ctrl.js" %}

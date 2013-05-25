@@ -1,5 +1,5 @@
 
-function ProfileCtrl($scope, $routeParams, $http, $location) {
+function ProfileCtrl($scope, $routeParams, $http, $location, alertService) {
     $http.get('/api/1/profile').success(function(data) {
         $scope.profile = data;
     });
@@ -8,11 +8,11 @@ function ProfileCtrl($scope, $routeParams, $http, $location) {
         var dfd = $http.post('/api/1/profile', $scope.profile);
         dfd.success(function(data) {
             $scope.profile = data;
-            $scope.flash('success', 'Your profile has been updated.');
+            alertService.flash('success', 'Your profile has been updated.');
             $location.path('/');
         });
         dfd.error(function(data) {
-            $scope.flash('error', 'There was an error saving your profile.');
+            alertService.flash('error', 'There was an error saving your profile.');
         });
     };
 }
