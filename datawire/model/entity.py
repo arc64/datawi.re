@@ -46,6 +46,9 @@ class Entity(db.Model, ModelCore):
 
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
+    matches = db.relationship('Match', backref='entity', lazy='dynamic',
+                              cascade='all, delete-orphan', order_by='Match.created_at.desc()')
+
     @classmethod
     def create(cls, data, user):
         obj = cls()

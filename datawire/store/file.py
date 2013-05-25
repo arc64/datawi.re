@@ -24,4 +24,4 @@ class FileStore(Store):
             fh.write(frame)
 
     def frame_url(self, urn):
-        return url_for('frames.get', urn=urn)
+        return url_for('frames.get', urn=urn, _external=True)

@@ -1,3 +1,4 @@
+from flask import url_for
 from datawire.core import db, app
 from datawire.model.util import make_token
 
@@ -10,6 +11,9 @@ class Frame(db.Model):
     service_id = db.Column(db.Integer(), db.ForeignKey('service.id'))
     event_id = db.Column(db.Integer(), db.ForeignKey('event.id'))
     created_at = db.Column(db.DateTime, index=True)
+
+    matches = db.relationship('Match', backref='frame', lazy='dynamic',
+                              cascade='all, delete-orphan', order_by='Match.created_at.desc()')
 
     @classmethod
     def create(cls, service, event, data):
@@ -33,6 +37,15 @@ class Frame(db.Model):
     def by_hash(cls, hash):
         q = db.session.query(cls).filter_by(hash=hash)
         return q.first()
+
+    def to_ref(self):
+        from datawire.store import frame_url
+        return {
+            'urn': self.urn,
+            'api_uri': url_for('frames.get', urn=self.urn, _external=True),
+            'store_uri': frame_url(self.urn),
+            'created_at': self.created_at
+        }
 
     @classmethod
     def all(cls):

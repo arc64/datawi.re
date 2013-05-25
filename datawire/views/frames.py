@@ -20,13 +20,7 @@ def frameset(q, route, data=None):
 
     def transform(frame):
         data['services'][frame.service.key] = frame.service.to_dict()
-        return {
-            'urn': frame.urn,
-            'api_uri': url_for('.get', urn=frame.urn, _external=True),
-            'store_uri': frame_url(frame.urn),
-            'service': frame.service.key,
-            'created_at': frame.created_at
-        }
+        return frame
     return query_pager(q, route, data=data, transform=transform)
 
 
