@@ -1,3 +1,4 @@
+import os
 from flask import request, session, render_template
 from formencode import Invalid
 
@@ -71,9 +72,19 @@ def handle_invalid(exc):
     return jsonify(body, status=400)
 
 
+def partial_templates():
+    if app.config.get('ASSETS_DEBUG'):
+        return
+    partials_dir = os.path.join(app.static_folder, 'partials')
+    for file_name in os.listdir(partials_dir):
+        with open(os.path.join(partials_dir, file_name), 'rb') as fh:
+            yield ('/static/partials/%s' % file_name, fh.read().decode('utf-8'))
+
+
 @app.route("/")
 @app.route("/profile")
 @app.route("/feed")
 @app.route("/entities")
 def index():
-    return render_template('index.html')
+    return render_template('index.html',
+                           partial_templates=partial_templates())

@@ -8,13 +8,13 @@
     <meta name="description" content="An act of data journalism.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {% assets filter="cssmin", output="gen/bootstrap.%(version)s.css",
+    {% assets filters="cssmin", output="gen/bootstrap.%(version)s.css",
           "vendor/bootstrap/docs/assets/css/bootstrap.css",
           "vendor/bootstrap/docs/assets/css/bootstrap-responsive.css" %}
         <link type="text/css" href="{{ ASSET_URL }}" rel="stylesheet">
     {% endassets %}
 
-    {% assets filter="scss", output="gen/main.%(version)s.css",
+    {% assets filters="scss", output="gen/main.%(version)s.css",
           "css/main.scss" %}
         <link type="text/css" href="{{ ASSET_URL }}" rel="stylesheet">
     {% endassets %}
@@ -52,12 +52,21 @@
 
     </div>
 
-    {% assets filter="uglifyjs", output="gen/app.%(version)s.js",
+    {% for path, tmpl in partial_templates %}
+        <script id="{{path}}" type="text/ng-template">{{tmpl|safe}}</script>
+    {% endfor %}
+
+    {% assets filters="uglifyjs", output="gen/deps.%(version)s.js",
           "vendor/angular/angular.js",
           "vendor/jquery/jquery.js",
           "vendor/handlebars/handlebars.js",
-          "vendor/bootstrap/docs/assets/js/bootstrap.js",
-          "js/app.js" %}
+          "vendor/bootstrap/docs/assets/js/bootstrap.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    {% assets output="gen/app.%(version)s.js",
+          "js/app.js",
+          "js/app.ctrl.js",
+          "js/profile.ctrl.js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
 </body>
