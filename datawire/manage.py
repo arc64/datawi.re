@@ -74,6 +74,15 @@ def deleteservice(key):
 
 
 @manager.command
+def match(urn):
+    """ Test entity matching. """
+    from datawire.store import load_frame
+    from datawire.processing.matching import match
+    frame = load_frame(urn)
+    match(frame)
+
+
+@manager.command
 def process():
     """ Process background tasks from the queue. """
     from datawire.processing import process
