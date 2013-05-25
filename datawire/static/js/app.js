@@ -2,17 +2,20 @@
 var datawire = angular.module('datawire', [], function($routeProvider, $locationProvider) {
   $routeProvider.when('/profile', {
     templateUrl: '/static/partials/profile.html',
-    controller: ProfileCtrl
+    controller: ProfileCtrl,
+    accessPolicy: 'user'
   });
 
   $routeProvider.when('/feed', {
     templateUrl: '/static/partials/feed.html',
-    controller: FeedCtrl
+    controller: FeedCtrl,
+    accessPolicy: 'user'
   });
 
   $routeProvider.when('/entities', {
     templateUrl: '/static/partials/watchlist.html',
-    controller: EntityCtrl
+    controller: EntityCtrl,
+    accessPolicy: 'user'
   });
 
   $locationProvider.html5Mode(true);
@@ -40,7 +43,14 @@ Handlebars.registerHelper('entity', function(text) {
 datawire.factory('identity', function($http) {
     var dfd = $http.get('/api/1/sessions');
     return {
-        session: dfd.success
+        session: dfd.success,
+        checkSession: function(callback) {
+            dfd.success(function(data) {
+                if (!data.logged_in) {
+                    callback(data);
+                }
+            });
+        }
     };
 });
 
@@ -61,11 +71,19 @@ function ProfileCtrl($scope, $routeParams, $http) {
     };
 }
 
-function AppCtrl($scope, $window, $routeParams, identity) {
+function AppCtrl($scope, $window, $routeParams, $location, identity) {
     identity.session(function(data) {
         $scope.session = data;
     });
 
+    $scope.$on("$routeChangeStart", function (event, next, current) {
+        if (next && next.$$route.accessPolicy==='user') {
+            identity.checkSession(function(data) {
+                $location.path('/');
+                $scope.flash('error', 'Sorry, you need to be logged in to view this page.');
+            });
+        }
+    });
 
     $scope.flash = function(type, message) {
         $scope.currentFlash = {
