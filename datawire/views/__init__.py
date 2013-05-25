@@ -74,5 +74,6 @@ def handle_invalid(exc):
 @app.route("/")
 @app.route("/profile")
 @app.route("/feed")
+@app.route("/entities")
 def index():
     return render_template('index.html')
