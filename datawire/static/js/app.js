@@ -10,6 +10,11 @@ var datawire = angular.module('datawire', [], function($routeProvider, $location
     controller: FeedCtrl
   });
 
+  $routeProvider.when('/entities', {
+    templateUrl: '/static/partials/watchlist.html',
+    controller: EntityCtrl
+  });
+
   $locationProvider.html5Mode(true);
 });
 
@@ -104,4 +109,34 @@ function FeedCtrl($scope, $routeParams, $http) {
             });
         });
     });
+}
+
+function EntityCtrl($scope, $routeParams, $http, identity) {
+    $scope._new = {};
+    $scope.entities = {};
+
+    $http.get('/api/1/facets').success(function(data) {
+        $scope.facets = data.results;
+        angular.forEach(data.results, function(facet) {
+            loadFacetEntities(facet.key);
+        });
+    });
+
+    function loadFacetEntities(facet_name) {
+        identity.session(function(ident) {
+            $http.get('/api/1/users/' + ident.user.id + '/entities?facet='+facet_name)
+            .success(function(data) {
+                $scope.entities[facet_name] = data.results;
+            });
+        });
+    }
+
+    $scope.create = function(facet) {
+        data = {facet: facet, text: $scope._new[facet]};
+        $scope._new[facet] = '';
+        console.log(data);
+        $http.post('/api/1/entities', data).success(function(data) {
+            $scope.entities[facet].push(data);
+        });
+    };
 }
