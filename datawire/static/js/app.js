@@ -90,14 +90,6 @@ datawire.factory('services', function($q, $http) {
     };
 });
 
-function HomeCtrl($scope, $location, identity) {
-    identity.session(function(data) {
-        if (data.logged_in) {
-            $location.path('/feed');
-        }
-    });
-}
-
 function FeedCtrl($scope, $routeParams, $http, services) {
     $scope.tableObject = function(obj) {
         var table = {};
