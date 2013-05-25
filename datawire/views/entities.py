@@ -1,5 +1,6 @@
 from flask import Blueprint, request, url_for
 
+from datawire.core import db
 from datawire.auth import require
 from datawire.model import Entity, Facet
 from datawire.views.util import jsonify, obj_or_404
@@ -27,6 +28,8 @@ def facet_get(key):
 def user_index(id):
     require.user_id(id)
     q = Entity.all().filter_by(user_id=id)
+    if 'facet' in request.args:
+        q = q.filter_by(facet=request.args.get('facet'))
     return query_pager(q, 'entities.user_index')
 
 
@@ -35,4 +38,22 @@ def get(id):
     require.logged_in()
     entity = Entity.all().filter_by(id=id).filter_by(user=request.user)
     entity = obj_or_404(entity.first())
+    return jsonify(entity)
+
+
+@entities.route('/entities', methods=['POST'])
+def create():
+    require.logged_in()
+    entity = Entity.create(request.form, request.user)
+    db.session.commit()
+    return jsonify(entity)
+
+
+@entities.route('/entities/<int:id>', methods=['POST'])
+def update():
+    require.logged_in()
+    entity = Entity.all().filter_by(id=id).filter_by(user=request.user)
+    entity = obj_or_404(entity.first())
+    entity.update(request.form)
+    db.session.commit()
     return jsonify(entity)

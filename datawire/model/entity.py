@@ -1,9 +1,24 @@
 from flask import url_for
+from formencode import Schema, FancyValidator, Invalid, validators
 
 from datawire.core import db, app
 from datawire.model.util import ModelCore
 
 FACETS = app.config.get('FACETS')
+
+
+class ValidFacetName(FancyValidator):
+
+    def _to_python(self, value, state):
+        if Facet.by_key(value) is None:
+            raise Invalid('Not a valid facet.', value, None)
+        return value
+
+
+class EntitySchema(Schema):
+    allow_extra_fields = True
+    text = validators.String(min=3, max=512)
+    facet = ValidFacetName()
 
 
 class Facet(object):
@@ -32,13 +47,20 @@ class Entity(db.Model, ModelCore):
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
     @classmethod
-    def create(cls, user, data):
+    def create(cls, data, user):
         obj = cls()
+        data = EntitySchema().to_python(data)
         obj.user = user
         obj.text = data.get('text')
         obj.facet = data.get('facet')
         db.session.add(obj)
         return obj
+
+    def update(self, data):
+        data = EntitySchema().to_python(data)
+        self.text = data.get('text')
+        self.facet = data.get('facet')
+        db.session.add(self)
 
     @classmethod
     def by_text(cls, text):
