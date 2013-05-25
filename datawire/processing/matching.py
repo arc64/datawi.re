@@ -1,7 +1,10 @@
 import re
+import logging
 
 from datawire.core import db
 from datawire.model import Entity, Match
+
+log = logging.getLogger(__name__)
 
 
 class Matcher(object):
@@ -10,7 +13,7 @@ class Matcher(object):
         self.pattern = re.compile(entity.text, re.I | re.M)
 
     def __call__(self, value):
-        match = self.pattern.search(value)
+        match = self.pattern.search(unicode(value))
         return match is not None
 
     def __hash__(self):
@@ -37,9 +40,21 @@ def match(frame):
         for matcher, entity in filters:
             if matcher(v) and not Match.exists(frame['urn'], entity):
                 field = k.split('.', 1).pop()
-                Match.create(frame['urn'], field, entity)
+                match = Match.create(frame['urn'], field, entity)
+                log.info("match: %s", match)
                 db.session.flush()
                 #print 'User "%s" will be notified, as %s matches for "%s" on field %s' % (
                 #    entity.user.name, frame['urn'], entity.text, field
                 #    )
     db.session.commit()
+
+
+def handle_matching(body, message):
+    try:
+        routing_key = message.delivery_info.get('routing_key')
+        log.info('%s - received: %s', routing_key, body['urn'])
+        match(body)
+    except Exception, e:
+        log.exception(e)
+    finally:
+        message.ack()
