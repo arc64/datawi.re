@@ -84,7 +84,6 @@ def partial_templates():
 @app.route("/")
 @app.route("/profile")
 @app.route("/feed")
-@app.route("/entities")
 def index():
     return render_template('index.html',
                            partial_templates=partial_templates())

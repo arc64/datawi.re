@@ -33,7 +33,7 @@ def logout():
 
 @sessions.route('/sessions/twitter/login')
 def twitter_login():
-    next = request.args.get('next') or request.referrer or None
+    next = request.args.get('next') or None
     callback = url_for('sessions.twitter_authorized',
                        next=next, _external=True)
     return twitter.authorize(callback=callback)
@@ -69,7 +69,7 @@ def twitter_authorized(resp):
 
 @sessions.route('/sessions/facebook/login')
 def facebook_login():
-    next = request.args.get('next') or request.referrer or None
+    next = request.args.get('next') or None
     callback = url_for('sessions.facebook_authorized',
                        next=next, _external=True)
     return facebook.authorize(callback=callback)

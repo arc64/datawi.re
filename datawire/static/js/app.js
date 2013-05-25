@@ -12,10 +12,13 @@ var datawire = angular.module('datawire', [], function($routeProvider, $location
     accessPolicy: 'user'
   });
 
-  $routeProvider.when('/entities', {
-    templateUrl: '/static/partials/watchlist.html',
-    controller: EntityCtrl,
-    accessPolicy: 'user'
+  $routeProvider.when('/', {
+    templateUrl: '/static/partials/home.html',
+    controller: HomeCtrl
+  });
+
+  $routeProvider.otherwise({
+    redirectTo: '/'
   });
 
   $locationProvider.html5Mode(true);
@@ -76,7 +79,7 @@ datawire.factory('services', function($q, $http) {
                 }
                 ref.service = service;
                 ref.data = frame.data;
-                ref.message = event.tmpl(frame.data);
+                ref.message = ref.event.tmpl(frame.data);
             });
         });
     }
@@ -86,6 +89,14 @@ datawire.factory('services', function($q, $http) {
         getFrame: getFrame
     };
 });
+
+function HomeCtrl($scope, $location, identity) {
+    identity.session(function(data) {
+        if (data.logged_in) {
+            $location.path('/feed');
+        }
+    });
+}
 
 function FeedCtrl($scope, $routeParams, $http, services) {
     $scope.tableObject = function(obj) {
