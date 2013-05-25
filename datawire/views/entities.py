@@ -36,8 +36,7 @@ def user_index(id):
 @entities.route('/entities/<id>')
 def get(id):
     require.logged_in()
-    entity = Entity.all().filter_by(id=id).filter_by(user=request.user)
-    entity = obj_or_404(entity.first())
+    entity = obj_or_404(Entity.by_user_and_id(request.user, id))
     return jsonify(entity)
 
 
@@ -50,10 +49,18 @@ def create():
 
 
 @entities.route('/entities/<int:id>', methods=['POST'])
-def update():
+def update(id):
     require.logged_in()
-    entity = Entity.all().filter_by(id=id).filter_by(user=request.user)
-    entity = obj_or_404(entity.first())
+    entity = obj_or_404(Entity.by_user_and_id(request.user, id))
     entity.update(request.form)
     db.session.commit()
     return jsonify(entity)
+
+
+@entities.route('/entities/<int:id>', methods=['DELETE'])
+def delete(id):
+    require.logged_in()
+    entity = obj_or_404(Entity.by_user_and_id(request.user, id))
+    entity.delete()
+    db.session.commit()
+    return jsonify({'status': 'gone'}, status=410)

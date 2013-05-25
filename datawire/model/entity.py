@@ -62,6 +62,15 @@ class Entity(db.Model, ModelCore):
         self.facet = data.get('facet')
         db.session.add(self)
 
+    def delete(self):
+        db.session.delete(self)
+
+    @classmethod
+    def by_user_and_id(cls, user, id):
+        q = db.session.query(cls).filter_by(user=user)
+        q = q.filter_by(id=id)
+        return q.first()
+
     @classmethod
     def by_text(cls, text):
         q = db.session.query(cls).filter_by(text=text)

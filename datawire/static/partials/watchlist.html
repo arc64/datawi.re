@@ -5,7 +5,7 @@
             <h3>{{facet.label}}</h3>
             <ul>
                 <li ng-repeat="entity in entities[facet.key]">
-                    {{entity.text}}
+                    {{entity.text}} (edit, <a href="" ng-click="remove(facet.key, entity.id)">remove</a>)
                 </li>
             </ul>
             <form name="form" class="form-inline" ng-submit="create(facet.key)" >
