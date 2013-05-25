@@ -3,6 +3,7 @@ import logging
 
 from datawire.core import db
 from datawire.model import Entity, Match
+from datawire.processing.util import itervalues
 
 log = logging.getLogger(__name__)
 
@@ -18,19 +19,6 @@ class Matcher(object):
 
     def __hash__(self):
         return hash(self.pattern)
-
-
-def itervalues(obj, path):
-    if isinstance(obj, dict):
-        for k, v in obj.items():
-            for ik, iv in itervalues(v, path + '.' + k):
-                yield ik, iv
-    elif isinstance(obj, list):
-        for i, v in enumerate(obj):
-            for ik, iv in itervalues(v, path + '[' + i + ']'):
-                yield ik, iv
-    else:
-        yield path, obj
 
 
 def match(frame):
