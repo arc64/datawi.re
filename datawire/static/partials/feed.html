@@ -11,9 +11,9 @@
         </tr>
     </table>
     <p class='frame-context'>
-        {{ services[frame.service].label }} &middot;
+        <a href="{{frame.service.url}}">{{ frame.service.label }}</a> &middot;
         {{ frame.urn }} &middot;
-        <a ng-click="frame.renderedView=false;" ng-show="frame.renderedView">raw</a>
-        <a ng-click="frame.renderedView=true;" ng-show="!frame.renderedView">text</a>
+        <a href="" ng-click="frame.renderedView=false;" ng-show="frame.renderedView">raw</a>
+        <a href="" ng-click="frame.renderedView=true;" ng-show="!frame.renderedView">text</a>
     </p>
 </div>

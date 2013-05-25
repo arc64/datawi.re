@@ -80,6 +80,7 @@ function FeedCtrl($scope, $routeParams, $http) {
         });
         angular.forEach($scope.frames, function(frame, i) {
             $http.get(frame.api_uri).success(function(fd) {
+                frame.service = $scope.services[fd.service];
                 frame.data = fd.data;
                 frame.renderedView = true;
                 var tmpl = $scope.templates[fd.service][fd.event];
