@@ -47,6 +47,25 @@
         <div ng-view></div>
     </div>
 
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="span7">
+            <h3>What is datawi.re?</h3>
+            <p>datawi.re &mdash; An act of data journalism.</p>
+          </div>
+          <div class="span5">
+            <h3>Get in touch</h3>
+            <p>The source code for datawi.re is <a href="https://github.com/arc64/datawi.re">available on GitHub</a>.</p>
+
+            <p>Made by <a href="http://annabelchurch.com">Annabel
+            Church</a> and <a href="http://pudo.org">Friedrich Lindenberg</a> as part of 
+            <a href="http://mozillaopennews.org/">Knight-Mozilla OpenNews</a>.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
     {% for path, tmpl in partial_templates %}
         <script id="{{path}}" type="text/ng-template">{{tmpl|safe}}</script>
     {% endfor %}
