@@ -54,9 +54,14 @@ input.ng-invalid {
 }
 
 #page {
+    margin-top: 2em;
+}
+
+.feed {
     background: white;
-    padding: 1em; 
+    /*padding: 1em; 
     margin: 2em -1em 0em -1em;
+    */
 
     //@include corner(5px);
     //border: 1px solid $lightBorder;
@@ -72,8 +77,7 @@ footer {
 .entities {
     background: $darkBgColor;
     color: white;
-    margin: -1em 0 -1em 16px;
-    padding: 1em 0 1em 1em;    
+    // padding: 1em 1em 1em 1em;
 }
 
 .frame {
