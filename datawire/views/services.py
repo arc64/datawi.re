@@ -3,7 +3,7 @@ from flask import Blueprint, request, url_for
 from datawire.auth import require
 from datawire.model import Service
 from datawire.views.util import jsonify, obj_or_404
-from datawire.views.util import query_pager
+from datawire.views.pager import query_pager
 
 services = Blueprint('services', __name__)
 

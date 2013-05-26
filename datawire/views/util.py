@@ -37,32 +37,6 @@ def get_offset(default=0):
     return max(0, arg_int('offset', default=default))
 
 
-def query_pager(q, route, data=None, transform=None, **kw):
-    data = data or {}
-    count = q.count()
-    limit = get_limit()
-    offset = get_offset()
-    prev_offset = max(offset - limit, 0)
-    prev = None if offset == 0 else \
-        url_for(route, limit=limit, offset=prev_offset, _external=True, **kw)
-    has_next = count < (offset + limit)
-    next_offset = min(limit + offset, count)
-    next = None if has_next else \
-        url_for(route, limit=limit, offset=next_offset, _external=True, **kw)
-    results = q.limit(limit).offset(offset)
-    if transform is not None:
-        results = [transform(r) for r in results]
-    data.update({
-        'count': count,
-        'limit': limit,
-        'offset': offset,
-        'previous': prev,
-        'next': next,
-        'results': results
-    })
-    return jsonify(data, refs=True)
-
-
 class JSONEncoder(json.JSONEncoder):
     """ This encoder will serialize all entities that have a to_dict
     method by calling that method and serializing the result. """

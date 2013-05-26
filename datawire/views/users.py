@@ -4,7 +4,7 @@ from datawire.core import db
 from datawire.auth import require
 from datawire.model import User
 from datawire.views.util import jsonify, obj_or_404
-from datawire.views.util import query_pager
+from datawire.views.pager import query_pager
 
 users = Blueprint('users', __name__)
 

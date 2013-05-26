@@ -5,7 +5,7 @@ from datawire.model import Service, Frame
 from datawire.exc import BadRequest, NotFound
 from datawire.store import load_frame, frame_url
 from datawire.views.util import jsonify, arg_bool, obj_or_404
-from datawire.views.util import query_pager
+from datawire.views.pager import query_pager
 from datawire.processing.inbound import generate_frame
 from datawire.processing.queue import publish, inbound_queue
 
