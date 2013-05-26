@@ -1,6 +1,7 @@
 $bgColor: #efebe3;
 $darkBgColor: #38342b;
 $lightText: #666;
+$lightBorder: #ddd;
 
 /* Mixins */
 
@@ -8,6 +9,13 @@ $lightText: #666;
     -webkit-box-shadow: $args;
     -moz-box-shadow: $args;
     box-shadow: $args;
+}
+
+@mixin corner($size) {
+  -moz-border-radius: $size;
+  -webkit-border-radius: $size;
+  -khtml-border-radius: $size;
+   border-radius: $size;
 }
 
 
@@ -30,6 +38,10 @@ input.ng-invalid {
 
     .brand {
         color: white;
+        font-size: 26px;
+        span {
+            font-weight: bold;
+        }
     }
 
     li a {
@@ -45,6 +57,9 @@ input.ng-invalid {
     background: white;
     padding: 1em; 
     margin: 2em -1em 0em -1em;
+
+    //@include corner(5px);
+    //border: 1px solid $lightBorder;
 }
 
 footer {
