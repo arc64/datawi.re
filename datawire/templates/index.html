@@ -36,53 +36,53 @@
     </div>
   </div>
 
+  <div class="container" id="page">
+    {% raw %}
+      <div ng-hide="!alert.visible" class="alert-hidden alert" ng-class="'alert-' + alert.type" >
+        <button type="button" class="close" ng-click="hideAlert()">&times;</button>
+        {{ alert.message }}
+      </div>
+    {% endraw %}    
+
+    <div ng-view></div>
+  </div>
+
+  <footer>
     <div class="container">
-        {% raw %}
-            <div ng-hide="!alert.visible" class="alert-hidden alert" ng-class="'alert-' + alert.type" >
-                <button type="button" class="close" ng-click="hideAlert()">&times;</button>
-                {{ alert.message }}
-            </div>
-        {% endraw %}    
+      <div class="row">
+        <div class="span7">
+          <h3>What is datawi.re?</h3>
+          <p>datawi.re &mdash; An act of data journalism.</p>
+        </div>
+        <div class="span5">
+          <h3>Get in touch</h3>
+          <p>The source code for datawi.re is <a href="https://github.com/arc64/datawi.re">available on GitHub</a>.</p>
 
-        <div ng-view></div>
-    </div>
-
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="span7">
-            <h3>What is datawi.re?</h3>
-            <p>datawi.re &mdash; An act of data journalism.</p>
-          </div>
-          <div class="span5">
-            <h3>Get in touch</h3>
-            <p>The source code for datawi.re is <a href="https://github.com/arc64/datawi.re">available on GitHub</a>.</p>
-
-            <p>Made by <a href="http://annabelchurch.com">Annabel
-            Church</a> and <a href="http://pudo.org">Friedrich Lindenberg</a> as part of 
-            <a href="http://mozillaopennews.org/">Knight-Mozilla OpenNews</a>.</p>
-          </div>
+          <p>Made by <a href="http://annabelchurch.com">Annabel
+          Church</a> and <a href="http://pudo.org">Friedrich Lindenberg</a> as part of 
+          <a href="http://mozillaopennews.org/">Knight-Mozilla OpenNews</a>.</p>
         </div>
       </div>
-    </footer>
+    </div>
+  </footer>
 
-    {% for path, tmpl in partial_templates %}
-        <script id="{{path}}" type="text/ng-template">{{tmpl|safe}}</script>
-    {% endfor %}
+  {% for path, tmpl in partial_templates %}
+      <script id="{{path}}" type="text/ng-template">{{tmpl|safe}}</script>
+  {% endfor %}
 
-    {% assets filters="uglifyjs", output="gen/deps.%(version)s.js",
-          "vendor/angular/angular.js",
-          "vendor/handlebars/handlebars.js",
-          "vendor/underscore/underscore.js" %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-    {% assets output="gen/app.%(version)s.js",
-          "js/app.js",
-          "js/alertService.svc.js",
-          "js/app.ctrl.js",
-          "js/home.ctrl.js",
-          "js/profile.ctrl.js" %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
+  {% assets filters="uglifyjs", output="gen/deps.%(version)s.js",
+        "vendor/angular/angular.js",
+        "vendor/handlebars/handlebars.js",
+        "vendor/underscore/underscore.js" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+  {% assets output="gen/app.%(version)s.js",
+        "js/app.js",
+        "js/alertService.svc.js",
+        "js/app.ctrl.js",
+        "js/home.ctrl.js",
+        "js/profile.ctrl.js" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
 </body>
 </html>
