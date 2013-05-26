@@ -67,17 +67,48 @@ footer {
     color: $lightText;
 }
 
+/* Feed page. */
+
+.entities {
+    background: $darkBgColor;
+    color: white;
+    margin: -1em 0 -1em 16px;
+    padding: 1em 0 1em 1em;    
+}
+
 .frame {
-    padding: 0.4em;
-    margin: 0 0 1em 0;
+    padding: 0.4em 0 0.5em 0;
+    margin: 0 0 0 0;
+    border-bottom: 1px solid $lightBorder;
+
+    p {
+        margin: 0 0 5px 0;
+    }
+
+    p.frame-header a {
+        font-weight: bold;
+        font-size: 1.1em;
+        color: #333;
+    }
 
     p.frame-body {
-        font-size: 1.3em;
-        line-height: 1.5em;
+    //    font-size: 1.3em;
+    //    line-height: 1.5em;
     }
 
     p.frame-context {
+        font-size: 1em;
         color: $lightText;
+        a {
+           color: $lightText; 
+        }
+    }
+}
+
+.frame:hover {
+    background-color: #eee;
+    p.frame-context a {
+        color: red;
     }
 }
 
