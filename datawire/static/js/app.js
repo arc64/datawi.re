@@ -24,14 +24,12 @@ var datawire = angular.module('datawire', [], function($routeProvider, $location
   $locationProvider.html5Mode(true);
 });
 
-datawire.directive('xlink', function ($window) {
+datawire.directive('external', function ($window) {
     return {
-        restrict: 'E',
-        template: '<a href=""><span ng-transclude></span></a>',
-        transclude: true,
+        restrict: 'A',
         link: function(scope, element, attrs) {
             element.bind('click', function() {
-                $window.location.href = attrs.href;
+                $window.location.href = attrs.external;
             });
         }
     };

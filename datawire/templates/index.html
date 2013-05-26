@@ -18,23 +18,25 @@
 </head>
 
 <body ng-controller="AppCtrl">
-    <div class="container">
-        <nav>
-            {% raw %}
-                <div ng-show="session.logged_in">
-                    {{ session.user.name }}, you are logged in.
-                    <a href="/profile">Profile</a>
-                    <xlink href="{{session.logout_uri}}">Logout</xlink>
-                </div>
-                <div ng-hide="session.logged_in">
-                    You need to log in.
-                    <xlink href="{{session.twitter_uri}}">Twitter</xlink>
-                    <xlink href="{{session.facebook_uri}}">Facebook</xlink>
-                </div>
-                <h1>welcome to the datawi.re</h1>
-            {% endraw %}    
-        </nav>
+  <div class="navbar navbar-static-top">
+    <div class="navbar-inner">
+        <div class="container">
+          {% raw %}
+            <a class="brand" href="/">datawi.re</a>
+            <ul class="nav pull-right" ng-show="session.logged_in">
+              <li><a href="/profile">{{ session.user.name }}</a></li>
+              <li><a external="{{session.logout_uri}}" href="">Logout</a></li>
+            </ul>
+            <ul class="nav pull-right" ng-hide="session.logged_in">
+              <li><a external="{{session.twitter_uri}}" href="">Twitter</a></li>
+              <li><a external="{{session.facebook_uri}}" href="">Facebook</a></li>
+            </ul>
+          {% endraw %}
+        </div>
+    </div>
+  </div>
 
+    <div class="container">
         {% raw %}
             <div ng-hide="!alert.visible" class="alert-hidden alert" ng-class="'alert-' + alert.type" >
                 <button type="button" class="close" ng-click="hideAlert()">&times;</button>
@@ -43,7 +45,6 @@
         {% endraw %}    
 
         <div ng-view></div>
-
     </div>
 
     {% for path, tmpl in partial_templates %}
