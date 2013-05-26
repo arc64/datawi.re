@@ -30,7 +30,7 @@ def user_index(id):
     q = Entity.all().filter_by(user_id=id)
     if 'facet' in request.args:
         q = q.filter_by(facet=request.args.get('facet'))
-    return query_pager(q, 'entities.user_index')
+    return query_pager(q, 'entities.user_index', id=id)
 
 
 @entities.route('/entities/<id>')
