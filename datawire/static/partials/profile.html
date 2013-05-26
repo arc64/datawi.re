@@ -1,28 +1,46 @@
 
-<h3>User profile</h3>
+<h3 class="page-header">Update your user profile</h3>
 
-<form name="form" class="form-horizontal">
-  <div class="control-group">
-    <label class="control-label" for="name">Name</label>
-    <div class="controls">
-      <input ng-model="profile.name" required ng-minlength="3" type="text" id="name" placeholder="Your name">
-    </div>
+<div class="row">
+  <div class="span7">
+    <form name="form" class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label" for="name">Name</label>
+        <div class="controls">
+          <input ng-model="profile.name" required ng-minlength="3" type="text" id="name" placeholder="Your name">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="email">Email</label>
+        <div class="controls">
+          <input ng-model="profile.email" required type="email" id="email" placeholder="Email">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="api_key">API Key</label>
+        <div class="controls">
+          <input ng-model="profile.api_key" type="text" id="api_key" disabled>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn" ng-click="save()" ng-disabled="form.$invalid">Update</button>
+        </div>
+      </div>
+    </form>
   </div>
-  <div class="control-group">
-    <label class="control-label" for="email">Email</label>
-    <div class="controls">
-      <input ng-model="profile.email" required type="email" id="email" placeholder="Email">
-    </div>
+
+  <div class="span5">
+    <p>
+      We need to know <strong>your email</strong> so that we can notify you when new data has been found 
+      that relates to your queries. We will not share personal data with other organisations
+    </p>
+    <p>
+      You can use your <strong>API key</strong> to talk to our web interface, e.g. to use the matches we've 
+      found in another application or to submit your own data to a service.
+    </p>
+    <p>
+      Thank you for taking the time to update your profile.
+    </p>
   </div>
-  <div class="control-group">
-    <label class="control-label" for="api_key">API Key</label>
-    <div class="controls">
-      <input ng-model="profile.api_key" type="text" id="api_key" disabled>
-    </div>
-  </div>
-  <div class="control-group">
-    <div class="controls">
-      <button type="submit" class="btn" ng-click="save()" ng-disabled="form.$invalid">Update</button>
-    </div>
-  </div>
-</form>
+</div>

@@ -1,8 +1,21 @@
-$background: #eee;
+$bgColor: #efebe3;
+$darkBgColor: #38342b;
+$lightText: #666;
+
+/* Mixins */
+
+@mixin box-shadow ($args) {
+    -webkit-box-shadow: $args;
+    -moz-box-shadow: $args;
+    box-shadow: $args;
+}
+
 
 body {
-    background-color: $background;
+    background-color: $bgColor;
 }
+
+
 
 /* Housekeeping in extension of bootstrap. */
 input.ng-invalid {
@@ -10,8 +23,36 @@ input.ng-invalid {
     color: #b94a48;
 }
 
+.navbar-static-top #navigation {
+    @include box-shadow(none);
+    background: $darkBgColor;
+    min-height: 3em;
+
+    .brand {
+        color: white;
+    }
+
+    li a {
+        color: white;
+    }
+}
+
+.alert-bar {
+    margin-top: 2em;
+}
+
+#page {
+    background: white;
+    padding: 1em; 
+    margin: 2em -1em 0em -1em;
+}
+
+footer {
+    margin: 2em 0 0 0;
+    color: $lightText;
+}
+
 .frame {
-    background-color: white;
     padding: 0.4em;
     margin: 0 0 1em 0;
 
@@ -21,6 +62,7 @@ input.ng-invalid {
     }
 
     p.frame-context {
-        color: #999;
+        color: $lightText;
     }
 }
+

@@ -19,7 +19,7 @@
 
 <body ng-controller="AppCtrl">
   <div class="navbar navbar-static-top">
-    <div class="navbar-inner">
+    <div id="navigation" class="navbar-inner">
         <div class="container">
           {% raw %}
             <a class="brand" href="/">datawi.re</a>
@@ -36,26 +36,24 @@
     </div>
   </div>
 
-  <div class="container" id="page">
+  <div class="container">
     {% raw %}
-      <div ng-hide="!alert.visible" class="alert-hidden alert" ng-class="'alert-' + alert.type" >
+      <div ng-hide="!alert.visible" class="alert-bar alert" ng-class="'alert-' + alert.type" >
         <button type="button" class="close" ng-click="hideAlert()">&times;</button>
         {{ alert.message }}
       </div>
     {% endraw %}    
 
-    <div ng-view></div>
+    <div id="page" ng-view></div>
   </div>
 
   <footer>
     <div class="container">
       <div class="row">
         <div class="span7">
-          <h3>What is datawi.re?</h3>
           <p>datawi.re &mdash; An act of data journalism.</p>
         </div>
         <div class="span5">
-          <h3>Get in touch</h3>
           <p>The source code for datawi.re is <a href="https://github.com/arc64/datawi.re">available on GitHub</a>.</p>
 
           <p>Made by <a href="http://annabelchurch.com">Annabel
