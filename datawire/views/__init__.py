@@ -78,7 +78,8 @@ def partial_templates():
     partials_dir = os.path.join(app.static_folder, 'partials')
     for file_name in os.listdir(partials_dir):
         with open(os.path.join(partials_dir, file_name), 'rb') as fh:
-            yield ('/static/partials/%s' % file_name, fh.read().decode('utf-8'))
+            yield ('/static/partials/%s' % file_name,
+                   fh.read().decode('utf-8'))
 
 
 @app.route("/")
