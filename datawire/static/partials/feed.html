@@ -37,6 +37,8 @@
                 {{ frame.urn }} &middot;
                 <a href="" ng-click="frame.showRaw=true;" ng-show="!frame.showRaw">Data View</a>
                 <a href="" ng-click="frame.showRaw=false;" ng-show="frame.showRaw">Text View</a>
+                &middot;
+                <a href="" external="{{frame.store_uri}}" download="{{frame.urn}}.json">Download</a>
             </p>
         </div>
     </div>

@@ -2,6 +2,7 @@ $bgColor: #efebe3;
 $darkBgColor: #38342b;
 $lightText: #666;
 $lightBorder: #ddd;
+$linkColor: #693;
 
 /* Mixins */
 
@@ -18,12 +19,29 @@ $lightBorder: #ddd;
    border-radius: $size;
 }
 
-
-body {
-    background-color: $bgColor;
+@mixin bold {
+    font-family: OpenSansSemibold, sans-serif;
+    font-weight: normal !important;
 }
 
 
+body {
+    background-color: $bgColor;
+    font-family: OpenSansRegular, sans-serif;
+    font-size: 16px;
+}
+
+strong, th {
+    @include bold;
+}
+
+h1, h2, h3, h4, h5 { 
+    @include bold;
+}
+
+a {
+    color: $linkColor;
+}
 
 /* Housekeeping in extension of bootstrap. */
 input.ng-invalid {
@@ -40,7 +58,7 @@ input.ng-invalid {
         color: white;
         font-size: 26px;
         span {
-            font-weight: bold;
+            @include bold;
         }
     }
 
@@ -68,8 +86,10 @@ input.ng-invalid {
 }
 
 footer {
-    margin: 2em 0 0 0;
+    margin: 3em 0 0 0;
+    padding: 3em 0 3em 0;
     color: $lightText;
+    background-color: white;
 }
 
 /* Feed page. */
@@ -81,7 +101,7 @@ footer {
 }
 
 .frame {
-    padding: 0.4em 0 0.5em 0;
+    padding: 0.4em 0.5em 0.5em 0.5em;
     margin: 0 0 0 0;
     border-bottom: 1px solid $lightBorder;
 
@@ -90,12 +110,15 @@ footer {
     }
 
     p.frame-header a {
-        font-weight: bold;
-        font-size: 1.1em;
+        @include bold;
+        font-size: 1em;
         color: #333;
     }
 
     p.frame-body {
+        strong {
+            color: $linkColor;
+        }
     //    font-size: 1.3em;
     //    line-height: 1.5em;
     }
@@ -112,7 +135,7 @@ footer {
 .frame:hover {
     background-color: #eee;
     p.frame-context a {
-        color: red;
+        color: $linkColor;
     }
 }
 
