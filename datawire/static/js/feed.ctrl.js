@@ -12,6 +12,7 @@ function FeedCtrl($scope, $routeParams, feed) {
 
     feed.notify.update = function(data) {
         $scope.frames = data.results;
+        $scope.count = data.count;
     };
 
     feed.update();

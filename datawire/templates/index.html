@@ -27,8 +27,8 @@
             {% raw %}
               <a class="brand" href="/">data<span>wi.re</span></a>
               <ul class="nav pull-right" ng-show="session.logged_in">
-                <li><a href="/profile">{{ session.user.name }}</a></li>
-                <li><a external="{{session.logout_uri}}" href="">Logout</a></li>
+                <li><a href="/profile"><i class="icon-cogs"></i> {{ session.user.name }}</a></li>
+                <li><a external="{{session.logout_uri}}" href=""><i class="icon-signout"></i> Logout</a></li>
               </ul>
               <ul class="nav pull-right" ng-hide="session.logged_in">
                 <li><a external="{{session.twitter_uri}}" href=""><i class="icon-twitter"></i> Twitter</a></li>
@@ -75,6 +75,7 @@
   {% assets filters="uglifyjs", output="gen/deps.%(version)s.js",
         "vendor/angular/angular.js",
         "vendor/handlebars/handlebars.js",
+        "vendor/moment/moment.js",
         "vendor/underscore/underscore.js" %}
       <script type="text/javascript" src="{{ ASSET_URL }}"></script>
   {% endassets %}

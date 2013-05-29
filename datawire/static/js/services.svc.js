@@ -21,6 +21,7 @@ datawire.factory('services', function($q, $http) {
                 }
                 ref.service = service;
                 ref.data = frame.data;
+                ref.created_at = moment(ref.created_at);
                 ref.message = ref.event.tmpl(frame.data);
                 ref.loaded = true;
             });
