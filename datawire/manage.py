@@ -83,6 +83,19 @@ def match(urn):
 
 
 @manager.command
+def matchall():
+    """ Re-do all matching. """
+    from datawire.store import load_frame
+    from datawire.model import Frame
+    from datawire.processing.matching import match
+    for frame_ref in Frame.all():
+        frame = load_frame(frame_ref.urn)
+        if frame is None:
+            continue
+        match(frame)
+
+
+@manager.command
 def process():
     """ Process background tasks from the queue. """
     from datawire.processing import process
