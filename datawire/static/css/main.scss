@@ -98,6 +98,10 @@ footer {
     background: $darkBgColor;
     color: white;
     // padding: 1em 1em 1em 1em;
+
+    .selected {
+        background-color: lighten($darkBgColor, 20%);
+    }
 }
 
 .frame {

@@ -42,20 +42,48 @@ Handlebars.registerHelper('entity', function(text) {
 });
 
 datawire.factory('feed', function($http, identity, services) {
+    var entities = [13, 14];
+    var notify = { update: null };
 
-    function update(callback) {
+    function buildQuery() {
+        // mostly a workaround for broken query builder in $http, 
+        // fixed in angular 1.1.5.
+        var query = [];
+        angular.forEach(entities, function(e) {
+            query.push('entity=' + encodeURIComponent(e));
+        });
+        return '?' + query.join('&');
+    }
+
+    function update() {
         identity.session(function(ident) {
-            $http.get('/api/1/users/' + ident.user.id + '/feed').success(function(data) {
+            $http.get('/api/1/users/' + ident.user.id + '/feed' + buildQuery()).success(function(data) {
                 angular.forEach(data.results, function(frame, i) {
                     services.getFrame(frame);
                 });
-                callback(data);
+                notify.update(data);
             });
         });
     }
 
+    function entitySelected(id) {
+        return entities.indexOf(id) != -1;
+    }
+
+    function toggleEntity(id, callback) {
+        if (entitySelected(id)) {
+            entities = _.without(entities, id);
+        } else {
+            entities.push(id);
+        }
+        update();
+    }
+
     return {
-        update: update
+        update: update,
+        notify: notify,
+        entitySelected: entitySelected,
+        toggleEntity: toggleEntity
     };
 });
 
@@ -70,8 +98,10 @@ function FeedCtrl($scope, $routeParams, feed) {
         return table;
     };
 
-    feed.update(function(data) {
+    feed.notify.update = function(data) {
         $scope.frames = data.results;
-    });
+    };
+
+    feed.update();
 
 }

@@ -11,7 +11,7 @@ datawire.factory('services', function($q, $http) {
     }
 
     function getFrame(ref) {
-        $http.get(ref.store_uri).success(function(frame) {
+        $http.get(ref.store_uri, {cache: true}).success(function(frame) {
             getService(frame.service, function(service) {
                 ref.event = _.find(service.events, function(e) {
                     return e.key == frame.event;
@@ -22,6 +22,7 @@ datawire.factory('services', function($q, $http) {
                 ref.service = service;
                 ref.data = frame.data;
                 ref.message = ref.event.tmpl(frame.data);
+                ref.loaded = true;
             });
         });
     }

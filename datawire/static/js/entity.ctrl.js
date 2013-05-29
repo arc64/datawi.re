@@ -1,7 +1,13 @@
 
-function EntityCtrl($scope, $routeParams, $http, identity) {
+function EntityCtrl($scope, $routeParams, $http, identity, feed) {
     $scope._new = {};
     $scope.entities = {};
+
+    $scope.isSelected = function(entity) {
+        return feed.entitySelected(entity.id) ? 'selected' : 'unselected';
+    };
+
+    $scope.toggle = feed.toggleEntity;
 
     $http.get('/api/1/facets').success(function(data) {
         $scope.facets = data.results;
