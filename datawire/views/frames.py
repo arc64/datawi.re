@@ -1,7 +1,7 @@
 from flask import Blueprint, request, url_for
 
 from datawire.auth import require
-from datawire.model import Service, Frame
+from datawire.model import Service, Frame, Match, Entity
 from datawire.exc import BadRequest, NotFound
 from datawire.store import load_frame, frame_url
 from datawire.views.util import jsonify, arg_bool, obj_or_404
@@ -23,6 +23,17 @@ def frameset(q, route, data=None):
 def index():
     q = Frame.all()
     return frameset(q, 'frames.index')
+
+
+@frames.route('/users/<int:id>/feed')
+def user_index(id):
+    require.user_id(id)
+    q = Frame.all()
+    q = q.join(Frame.matches)
+    q = q.join(Match.entity)
+    q = q.filter(Entity.user_id == id)
+    # TODO: filter by entity ID
+    return query_pager(q, 'frames.user_index', id=id)
 
 
 @frames.route('/frames/<urn>')
