@@ -39,6 +39,7 @@ def user_index(id):
         q = q.group_by(Frame)
         q = q.filter(Entity.id.in_(entities))
         q = q.having(count(Entity.id) == len(entities))
+    q = q.order_by(Frame.created_at.desc())
     return query_pager(q, 'frames.user_index', id=id)
 
 
