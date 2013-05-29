@@ -4,6 +4,13 @@ $lightText: #666;
 $lightBorder: #ddd;
 $linkColor: #693;
 
+$twitterColor2: #9AE4E8;
+$twitterColor: darken($twitterColor2, 20%);
+
+$fbColor: #335795;
+$fbColor2: #6D8BC9;
+
+
 /* Mixins */
 
 @mixin box-shadow ($args) {
@@ -24,9 +31,47 @@ $linkColor: #693;
     font-weight: normal !important;
 }
 
+@mixin reset-filter() {
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+@mixin vertical($startColor: #555, $endColor: #333) {
+    background-color: mix($startColor, $endColor, 60%);
+    background-image: -moz-linear-gradient(top, $startColor, $endColor); // FF 3.6+
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from($startColor), to($endColor)); // Safari 4+, Chrome 2+
+    background-image: -webkit-linear-gradient(top, $startColor, $endColor); // Safari 5.1+, Chrome 10+
+    background-image: -o-linear-gradient(top, $startColor, $endColor); // Opera 11.10
+    background-image: linear-gradient(to bottom, $startColor, $endColor); // Standard, IE10
+    background-repeat: repeat-x;
+  }
+
+
+@mixin gradientBar($primaryColor, $secondaryColor, $textColor: #fff, $textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
+  color: $textColor;
+  text-shadow: $textShadow;
+  @include vertical($primaryColor, $secondaryColor);
+  border-color: $secondaryColor $secondaryColor darken($secondaryColor, 15%);
+  border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
+}
+
+@mixin buttonBackground($startColor, $endColor, $textColor: #fff, $textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
+  @include gradientBar($startColor, $endColor, $textColor, $textShadow);
+  *background-color: $endColor;
+  @include reset-filter();
+
+  &:hover, &:focus, &:active, &.active, &.disabled, &[disabled] {
+    color: $textColor;
+    background-color: $endColor;
+    *background-color: darken($endColor, 5%);
+  }
+
+  &:active,
+  &.active {
+    background-color: darken($endColor, 10%) e("\9");
+  }
+}
 
 body {
-    background-color: $bgColor;
     font-family: OpenSansRegular, sans-serif;
     font-size: 16px;
 }
@@ -43,6 +88,14 @@ a {
     color: $linkColor;
 }
 
+.btn.facebook {
+    @include buttonBackground($fbColor2, $fbColor);
+}
+
+.btn.twitter {
+    @include buttonBackground($twitterColor2, $twitterColor);
+}
+
 /* Housekeeping in extension of bootstrap. */
 input.ng-invalid {
     border-color: #B94A49;
@@ -53,6 +106,10 @@ input.ng-invalid {
     @include box-shadow(none);
     background: $darkBgColor;
     min-height: 3em;
+
+    .container {
+        padding-top: 3px;
+    }
 
     .brand {
         color: white;
@@ -71,6 +128,11 @@ input.ng-invalid {
     margin-top: 2em;
 }
 
+#pagearea {
+    background-color: $bgColor;
+    padding: 0 0 2em 0;
+}
+
 #page {
     margin-top: 2em;
 }
@@ -86,10 +148,20 @@ input.ng-invalid {
 }
 
 footer {
-    margin: 3em 0 0 0;
     padding: 3em 0 3em 0;
     color: $lightText;
     background-color: white;
+}
+
+/* Home page. */
+.hero-unit {
+    background-color: $darkBgColor;
+    color: white;
+
+    h1 {
+        text-transform: lowercase;
+        margin-bottom: 0.3em;
+    }
 }
 
 /* Feed page. */

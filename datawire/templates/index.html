@@ -16,36 +16,39 @@
     {% endassets %}
     <link rel="shortcut icon" href="http://assets.pudo.org/img/opennews-favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="http://assets.pudo.org/fonts/open-sans/stylesheet.css" type="text/css" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
 </head>
 
 <body ng-controller="AppCtrl">
-  <div class="navbar navbar-static-top">
-    <div id="navigation" class="navbar-inner">
-        <div class="container">
-          {% raw %}
-            <a class="brand" href="/">data<span>wi.re</span></a>
-            <ul class="nav pull-right" ng-show="session.logged_in">
-              <li><a href="/profile">{{ session.user.name }}</a></li>
-              <li><a external="{{session.logout_uri}}" href="">Logout</a></li>
-            </ul>
-            <ul class="nav pull-right" ng-hide="session.logged_in">
-              <li><a external="{{session.twitter_uri}}" href="">Twitter</a></li>
-              <li><a external="{{session.facebook_uri}}" href="">Facebook</a></li>
-            </ul>
-          {% endraw %}
-        </div>
-    </div>
-  </div>
-
-  <div class="container">
-    {% raw %}
-      <div ng-hide="!alert.visible" class="alert-bar alert" ng-class="'alert-' + alert.type" >
-        <button type="button" class="close" ng-click="hideAlert()">&times;</button>
-        {{ alert.message }}
+  <div id="pagearea">
+    <div class="navbar navbar-static-top">
+      <div id="navigation" class="navbar-inner">
+          <div class="container">
+            {% raw %}
+              <a class="brand" href="/">data<span>wi.re</span></a>
+              <ul class="nav pull-right" ng-show="session.logged_in">
+                <li><a href="/profile">{{ session.user.name }}</a></li>
+                <li><a external="{{session.logout_uri}}" href="">Logout</a></li>
+              </ul>
+              <ul class="nav pull-right" ng-hide="session.logged_in">
+                <li><a external="{{session.twitter_uri}}" href=""><i class="icon-twitter"></i> Twitter</a></li>
+                <li><a external="{{session.facebook_uri}}" href=""><i class="icon-facebook"></i> Facebook</a></li>
+              </ul>
+            {% endraw %}
+          </div>
       </div>
-    {% endraw %}    
+    </div>
 
-    <div id="page" ng-view></div>
+    <div class="container">
+      {% raw %}
+        <div ng-hide="!alert.visible" class="alert-bar alert" ng-class="'alert-' + alert.type" >
+          <button type="button" class="close" ng-click="hideAlert()">&times;</button>
+          {{ alert.message }}
+        </div>
+      {% endraw %}    
+
+      <div id="page" ng-view></div>
+    </div>
   </div>
 
   <footer>
@@ -55,7 +58,7 @@
           <p>datawi.re &mdash; An act of data journalism.</p>
         </div>
         <div class="span5">
-          <p>The source code for datawi.re is <a href="https://github.com/arc64/datawi.re">available on GitHub</a>.</p>
+          <p>datawi.re is open source and <a href="https://github.com/arc64/datawi.re">available on GitHub</a>.</p>
 
           <p>Made by <a href="http://annabelchurch.com">Annabel
           Church</a> and <a href="http://pudo.org">Friedrich Lindenberg</a> as part of 
