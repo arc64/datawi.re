@@ -1,4 +1,6 @@
 from flask import Blueprint, request, url_for
+from sqlalchemy.sql.expression import and_
+from sqlalchemy.sql.functions import count
 
 from datawire.auth import require
 from datawire.model import Service, Frame, Match, Entity
@@ -32,7 +34,11 @@ def user_index(id):
     q = q.join(Frame.matches)
     q = q.join(Match.entity)
     q = q.filter(Entity.user_id == id)
-    # TODO: filter by entity ID
+    entities = request.args.getlist('entity')
+    if len(entities):
+        q = q.group_by(Frame)
+        q = q.filter(Entity.id.in_(entities))
+        q = q.having(count(Entity.id) == len(entities))
     return query_pager(q, 'frames.user_index', id=id)
 
 
