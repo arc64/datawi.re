@@ -4,7 +4,7 @@ datawire.factory('services', function($q, $http) {
 
     function getService(name, callback) {
         if(!serviceDfds[name]) {
-            serviceDfds[name] = $http.get('/api/1/services/' + name);
+            serviceDfds[name] = $http.get('/api/1/services/' + name, {cache: true});
         }
         serviceDfds[name].success(callback);
         return serviceDfds[name];
