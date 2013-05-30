@@ -66,10 +66,15 @@ def submit(service_key, event_key):
     service = obj_or_404(Service.by_key(service_key))
     require.service.publish(service)
 
+    data = {
+        'body': request.json,
+        'headers': dict(request.headers.items())
+    }
+
     if arg_bool('sync'):
-        urn = generate_frame(service_key, event_key, request.json)
+        urn = generate_frame(service_key, event_key, data)
         return jsonify({'status': 'ok', 'urn': urn})
     else:
         routing_key = 'inbound.%s.%s' % (service_key, event_key)
-        publish(inbound_queue, routing_key, request.json)
+        publish(inbound_queue, routing_key, data)
         return jsonify({'status': 'queued'})

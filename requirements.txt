@@ -9,3 +9,4 @@ kombu==2.5.10
 librabbitmq==1.0.1
 cssmin==0.1.4
 FormEncode==1.2.6
+python-dateutil==2.1

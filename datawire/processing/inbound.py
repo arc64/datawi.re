@@ -7,6 +7,7 @@ from datawire.model import Service, Event, Frame
 from datawire.model.util import data_hash
 from datawire.store import store_frame
 from datawire.processing.queue import publish, matching_queue
+from datawire.processing.util import parse_datetime, parse_url
 
 log = logging.getLogger(__name__)
 
@@ -33,9 +34,13 @@ def generate_frame(service_key, event_key, data):
     frame = {
         'service': service_key,
         'event': event_key,
-        'data': data
+        'data': data.get('body')
     }
+    headers = data.get('headers')
     frame.update({
+        'event_at': parse_datetime(headers.get('X-Event-At')),
+        'source_url': parse_url(headers.get('X-Source-Location')),
+        'details_url': parse_url(headers.get('X-Details-Location')),
         'hash': data_hash(frame),
         'created_at': datetime.utcnow()
     })
