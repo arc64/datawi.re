@@ -6,7 +6,7 @@ datawire.factory('feed', function($http, identity, services) {
     function feedQuery() {
         // mostly a workaround for broken query builder in $http, 
         // fixed in angular 1.1.5.
-        var query = [];
+        var query = ['limit=10'];
         angular.forEach(entities, function(e) {
             query.push('entity=' + encodeURIComponent(e));
         });

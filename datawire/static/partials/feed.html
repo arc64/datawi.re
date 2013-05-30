@@ -5,7 +5,7 @@
 
     <div class="span8 feed">
         <div class="frame-count">
-            {{count}} Events have been found.
+            {{count}} Events have been found, {{frames.length}} shown.
         </div>
         <div ng-repeat="frame in frames" class="frame" ng-show="frame.loaded">
             <div class='frame-header'>
@@ -26,8 +26,14 @@
                 <a href="" ng-click="frame.showRaw=true;" ng-show="!frame.showRaw">Data View</a>
                 <a href="" ng-click="frame.showRaw=false;" ng-show="frame.showRaw">Text View</a>
                 &middot;
-                <a href="#">Source Page</a>
-                &middot;
+                <span ng-show="frame.details_url!==null">
+                    <a ng-href="{{frame.details_url}}">Details</a>
+                    &middot;
+                </span>
+                <span ng-show="frame.source_url!==null">
+                    <a ng-href="{{frame.source_url}}">Source</a>
+                    &middot;
+                </span>
                 <a href="" external="{{frame.store_uri}}" download="{{frame.urn}}.json">Download</a>
             </p>
         </div>
