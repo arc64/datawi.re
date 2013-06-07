@@ -42,7 +42,5 @@ def handle_matching(body, message):
         routing_key = message.delivery_info.get('routing_key')
         log.info('%s - received: %s', routing_key, body['urn'])
         match(body)
-    except Exception, e:
-        log.exception(e)
     finally:
         message.ack()

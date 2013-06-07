@@ -17,8 +17,6 @@ def handle_inbound(body, message):
     log.info('%s - received: %s / %s', queue, service_key, event_key)
     try:
         generate_frame(service_key, event_key, body)
-    except Exception, exc:
-        log.exception(exc)
     finally:
         message.ack()
 

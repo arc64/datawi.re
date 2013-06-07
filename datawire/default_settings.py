@@ -12,6 +12,7 @@ SYSADMINS = ['friedrich@pudo.org']
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
 AMQP_QUEUE_URI = 'amqp://guest:guest@localhost//'
+PROCESSING_WORKERS = 20
 
 STORE_URL = 'file:///tmp/datawi.re/frames/'
 

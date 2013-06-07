@@ -8,7 +8,7 @@ logger = logging.getLogger('datawire')
 logger.setLevel(logging.DEBUG)
 
 formatter = ColoredFormatter(
-    "%(log_color)s%(levelname)-8s%(reset)s %(white)s%(message)s",
+    "%(log_color)s%(levelname)-8s[%(threadName)s]%(reset)s %(white)s%(message)s",
     datefmt=None,
     reset=True,
     log_colors={
