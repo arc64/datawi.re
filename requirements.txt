@@ -1,5 +1,6 @@
 Flask==0.9
 SQLAlchemy==0.8.1
+Flask-SQLAlchemy
 Flask-Script==0.5.3
 Flask-OAuth==0.12
 Flask-Assets==0.8
@@ -10,3 +11,5 @@ librabbitmq==1.0.1
 cssmin==0.1.4
 FormEncode==1.2.6
 python-dateutil==2.1
+psycopg2
+gunicorn
