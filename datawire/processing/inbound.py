@@ -15,10 +15,7 @@ log = logging.getLogger(__name__)
 def handle_inbound(body, message):
     queue, service_key, event_key = message.delivery_info.get('routing_key').split('.')
     log.info('%s - received: %s / %s', queue, service_key, event_key)
-    try:
-        generate_frame(service_key, event_key, body)
-    finally:
-        message.ack()
+    generate_frame(service_key, event_key, body)
 
 
 def generate_frame(service_key, event_key, data):

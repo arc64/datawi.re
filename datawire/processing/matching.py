@@ -38,9 +38,6 @@ def match(frame):
 
 
 def handle_matching(body, message):
-    try:
-        routing_key = message.delivery_info.get('routing_key')
-        log.info('%s - received: %s', routing_key, body['urn'])
-        match(body)
-    finally:
-        message.ack()
+    routing_key = message.delivery_info.get('routing_key')
+    log.info('%s - received: %s', routing_key, body['urn'])
+    match(body)
