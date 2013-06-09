@@ -29,6 +29,7 @@ def createservice(filename):
     with open(filename, 'rb') as fh:
         data = json.load(fh)
         events = data.pop('events', [])
+        editors = data.pop('editors', [1])
         service = Service.by_key(data.get('key'))
         if service is not None:
             raise ValueError("Service already exists: %s" % data.get('key'))
@@ -36,8 +37,9 @@ def createservice(filename):
         for event_data in events:
             event_data['service'] = service
             Event.create(event_data)
-        user = User.by_screen_name('admin')
-        service.editors.append(user)
+        for editor_id in editors:
+            user = User.by_id(editor_id)
+            service.editors.append(user)
         db.session.commit()
 
 
@@ -60,6 +62,10 @@ def updateservice(filename):
                 event.update(event_data)
             events.append(event)
         service.events = events
+        service.editors = []
+        for editor_id in data.get('editors', [1]):
+            user = User.by_id(editor_id)
+            service.editors.append(user)
         db.session.commit()
 
 
