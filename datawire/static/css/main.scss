@@ -91,7 +91,7 @@ $defaultRoundedAmount: 5px;
 
 body {
     font-family: OpenSansRegular, sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     color: #333;
 
     @media (max-width: 767px) {
@@ -146,6 +146,11 @@ input.ng-invalid {
     li a {
         color: white;
     }
+}
+
+.navbar .nav > li > a,
+.navbar .brand {
+    text-shadow: none;
 }
 
 .alert-bar {
