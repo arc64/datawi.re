@@ -56,9 +56,12 @@ def json_post():
 @app.errorhandler(500)
 def handle_exceptions(exc):
     """ Re-format exceptions to JSON. """
-    body = {'status': exc.code,
-            'name': exc.name,
-            'description': exc.get_description(request.environ)}
+    if hasattr(exc, 'code'):
+        body = {'status': exc.code,
+                'name': exc.name,
+                'description': exc.get_description(request.environ)}
+    else:
+        body = {'description': unicode(exc)}
     return jsonify(body, status=exc.code,
                    headers=exc.get_headers(request.environ))
 
