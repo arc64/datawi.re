@@ -79,15 +79,18 @@ def partial_templates():
     if app.config.get('ASSETS_DEBUG'):
         return
     partials_dir = os.path.join(app.static_folder, 'partials')
-    for file_name in os.listdir(partials_dir):
-        with open(os.path.join(partials_dir, file_name), 'rb') as fh:
-            yield ('/static/partials/%s' % file_name,
-                   fh.read().decode('utf-8'))
+    for (root, dirs, files) in os.walk(partials_dir):
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
+            with open(file_path, 'rb') as fh:
+                yield ('/static/partials/%s' % file_path[len(partials_dir)+1:],
+                       fh.read().decode('utf-8'))
 
 
 @app.route("/")
 @app.route("/profile")
 @app.route("/feed")
-def index():
+@app.route("/about/<path:path>")
+def index(path=None):
     return render_template('index.html',
                            partial_templates=partial_templates())

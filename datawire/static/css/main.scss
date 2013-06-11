@@ -112,6 +112,10 @@ a {
     color: $linkColor;
 }
 
+.nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus {
+    background-color: $linkColor;
+}
+
 .btn.facebook {
     @include buttonBackground($fbColor2, $fbColor);
 }
@@ -345,6 +349,8 @@ footer {
         strong {
             color: $linkColor;
         }
+
+        overflow-x: scroll;
     //    font-size: 1.3em;
     //    line-height: 1.5em;
     }

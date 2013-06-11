@@ -12,6 +12,11 @@ var datawire = angular.module('datawire', [], function($routeProvider, $location
     accessPolicy: 'user'
   });
 
+  $routeProvider.when('/about/:page', {
+    templateUrl: '/static/partials/docs.html',
+    controller: DocsCtrl
+  });
+
   $routeProvider.when('/', {
     templateUrl: '/static/partials/home.html',
     controller: HomeCtrl
