@@ -1,0 +1,73 @@
+<h2>Contributing to datawi.re</h2>
+
+<p>We'd love to see contributions to datawi.re, so that the site can become 
+more useful to you. Here's some of the types of contributions we're most
+keen for:</p>
+
+<ul>
+<li><strong>Give feedback and tell others.</strong> As datawi.re is an experiment, we're looking
+  to get a wide range of opinions on the service. Please also help us to 
+  spread the word and invite others to use the service.</li>
+
+<li><strong>Add new data feeds.</strong> datawi.re can only be as good as the data which it
+  monitors, so if you operate a data feed - such as a scraper for a public
+  data source - please consider submitting data from this feed to datawi.re.</li>
+
+<li><strong>Contribute to the core software.</strong> This could include extensions to the
+  user interface, but also more intelligent systems for matching search
+  terms with data and external services which execute actions based on
+  matches.</li>
+
+<li><strong>Embed a data feed.</strong> We're hoping to offer support for embeddable activity
+  streams soon. If you want to embed a feed of information relating to 
+  a specific company, person or topic on your own web site, please help
+  us design this function.</li>
+</ul>
+
+<h3>Which kinds of data feeds are you looking for?</h3>
+
+<p>datawi.re is focussed on transactional data, in particular data about 
+interactions between people, companies, public bodies or specific 
+topics. Government spending and revenue, lobbying activity, legislative
+activity and official journals are good examples of the types of
+information most relevant to this service.</p>
+
+<p>We aim to respect individual privacy and data feeds which contain personal
+information without reflecting a public interest (such as government
+action, policy formation or actions of public companies) will not be
+considered.</p>
+
+<h3>How do I add a data feed?</h3>
+
+<p>Adding a data feed to datawi.re requires three steps:</p>
+
+<ul>
+    <li>Coding or extending a script or application to submit data records 
+  (called "frames") to datawi.re. This can just mean extending an
+  existing web scraper or ETL process, but it could also be a new
+  application that submits individual frames to the datawi.re
+  servers. If you're using Python, please use the [datastringer]
+  client library. For other languages, please refer to the [REST API
+  documentation].</li>
+
+    <li>Writing a service profile to describe the way in which data should
+  be represented in the user interface. Each data feed is managed 
+  through a service which may emit various types of events. The key
+  aspect of an event is defining a template to summarize an event
+  frame into a short narrative (see 'nut graf').</li>
+
+    <li>Installing the service profile on datawi.re. At the moment, there 
+  is no user interface or API for installing a service - so please 
+  [get in touch] so that we can set up your service for you. An
+  interface will be available in future releases of datawi.re, but
+  services will remain curated for legal, security and quality control
+  reasons.</li>
+</ul>
+
+
+
+<p>datawi.re is free and open source software, licensed under the terms of an
+MIT-style license. Data consumed, processed and displayed by this service 
+may be subject to a range of licensing conditions, although our aim is to 
+prefer open data and public domain sources where they are available.</p>
+
