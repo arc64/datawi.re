@@ -38,6 +38,6 @@ def query_pager(q, route, data=None, **kw):
         'offset': offset,
         'previous': prev_url(url, count, offset, limit),
         'next': next_url(url, count, offset, limit),
-        'results': q.limit(limit).offset(offset)
+        'results': q.offset(offset).limit(limit).all()
     })
     return jsonify(data, refs=True)

@@ -14,17 +14,11 @@ from datawire.processing.queue import publish, inbound_queue
 frames = Blueprint('frames', __name__)
 
 
-def frameset(q, route, data=None):
-    # TODO: add argument for RSS support.
-    data = data or {}
-    q = q.order_by(Frame.created_at.desc())
-    return query_pager(q, route, data=data)
-
-
 @frames.route('/frames')
 def index():
     q = Frame.all()
-    return frameset(q, 'frames.index')
+    q = q.order_by(Frame.action_at.desc())
+    return query_pager(q, 'frames.index')
 
 
 @frames.route('/users/<int:id>/feed')
@@ -34,9 +28,9 @@ def user_index(id):
     q = q.join(Frame.matches)
     q = q.join(Match.entity)
     q = q.filter(Entity.user_id == id)
+    q = q.group_by(Frame)
     entities = request.args.getlist('entity')
     if len(entities):
-        q = q.group_by(Frame)
         q = q.filter(Entity.id.in_(entities))
         q = q.having(count(Entity.id) == len(entities))
     q = q.order_by(Frame.action_at.desc())
