@@ -22,9 +22,7 @@ class Frame(db.Model):
         obj.urn = data.get('urn')
         obj.hash = data.get('hash')
         obj.submitted_at = data.get('submitted_at')
-        obj.action_at = data.get('action_at') or obj.submitted_at
-        # Let's not do the future:
-        obj.action_at = min(obj.submitted_at, obj.action_at)
+        obj.action_at = data.get('action_at')
         obj.service = service
         obj.event = event
         db.session.add(obj)

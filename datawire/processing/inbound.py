@@ -39,6 +39,12 @@ def generate_frame(service_key, event_key, data):
         'action_at': parse_datetime(headers.get('X-Action-Time')),
         'submitted_at': datetime.utcnow()
     })
+
+    if not frame['action_at']:
+        frame['action_at'] = frame['submitted_at']
+    else:
+        frame['action_at'] = min(frame['action_at'], frame['submitted_at'])
+
     frame['urn'] = Frame.to_urn(frame)
 
     if Frame.by_hash(frame['hash']) is not None:
