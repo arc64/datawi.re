@@ -10,7 +10,8 @@ class Frame(db.Model):
     hash = db.Column(db.Unicode(), index=True)
     service_id = db.Column(db.Integer(), db.ForeignKey('service.id'))
     event_id = db.Column(db.Integer(), db.ForeignKey('event.id'))
-    created_at = db.Column(db.DateTime, index=True)
+    action_at = db.Column(db.DateTime, index=True)
+    submitted_at = db.Column(db.DateTime, index=True)
 
     matches = db.relationship('Match', backref='frame', lazy='dynamic',
                               cascade='all, delete-orphan', order_by='Match.created_at.desc()')
@@ -20,7 +21,8 @@ class Frame(db.Model):
         obj = cls()
         obj.urn = data.get('urn')
         obj.hash = data.get('hash')
-        obj.created_at = data.get('created_at')
+        obj.action_at = data.get('action_at')
+        obj.submitted_at = data.get('submitted_at')
         obj.service = service
         obj.event = event
         db.session.add(obj)
@@ -44,7 +46,8 @@ class Frame(db.Model):
             'urn': self.urn,
             'api_uri': url_for('frames.get', urn=self.urn, _external=True),
             'store_uri': frame_url(self.urn),
-            'created_at': self.created_at
+            'action_at': self.action_at,
+            'submitted_at': self.submitted_at
         }
 
     @classmethod

@@ -33,11 +33,11 @@ def generate_frame(service_key, event_key, data):
     }
     headers = data.get('headers')
     frame.update({
-        'event_at': parse_datetime(headers.get('X-Event-At')),
         'source_url': parse_url(headers.get('X-Source-Location')),
         'details_url': parse_url(headers.get('X-Details-Location')),
         'hash': data_hash(frame),
-        'created_at': datetime.utcnow()
+        'action_at': parse_datetime(headers.get('X-Action-Time')),
+        'submitted_at': datetime.utcnow()
     })
     frame['urn'] = Frame.to_urn(frame)
 
@@ -50,6 +50,7 @@ def generate_frame(service_key, event_key, data):
 
     log.info("created: %(urn)s (%(hash)s)", frame)
     routing_key = 'matching.%s.%s' % (service_key, event_key)
-    frame['created_at'] = frame['created_at'].isoformat()
+    frame['submitted_at'] = frame['submitted_at'].isoformat()
+    frame['action_at'] = frame['action_at'].isoformat()
     publish(matching_queue, routing_key, frame)
     return frame['urn']

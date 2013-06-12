@@ -18,7 +18,7 @@ def itervalues(obj, path):
 def parse_datetime(text):
     try:
         dt = dateutil.parser.parse(text)
-        return dt.isoformat()
+        return dt
     except Exception:
         return
 
