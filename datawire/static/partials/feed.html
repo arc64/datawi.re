@@ -38,6 +38,9 @@
                 {{frame.urn}}
             </p>
         </div>
+        <div ng-show='hasMore()' class="frame-pagination">
+            <a href="#" ng-click="loadMore()">Show more</a>
+        </div>
     </div>
 
     <div class="span4 entities pull-left" ng-controller="EntityCtrl">

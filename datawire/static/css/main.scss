@@ -315,6 +315,13 @@ footer {
     
 }
 
+.frame-count, .frame-pagination {
+    padding: 0.4em 0.5em 0.5em 0.5em;
+    background-color: $lightBgColor;
+    border-bottom: 1px solid darken($lightBgColor, 10%);
+
+}
+
 .frame-count {
     padding: 0.4em 0.5em 0.5em 0.5em;
     background-color: $lightBgColor;
@@ -322,6 +329,10 @@ footer {
 
     @include round-corner("top-left");
     @include round-corner-mozilla("topleft");
+}
+
+.frame-pagination {
+    text-align: center;
 }
 
 .frame {
