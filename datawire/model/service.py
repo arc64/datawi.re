@@ -18,7 +18,7 @@ class Service(db.Model, ModelCore):
     url = db.Column(db.Unicode())
 
     frames = db.relationship('Frame', backref='service', lazy='dynamic',
-                             cascade='all, delete-orphan', order_by='Frame.created_at.desc()')
+                             cascade='all, delete-orphan', order_by='Frame.action_at.desc()')
     events = db.relationship('Event', backref='service', lazy='dynamic',
                              cascade='all, delete-orphan', order_by='Event.key.asc()')
     editors = db.relationship('User', secondary=editors,

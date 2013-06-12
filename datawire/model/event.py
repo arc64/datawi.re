@@ -14,7 +14,7 @@ class Event(db.Model, ModelCore):
     service_id = db.Column(db.Integer(), db.ForeignKey('service.id'))
 
     frames = db.relationship('Frame', backref='event', lazy='dynamic',
-                             cascade='all, delete-orphan', order_by='Frame.created_at.desc()')
+                             cascade='all, delete-orphan', order_by='Frame.action_at.desc()')
 
     @classmethod
     def create(cls, data):
