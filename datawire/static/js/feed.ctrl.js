@@ -1,5 +1,7 @@
 
 function FeedCtrl($scope, $routeParams, feed) {
+    $scope.refresh = feed.update;
+    
     $scope.tableObject = function(obj) {
         var table = {};
         angular.forEach(obj, function(v, k) {

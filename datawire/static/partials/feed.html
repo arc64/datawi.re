@@ -6,6 +6,7 @@
     <div class="span8 feed">
         <div class="frame-count">
             {{count}} Events have been found, {{frames.length}} shown.
+            <div class="pull-right"><a href='#' ng-click="refresh()"><i class="icon-refresh"></i> Refresh</a></div>
         </div>
         <div ng-repeat="frame in frames" class="frame" ng-show="frame.loaded">
             <div class='frame-header'>

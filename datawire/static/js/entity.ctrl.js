@@ -28,7 +28,6 @@ function EntityCtrl($scope, $routeParams, $http, identity, feed) {
     $scope.create = function(facet) {
         data = {facet: facet, text: $scope._new[facet]};
         $scope._new[facet] = '';
-        console.log(data);
         $http.post('/api/1/entities', data).success(function(data) {
             $scope.entities[facet].push(data);
         });
