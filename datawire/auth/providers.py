@@ -6,7 +6,7 @@ from datawire.core import app
 oauth = OAuth()
 
 twitter = oauth.remote_app('twitter',
-        base_url='https://api.twitter.com/1/',
+        base_url='https://api.twitter.com/1.1/',
         authorize_url='https://api.twitter.com/oauth/authorize',
         request_token_url='https://api.twitter.com/oauth/request_token',
         access_token_url='https://api.twitter.com/oauth/access_token',
