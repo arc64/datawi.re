@@ -10,7 +10,7 @@
         </div>
         <div ng-repeat="frame in frames" class="frame" ng-show="frame.loaded">
             <div class='frame-header'>
-                <div class='timestamp'>{{frame.created_at.fromNow()}}</div>
+                <div class='timestamp'>{{frame.action_at.fromNow()}}</div>
                 <a href="{{frame.service.url}}">{{ frame.service.label }}</a>
             </div>
             <div ng-show="!frame.showRaw">
