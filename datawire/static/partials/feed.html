@@ -27,15 +27,15 @@
                 <a href="" ng-click="frame.showRaw=true;" ng-show="!frame.showRaw">Data View</a>
                 <a href="" ng-click="frame.showRaw=false;" ng-show="frame.showRaw">Text View</a>
                 &middot;
-                <span ng-show="frame.details_url!==null">
+                <span ng-show="frame.details_url">
                     <a ng-href="{{frame.details_url}}">Details</a>
                     &middot;
                 </span>
-                <span ng-show="frame.source_url!==null">
+                <span ng-show="frame.source_url">
                     <a ng-href="{{frame.source_url}}">Source</a>
                     &middot;
                 </span>
-                <a href="" external="{{frame.store_uri}}" download="{{frame.urn}}.json">Download</a>
+                {{frame.urn}}
             </p>
         </div>
     </div>
