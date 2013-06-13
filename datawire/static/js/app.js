@@ -40,8 +40,23 @@ datawire.directive('external', function ($window) {
     };
 });
 
+datawire.directive('entityref', function ($window) {
+    return {
+        restrict: 'A',
+        templateUrl: '/static/partials/ref.html',
+        transclude: true,
+        scope: {},
+        link: function(scope, element, attrs) {
+          scope.entity = attrs.entityref;
+          element.bind('click', function() {
+            element.find('div').toggleClass('visible');
+          });
+        }
+    };
+});
+
 Handlebars.registerHelper('entity', function(text) {
     text = Handlebars.Utils.escapeExpression(text);
-    var result = '<strong>' + text + '</strong>';
+    var result = '<span entityref="' + text + '">' + text + '</span>';
     return new Handlebars.SafeString(result);
 });
