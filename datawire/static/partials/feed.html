@@ -14,7 +14,7 @@
                 <a href="{{frame.service.url}}">{{ frame.service.label }}</a>
             </div>
             <div ng-show="!frame.showRaw">
-                <p class='frame-body' ng-bind-html-unsafe="frame.message"></p>
+                <p class='frame-body' ng-include="frame.hash"></p>
             </div>
             <table ng-show="frame.showRaw" class="table table-condensed table-striped">
                 <tr ng-repeat="(key, value) in tableObject(frame.data)">
