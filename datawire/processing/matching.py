@@ -3,7 +3,7 @@ import logging
 
 from datawire.core import db
 from datawire.model import Entity, Match
-from datawire.processing.util import itervalues
+from datawire.model.util import itervalues
 
 log = logging.getLogger(__name__)
 

@@ -36,3 +36,17 @@ def data_hash(data):
         d = [(k, data_hash(v)) for k, v in sorted(data.items())]
         return sha1(data_hash(d)).hexdigest()
     return unicode(data).encode('ascii', 'ignore')
+
+
+def itervalues(obj, path):
+    """ Recursively iterate all the fields in a dict. """
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            for ik, iv in itervalues(v, path + '.' + k):
+                yield ik, iv
+    elif isinstance(obj, (list, tuple)):
+        for i, v in enumerate(obj):
+            for ik, iv in itervalues(v, path + '[' + i + ']'):
+                yield ik, iv
+    else:
+        yield path, obj

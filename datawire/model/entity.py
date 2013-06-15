@@ -1,17 +1,9 @@
 from flask import url_for
-from formencode import Schema, FancyValidator, Invalid, validators
+from formencode import Schema, validators
 
 from datawire.core import db
 from datawire.model.util import ModelCore
-from datawire.model.facet import Facet
-
-
-class ValidFacetName(FancyValidator):
-
-    def _to_python(self, value, state):
-        if Facet.by_key(value) is None:
-            raise Invalid('Not a valid facet.', value, None)
-        return value
+from datawire.model.facet import ValidFacetName
 
 
 class EntitySchema(Schema):

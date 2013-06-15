@@ -1,4 +1,5 @@
 from flask import url_for
+from formencode import FancyValidator, Invalid
 
 from datawire.core import app
 
@@ -20,3 +21,11 @@ class Facet(object):
             facet['uri'] = url_for('entities.facet_get', key=facet['key'], _external=True)
             facets.append(facet)
         return facets
+
+
+class ValidFacetName(FancyValidator):
+
+    def _to_python(self, value, state):
+        if Facet.by_key(value) is None:
+            raise Invalid('Not a valid facet.', value, None)
+        return value
