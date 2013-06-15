@@ -55,6 +55,7 @@
                     <i class="icon-check sieve"></i>
                     <i class="icon-check-empty nosieve"></i>
                     <a ng-click="toggle(entity.id)">{{entity.text}}</a>
+                    <span class="badge badge-important">{{entity.count}}</span>
                 </li>
             </ul>
             <form name="form" class="form-inline" ng-submit="create(facet.key)" >

@@ -26,18 +26,19 @@ def prev_url(url, count, offset, limit):
     return url + args(limit, max(offset - limit, 0))
 
 
-def query_pager(q, route, data=None, **kw):
+def query_pager(q, route, transform=lambda x: x, data=None, **kw):
     data = data or {}
     count = q.count()
     limit = get_limit()
     offset = get_offset()
     url = url_for(route, _external=True, **kw)
+    results = q.offset(offset).limit(limit).all()
     data.update({
         'count': count,
         'limit': limit,
         'offset': offset,
         'previous': prev_url(url, count, offset, limit),
         'next': next_url(url, count, offset, limit),
-        'results': q.offset(offset).limit(limit).all()
+        'results': map(transform, results)
     })
     return jsonify(data, refs=True)
