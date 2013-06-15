@@ -1,8 +1,8 @@
 
-datawire.factory('feed', function($http, identity, services) {
+datawire.factory('feed', function($http, identity, services, facets) {
     var currentData = null,
         entities = [];
-    var notify = { update: null };
+    var notify = { updateFrames: null, updateEntities: null };
 
     function feedQuery() {
         // mostly a workaround for broken query builder in $http, 
@@ -23,11 +23,27 @@ datawire.factory('feed', function($http, identity, services) {
         });
     }
 
+    function loadFacetEntities(facet_name) {
+        identity.session(function(ident) {
+            $http.get('/api/1/users/' + ident.user.id + '/entities?facet='+facet_name)
+            .success(function(data) {
+                
+                notify.updateEntities(facet_name, data.results);
+            });
+        });
+    }
+
     function update() {
+        facets.getAll(function(data) {
+            angular.forEach(data.results, function(facet) {
+                loadFacetEntities(facet.key);
+            });
+        });
+
         identity.session(function(ident) {
             loadFrames('/api/1/users/' + ident.user.id + '/feed' + feedQuery(), function(data) {
                 currentData = data;
-                notify.update(data);
+                notify.updateFrames(data);
             });
         });
     }
@@ -36,7 +52,7 @@ datawire.factory('feed', function($http, identity, services) {
         loadFrames(currentData.next, function(data) {
             currentData.results = currentData.results.concat(data.results);
             currentData.next = data.next;
-            notify.update(currentData);
+            notify.updateFrames(currentData);
         });
     }
 
