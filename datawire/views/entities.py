@@ -6,6 +6,7 @@ from sqlalchemy.orm import aliased
 from datawire.core import db
 from datawire.auth import require
 from datawire.model import Entity, Facet, Match, Frame
+
 from datawire.views.util import jsonify, obj_or_404
 from datawire.views.pager import query_pager
 
@@ -50,7 +51,7 @@ def user_index(id):
         data = entity_obj.to_ref()
         data['count'] = count_
         return data
-    
+
     return query_pager(q, 'entities.user_index', transform=transform_result, id=id)
 
 
