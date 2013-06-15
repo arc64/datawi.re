@@ -1,0 +1,13 @@
+*.pyc
+.env
+*.egg-info
+datawire/development.db
+settings.py
+env/*
+.sass-cache/*
+datawire/static/gen/*
+datawire/static/vendor/*
+datawire/static/.webassets-cache/*
+*.DS_Store
+list/*
+service/*

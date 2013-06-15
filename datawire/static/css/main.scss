@@ -1,0 +1,420 @@
+$bgColor: #efebe3;
+$darkBgColor: #38342b;
+$lightBgColor: #fdfcfb;
+$lightText: #999;
+$lightBorder: #ddd;
+$linkColor: #693;
+
+$twitterColor2: #9AE4E8;
+$twitterColor: darken($twitterColor2, 20%);
+
+$fbColor: #335795;
+$fbColor2: #6D8BC9;
+
+$defaultRoundedAmount: 5px;
+
+
+/* Mixins */
+
+@mixin box-shadow ($args) {
+    -webkit-box-shadow: $args;
+    -moz-box-shadow: $args;
+    box-shadow: $args;
+}
+
+@mixin box-sizing {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+@mixin corner($size) {
+  -moz-border-radius: $size;
+  -webkit-border-radius: $size;
+  -khtml-border-radius: $size;
+   border-radius: $size;
+}
+
+@mixin round-corner ($position, $amount: $defaultRoundedAmount) {
+  border-#{$position}-radius: $amount;
+  -webkit-border-#{$position}-radius: $amount;  
+}
+  
+@mixin round-corner-mozilla ($position, $amount: $defaultRoundedAmount) {
+  -moz-border-radius-#{$position}: $amount;
+}
+
+@mixin bold {
+    font-family: OpenSansSemibold, sans-serif;
+    font-weight: normal !important;
+}
+
+@mixin reset-filter() {
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+@mixin vertical($startColor: #555, $endColor: #333) {
+    background-color: mix($startColor, $endColor, 60%);
+    background-image: -moz-linear-gradient(top, $startColor, $endColor); // FF 3.6+
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from($startColor), to($endColor)); // Safari 4+, Chrome 2+
+    background-image: -webkit-linear-gradient(top, $startColor, $endColor); // Safari 5.1+, Chrome 10+
+    background-image: -o-linear-gradient(top, $startColor, $endColor); // Opera 11.10
+    background-image: linear-gradient(to bottom, $startColor, $endColor); // Standard, IE10
+    background-repeat: repeat-x;
+  }
+
+
+@mixin gradientBar($primaryColor, $secondaryColor, $textColor: #fff, $textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
+  color: $textColor;
+  text-shadow: $textShadow;
+  @include vertical($primaryColor, $secondaryColor);
+  border-color: $secondaryColor $secondaryColor darken($secondaryColor, 15%);
+  border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
+}
+
+@mixin buttonBackground($startColor, $endColor, $textColor: #fff, $textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
+  @include gradientBar($startColor, $endColor, $textColor, $textShadow);
+  *background-color: $endColor;
+  @include reset-filter();
+
+  &:hover, &:focus, &:active, &.active, &.disabled, &[disabled] {
+    color: $textColor;
+    background-color: $endColor;
+    *background-color: darken($endColor, 5%);
+  }
+
+  &:active,
+  &.active {
+    background-color: darken($endColor, 10%) e("\9");
+  }
+}
+
+body {
+    font-family: OpenSansRegular, sans-serif;
+    font-size: 14px;
+    color: #333;
+
+    @media (max-width: 767px) {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+}
+
+strong, th {
+    @include bold;
+}
+
+h1, h2, h3, h4, h5 { 
+    @include bold;
+}
+
+a {
+    color: $linkColor;
+}
+
+.nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus {
+    background-color: $linkColor;
+}
+
+.btn.facebook {
+    @include buttonBackground($fbColor2, $fbColor);
+}
+
+.btn.twitter {
+    @include buttonBackground($twitterColor2, $twitterColor);
+}
+
+/* Housekeeping in extension of bootstrap. */
+input.ng-invalid {
+    border-color: #B94A49;
+    color: #b94a48;
+}
+
+.navbar-static-top #navigation {
+    @include box-shadow(none);
+    background: $darkBgColor;
+    min-height: 3em;
+
+    .container {
+        padding-top: 3px;
+    }
+
+    .brand {
+        color: white;
+        font-size: 26px;
+        span {
+            @include bold;
+        }
+    }
+
+    li a {
+        color: white;
+    }
+}
+
+.navbar .nav > li > a,
+.navbar .brand {
+    text-shadow: none;
+}
+
+.alert-bar {
+    margin-top: 2em;
+}
+
+#pagearea {
+    background-color: $bgColor;
+    padding: 0 0 2em 0;
+    border-bottom: 1px solid $lightBorder;
+
+    /*@media (max-width: 767px) {
+        padding-right: 20px;
+        padding-left: 20px;
+    }*/
+}
+
+#page {
+    margin-top: 2em;
+
+    @include corner(5px);
+}
+
+.page-header {
+    border-bottom: 1px solid $darkBgColor;
+}
+
+footer {
+    padding: 3em 0 3em 0;
+    color: $lightText;
+    background-color: white;
+}
+
+/* Home page. */
+
+.hero-unit {
+    background-color: $darkBgColor;
+    color: white;
+
+    h1 {
+        text-transform: lowercase;
+        margin-bottom: 0.3em;
+    }
+
+    p.claim {
+        margin-bottom: 1em;
+    }
+}
+
+/* Feed page. */
+
+.entities {
+    background: $darkBgColor;
+    color: white;
+    // padding: 1em 1em 1em 1em;
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+
+        li.selected,
+        li:hover {
+            background-color: lighten($darkBgColor, 10%);
+        }
+
+        li i.sieve, li.selected i.nosieve {
+            display: none;
+        }
+
+        li.selected i.sieve, li i.nosieve {
+            display: inline-block;
+        }
+
+        a, a:hover {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    }
+
+    li, h3 {
+        font-size: 1em;
+        padding: 0;
+        margin: 0;
+        line-height: 1.3em;
+    }
+
+    li, h3, form {
+        padding: 0.4em;
+        border-bottom: 1px solid lighten($darkBgColor, 10%);
+    }
+    
+    form {
+        margin: 0;
+
+        a {
+            color: lighten($darkBgColor, 20%);
+            margin-top: 0.2em;
+            display: inline-block;
+        }
+    }
+
+    li, form {
+        padding-left: 1em;
+    }
+
+    .entity-delete {
+        float: right;
+        padding-right: 1em;
+        display: none;
+    }
+
+    li:hover .entity-delete {
+        display: block;
+    }
+
+    /*
+    margin-left: 0px;
+    padding-left: 20px;
+    
+    @media (min-width: 1200px) {
+        margin-left: 0px;
+        padding-left: 30px;
+    }*/
+    
+    @include round-corner("top-right");
+    @include round-corner-mozilla("topright");
+    @include round-corner("bottom-right");
+    @include round-corner-mozilla("bottomright");
+    
+
+    input[type="text"] {
+        background-color: lighten($darkBgColor, 20%);
+        color: white;
+    }
+
+    input.ng-invalid {
+        border: none;
+    }
+}
+
+.feed {
+    @include box-sizing;
+    border: 1px solid $lightBorder;
+    border-bottom: none;
+    //background: white;
+    /*padding: 1em; 
+    margin: 2em -1em 0em -1em;
+    */
+
+    //@include corner(5px);
+    //border: 1px solid $lightBorder;
+    
+    @include round-corner("top-left");
+    @include round-corner-mozilla("topleft");
+    @include round-corner("bottom-left");
+    @include round-corner-mozilla("bottomleft");
+    
+}
+
+.frame-count, .frame-pagination {
+    padding: 0.4em 0.5em 0.5em 0.5em;
+    background-color: $lightBgColor;
+    border-bottom: 1px solid darken($lightBgColor, 10%);
+
+}
+
+.frame-count {
+    padding: 0.4em 0.5em 0.5em 0.5em;
+    background-color: $lightBgColor;
+    border-bottom: 1px solid darken($lightBgColor, 10%);
+
+    @include round-corner("top-left");
+    @include round-corner-mozilla("topleft");
+}
+
+.frame-pagination {
+    text-align: center;
+}
+
+.frame {
+    background-color: white;
+    padding: 0.4em 0.5em 0.5em 0.5em;
+    margin: 0 0 0 0;
+    border-bottom: 1px solid $lightBorder;
+
+    position: relative;
+
+    p, .frame-header {
+        margin: 0 0 5px 0;
+    }
+
+    .frame-header a {
+        @include bold;
+        font-size: 1em;
+        color: #333;
+    }
+
+    .frame-header .timestamp {
+        color: $lightText;
+        float: right;
+    }
+
+    p.frame-body {
+        strong {
+            color: $linkColor;
+        }
+
+        .entityref {
+
+            strong {
+                cursor: pointer;
+            }
+
+            i {
+                color: $lightText;
+                cursor: pointer;
+            }
+
+            .entity-overlay {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: white;
+                background-color: $darkBgColor;
+                overflow: hidden;
+                width: 100%;
+                margin: 0 0.8em 0 0;
+                height: 100%;
+
+                .inner {
+                    padding: 0.4em;
+                }
+            }
+
+            .entity-overlay.visible {
+                display: block;
+            }
+
+        }
+
+        .entityref:hover .add-entity {
+            display: block;
+        }
+    }
+
+    p.frame-context {
+        font-size: 0.8em;
+        color: $lightText;
+        a {
+           color: $lightText; 
+        }
+    }
+}
+
+.frame:hover {
+    background-color: #eee;
+    p.frame-context a {
+        color: $linkColor;
+    }
+}
+
