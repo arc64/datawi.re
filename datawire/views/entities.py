@@ -48,7 +48,7 @@ def user_index(id):
         q = q.filter(fq)
 
     q = q.order_by(count_field.desc())
-    q = q.order_by(Entity.text.desc())
+    q = q.order_by(Entity.text.asc())
 
     def transform_result(result):
         entity_obj, count_ = result
