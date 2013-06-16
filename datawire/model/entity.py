@@ -1,7 +1,9 @@
 from flask import url_for
+import re
 from formencode import Schema, validators
 
 from datawire.core import db
+from datawire.model.match import Match
 from datawire.model.util import ModelCore
 from datawire.model.facet import ValidFacetName
 
@@ -41,6 +43,10 @@ class Entity(db.Model, ModelCore):
 
     def delete(self):
         db.session.delete(self)
+
+    @property
+    def pattern(self):
+        return re.compile(self.text, re.I | re.M)
 
     @classmethod
     def by_user_and_id(cls, user, id):

@@ -12,19 +12,19 @@ class Match(db.Model, ModelCore):
     entity_id = db.Column(db.Integer(), db.ForeignKey('entity.id'))
 
     @classmethod
-    def create(cls, urn, field, entity):
+    def create(cls, urn, field, entity_id):
         obj = cls()
         obj.urn = urn
         obj.field = field
-        obj.entity = entity
+        obj.entity_id = entity_id
         db.session.add(obj)
         return obj
 
     @classmethod
-    def exists(cls, urn, entity):
+    def exists(cls, urn, entity_id):
         q = db.session.query(cls)
         q = q.filter_by(urn=urn)
-        q = q.filter_by(entity=entity)
+        q = q.filter_by(entity_id=entity_id)
         return q.first()
 
     def to_ref(self):
