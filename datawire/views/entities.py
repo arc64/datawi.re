@@ -1,6 +1,6 @@
 from flask import Blueprint, request, url_for
 from sqlalchemy.sql.functions import count
-from sqlalchemy.sql.expression import or_
+from sqlalchemy.sql.expression import or_, func
 from sqlalchemy.orm import aliased
 
 from datawire.core import db
@@ -32,21 +32,22 @@ def facet_get(key):
 def user_index(id):
     require.user_id(id)
     q = Entity.all().filter_by(user_id=id)
-    q = q.add_column(count(Match.id))
+    count_field = count(func.distinct(Match.id))
+    q = q.add_column(count_field)
     q = q.outerjoin(Entity.matches)
     q = q.group_by(Entity)
     if 'facet' in request.args:
-        q = q.filter(Entity.facet==request.args.get('facet'))
-    
+        q = q.filter(Entity.facet == request.args.get('facet'))
+
     if 'entity' in request.args:
         q = q.outerjoin(Match.frame)
         other_match = aliased(Match)
-        q = q.outerjoin(other_match, Frame.urn==other_match.urn)
+        q = q.outerjoin(other_match, Frame.urn == other_match.urn)
         fq = or_(other_match.entity_id.in_(request.args.get('entity')),
-                 other_match.entity_id==None)
+                 other_match.entity_id == None)
         q = q.filter(fq)
 
-    q = q.order_by(count(Match.id).desc())
+    q = q.order_by(count_field.desc())
     q = q.order_by(Entity.text.desc())
 
     def transform_result(result):
