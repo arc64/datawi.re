@@ -71,7 +71,7 @@ def create():
     require.logged_in()
     entity = Entity.create(request.form, request.user)
     db.session.commit()
-    publish(entity_queue, 'entity.create', entity.to_dict())
+    publish(entity_queue, 'entity.create', entity)
     return jsonify(entity)
 
 
@@ -82,7 +82,7 @@ def update(id):
     data = {'old': entity.to_dict()}
     entity.update(request.form)
     db.session.commit()
-    data['new'] = entity.to_dict()
+    data['new'] = entity
     publish(entity_queue, 'entity.update', data)
     return jsonify(entity)
 
@@ -91,7 +91,7 @@ def update(id):
 def delete(id):
     require.logged_in()
     entity = obj_or_404(Entity.by_user_and_id(request.user, id))
-    publish(entity_queue, 'entity.delete', entity.to_dict())
+    publish(entity_queue, 'entity.delete', entity)
     entity.delete()
     db.session.commit()
     return jsonify({'status': 'gone'}, status=410)
