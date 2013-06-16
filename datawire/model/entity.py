@@ -3,7 +3,6 @@ import re
 from formencode import Schema, validators
 
 from datawire.core import db
-from datawire.model.match import Match
 from datawire.model.util import ModelCore
 from datawire.model.category import ValidCategoryName
 
@@ -11,7 +10,7 @@ from datawire.model.category import ValidCategoryName
 class EntitySchema(Schema):
     allow_extra_fields = True
     text = validators.String(min=3, max=512)
-    facet = ValidCategoryName()
+    category = ValidCategoryName()
 
 
 class Entity(db.Model, ModelCore):
@@ -38,7 +37,7 @@ class Entity(db.Model, ModelCore):
     def update(self, data):
         data = EntitySchema().to_python(data)
         self.text = data.get('text')
-        obj.category = data.get('category')
+        self.category = data.get('category')
         db.session.add(self)
 
     def delete(self):
@@ -60,8 +59,8 @@ class Entity(db.Model, ModelCore):
         return q.first()
 
     @classmethod
-    def by_facet(cls, facet):
-        q = db.session.query(cls).filter_by(facet=facet)
+    def by_category(cls, category):
+        q = db.session.query(cls).filter_by(category=category)
         return q.first()
 
     def to_ref(self):

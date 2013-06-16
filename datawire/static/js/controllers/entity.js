@@ -8,22 +8,22 @@ function EntityCtrl($scope, $routeParams, $http, identity) {
         return $scope.selected(entity.id) ? 'selected' : 'unselected';
     };
 
-    $scope.create = function(facet) {
-        data = {facet: facet, text: $scope._new[facet]};
-        $scope._new[facet] = '';
+    $scope.create = function(category) {
+        data = {category: category, text: $scope._new[category]};
+        $scope._new[category] = '';
         $http.post('/api/1/entities', data).success(function(data) {
-            $scope.entities[facet].push(data);
+            $scope.entities[category].push(data);
         });
     };
 
-    $scope.remove = function(facet, id) {
+    $scope.remove = function(category, id) {
         $http({method: 'delete', url: '/api/1/entities/' + id}).error(function(data, status) {
             if (status===410) {
                 var entities = [];
-                angular.forEach($scope.entities[facet], function(entity) {
+                angular.forEach($scope.entities[category], function(entity) {
                     if (entity.id!==id) entities.push(entity);
                 });
-                $scope.entities[facet] = entities;
+                $scope.entities[category] = entities;
             }
         });
     };
