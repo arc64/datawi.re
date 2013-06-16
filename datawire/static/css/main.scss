@@ -358,6 +358,10 @@ footer {
         float: right;
     }
 
+    .tablewrapper {
+        overflow-x: scroll;
+    }
+
     p.frame-body {
         strong {
             color: $linkColor;

@@ -15,12 +15,14 @@
             <div ng-show="!frame.showRaw">
                 <p class='frame-body' ng-include="frame.hash"></p>
             </div>
-            <table ng-show="frame.showRaw" class="table table-condensed table-striped">
-                <tr ng-repeat="(key, value) in tableObject(frame.data)">
-                    <th>{{key}}</th>
-                    <td>{{value}}</td>
-                </tr>
-            </table>
+            <div class="tablewrapper">
+                <table ng-show="frame.showRaw" class="table table-condensed table-striped">
+                    <tr ng-repeat="(key, value) in tableObject(frame.data)">
+                        <th>{{key}}</th>
+                        <td>{{value}}</td>
+                    </tr>
+                </table>
+            </div>
             <p class='frame-context'>
                 <!-- {{ frame.urn }} &middot; -->
                 <a href="" ng-click="frame.showRaw=true;" ng-show="!frame.showRaw">Data View</a>
