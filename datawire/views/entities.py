@@ -6,7 +6,7 @@ from sqlalchemy.orm import aliased
 from datawire.core import db
 from datawire.auth import require
 from datawire.model import Entity, Facet, Match, Frame
-
+from datawire.processing.queue import publish, entity_queue
 from datawire.views.util import jsonify, obj_or_404
 from datawire.views.pager import query_pager
 
@@ -71,6 +71,7 @@ def create():
     require.logged_in()
     entity = Entity.create(request.form, request.user)
     db.session.commit()
+    publish(entity_queue, 'entity.create', entity.to_dict())
     return jsonify(entity)
 
 
@@ -78,8 +79,11 @@ def create():
 def update(id):
     require.logged_in()
     entity = obj_or_404(Entity.by_user_and_id(request.user, id))
+    data = {'old': entity.to_dict()}
     entity.update(request.form)
     db.session.commit()
+    data['new'] = entity.to_dict()
+    publish(entity_queue, 'entity.update', data)
     return jsonify(entity)
 
 
@@ -87,6 +91,7 @@ def update(id):
 def delete(id):
     require.logged_in()
     entity = obj_or_404(Entity.by_user_and_id(request.user, id))
+    publish(entity_queue, 'entity.delete', entity.to_dict())
     entity.delete()
     db.session.commit()
     return jsonify({'status': 'gone'}, status=410)

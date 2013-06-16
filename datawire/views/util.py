@@ -1,9 +1,7 @@
-from datetime import datetime
 from flask import Response, request, url_for
-from sqlalchemy.orm.query import Query
-import json
 
 from datawire.exc import NotFound
+from datawire.util import JSONEncoder
 
 BOOL_TRUISH = ['true', '1', 'yes', 'y', 't']
 
@@ -35,29 +33,6 @@ def get_limit(default=50):
 
 def get_offset(default=0):
     return max(0, arg_int('offset', default=default))
-
-
-class JSONEncoder(json.JSONEncoder):
-    """ This encoder will serialize all entities that have a to_dict
-    method by calling that method and serializing the result. """
-
-    def __init__(self, refs=False):
-        self.refs = refs
-        super(JSONEncoder, self).__init__()
-
-    def encode(self, obj):
-        return super(JSONEncoder, self).encode(obj)
-
-    def default(self, obj):
-        if isinstance(obj, datetime):
-            return obj.isoformat()
-        if isinstance(obj, Query):
-            return list(obj)
-        if self.refs and hasattr(obj, 'to_ref'):
-            return obj.to_ref()
-        if hasattr(obj, 'to_dict'):
-            return obj.to_dict()
-        raise TypeError("%r is not JSON serializable" % obj)
 
 
 def jsonify(obj, status=200, headers=None, refs=False):

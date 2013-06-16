@@ -56,7 +56,5 @@ def generate_frame(service_key, event_key, data):
 
     log.info("created: %(urn)s (%(hash)s)", frame)
     routing_key = 'matching.%s.%s' % (service_key, event_key)
-    frame['submitted_at'] = frame['submitted_at'].isoformat()
-    frame['action_at'] = frame['action_at'].isoformat()
     publish(matching_queue, routing_key, frame)
     return frame['urn']

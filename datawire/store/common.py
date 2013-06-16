@@ -1,6 +1,6 @@
 import json
 
-from datawire.views.util import JSONEncoder
+from datawire.util import JSONEncoder
 
 
 class Store(object):
