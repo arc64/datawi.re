@@ -46,6 +46,9 @@ def user_index(id):
                  other_match.entity_id==None)
         q = q.filter(fq)
 
+    q = q.order_by(count(Match.id).desc())
+    q = q.order_by(Entity.text.desc())
+
     def transform_result(result):
         entity_obj, count_ = result
         data = entity_obj.to_ref()
