@@ -12,3 +12,4 @@ datawire/static/.webassets-cache/*
 list/*
 service/*
 
+*.db-journal

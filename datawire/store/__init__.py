@@ -22,6 +22,7 @@ def store_frame(frame):
 
 
 def load_frame(urn):
+    # TODO: Memcache a few things (10k?)
     return get_backend().load(urn)
 
 

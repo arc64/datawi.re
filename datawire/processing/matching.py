@@ -41,6 +41,7 @@ def handle_matching(body, message):
 
 
 def backsearch(entity, step=5000):
+    # TODO: Check if the string is already tracked, use existing results.
     found_count = 0
     pattern = entity.pattern
     q = Frame.all().order_by(Frame.submitted_at.desc())

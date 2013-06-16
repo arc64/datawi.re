@@ -1,5 +1,5 @@
 
-function FeedCtrl($scope, $routeParams, $http, identity, services, facets) {
+function FeedCtrl($scope, $routeParams, $http, identity, services, categories) {
     $scope.entities = {};
     $scope.frames = [];
     $scope.count = 0;
@@ -17,7 +17,7 @@ function FeedCtrl($scope, $routeParams, $http, identity, services, facets) {
 
     $scope.selected = function(id) {
         return $scope.entityFilters.indexOf(id) != -1;
-    }
+    };
 
     $scope.toggle = function(id) {
         if ($scope.selected(id)) {
@@ -26,7 +26,7 @@ function FeedCtrl($scope, $routeParams, $http, identity, services, facets) {
             $scope.entityFilters.push(id);
         }
         $scope.update();
-    }
+    };
 
     function loadFrames(url, callback) {
         $http.get(url).success(function(data) {
@@ -37,22 +37,22 @@ function FeedCtrl($scope, $routeParams, $http, identity, services, facets) {
         });
     }
 
-    function loadFacetEntities(facet_name) {
+    function loadCategoryEntities(category) {
         identity.session(function(ident) {
-            var query = ['facet='+facet_name,'limit=15'];
+            var query = ['category='+category, 'limit=15'];
             query = query.concat(queryFilter());
             $http.get('/api/1/users/' + ident.user.id + '/entities?' + query.join('&'))
             .success(function(data) {
-                $scope.entities[facet_name] = data.results;
+                $scope.entities[category] = data.results;
             });
         });
     }
 
     $scope.update = function() {
-        facets.getAll(function(data) {
-            $scope.facets = data.results;
-            angular.forEach(data.results, function(facet) {
-                loadFacetEntities(facet.key);
+        categories.getAll(function(data) {
+            $scope.categories = data.results;
+            angular.forEach(data.results, function(category) {
+                loadCategoryEntities(category.key);
             });
         });
 
@@ -65,7 +65,7 @@ function FeedCtrl($scope, $routeParams, $http, identity, services, facets) {
                 $scope.count = data.count;
             });
         });
-    }
+    };
 
     $scope.loadMore = function() {
         loadFrames(currentData.next, function(data) {
@@ -74,11 +74,11 @@ function FeedCtrl($scope, $routeParams, $http, identity, services, facets) {
             $scope.frames = currentData.results;
             $scope.count = data.count;
         });
-    }
+    };
 
     $scope.hasMore = function() {
         return currentData && !!currentData.next;
-    }
+    };
 
     $scope.update();
 };

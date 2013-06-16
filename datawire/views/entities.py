@@ -5,7 +5,7 @@ from sqlalchemy.orm import aliased
 
 from datawire.core import db
 from datawire.auth import require
-from datawire.model import Entity, Facet, Match, Frame
+from datawire.model import Entity, Category, Match, Frame
 from datawire.processing.queue import publish, entity_queue
 from datawire.views.util import jsonify, obj_or_404
 from datawire.views.pager import query_pager
@@ -13,19 +13,19 @@ from datawire.views.pager import query_pager
 entities = Blueprint('entities', __name__)
 
 
-@entities.route('/facets')
-def facet_index():
-    facets = Facet.all()
+@entities.route('/categories')
+def category_index():
+    categories = Category.all()
     return jsonify({
-        'results': facets,
-        'count': len(facets)
+        'results': categories,
+        'count': len(categories)
     })
 
 
-@entities.route('/facets/<key>')
-def facet_get(key):
-    facet = obj_or_404(Facet.by_key(key))
-    return jsonify(facet)
+@entities.route('/categories/<key>')
+def category_get(key):
+    category = obj_or_404(Category.by_key(key))
+    return jsonify(category)
 
 
 @entities.route('/users/<int:id>/entities')
@@ -36,8 +36,8 @@ def user_index(id):
     q = q.add_column(count_field)
     q = q.outerjoin(Entity.matches)
     q = q.group_by(Entity)
-    if 'facet' in request.args:
-        q = q.filter(Entity.facet == request.args.get('facet'))
+    if 'category' in request.args:
+        q = q.filter(Entity.category == request.args.get('category'))
 
     if 'entity' in request.args:
         q = q.outerjoin(Match.frame)

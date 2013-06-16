@@ -5,20 +5,20 @@ from formencode import Schema, validators
 from datawire.core import db
 from datawire.model.match import Match
 from datawire.model.util import ModelCore
-from datawire.model.facet import ValidFacetName
+from datawire.model.category import ValidCategoryName
 
 
 class EntitySchema(Schema):
     allow_extra_fields = True
     text = validators.String(min=3, max=512)
-    facet = ValidFacetName()
+    facet = ValidCategoryName()
 
 
 class Entity(db.Model, ModelCore):
     __tablename__ = 'entity'
 
     text = db.Column(db.Unicode())
-    facet = db.Column(db.Unicode())
+    category = db.Column(db.Unicode())
 
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
@@ -31,14 +31,14 @@ class Entity(db.Model, ModelCore):
         data = EntitySchema().to_python(data)
         obj.user = user
         obj.text = data.get('text')
-        obj.facet = data.get('facet')
+        obj.category = data.get('category')
         db.session.add(obj)
         return obj
 
     def update(self, data):
         data = EntitySchema().to_python(data)
         self.text = data.get('text')
-        self.facet = data.get('facet')
+        obj.category = data.get('category')
         db.session.add(self)
 
     def delete(self):
@@ -68,7 +68,7 @@ class Entity(db.Model, ModelCore):
         return {
             'id': self.id,
             'text': self.text,
-            'facet': self.facet,
+            'category': self.category,
             'user_id': self.user_id
         }
 
