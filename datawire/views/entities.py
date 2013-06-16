@@ -32,7 +32,7 @@ def category_get(key):
 def user_index(id):
     require.user_id(id)
     q = Entity.all().filter_by(user_id=id)
-    count_field = count(func.distinct(Match.id))
+    count_field = count(func.distinct(Match.urn))
     q = q.add_column(count_field)
     q = q.outerjoin(Entity.matches)
     q = q.group_by(Entity)
