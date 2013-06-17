@@ -53,8 +53,7 @@
                     <div class="entity-delete">
                         <a ng-click="remove(category.key, entity.id)"><i class="icon-trash"></i></a>
                     </div>
-                    <i class="icon-check sieve"></i>
-                    <i class="icon-check-empty nosieve"></i>
+                    <i ng-class="category.icon"></i>
                     <a ng-click="toggle(entity.id)">{{entity.text}}</a>
                     <span class="badge badge-important">{{entity.count}}</span>
                 </li>

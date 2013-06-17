@@ -220,14 +220,6 @@ footer {
             background-color: lighten($darkBgColor, 10%);
         }
 
-        li i.sieve, li.selected i.nosieve {
-            display: none;
-        }
-
-        li.selected i.sieve, li i.nosieve {
-            display: inline-block;
-        }
-
         a, a:hover {
             color: white;
             text-decoration: none;

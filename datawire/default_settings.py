@@ -26,8 +26,8 @@ S3_ACCESS_KEY = ''
 S3_SECRET_KEY = ''
 
 CATEGORIES = [
-    {'key': 'persons', 'label': 'Persons'},
-    {'key': 'orgs', 'label': 'Organisations'},
-    {'key': 'topics', 'label': 'Topics'},
-    {'key': 'places', 'label': 'Places'},
+    {'key': 'persons', 'label': 'Persons', 'icon': 'icon-user'},
+    {'key': 'orgs', 'label': 'Organisations', 'icon': 'icon-building'},
+    {'key': 'topics', 'label': 'Topics', 'icon': 'icon-comment-alt'},
+    {'key': 'places', 'label': 'Places', 'icon': 'icon-map-marker'},
 ]
