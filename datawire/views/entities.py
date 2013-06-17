@@ -44,8 +44,7 @@ def user_index(id):
     for entity_id in request.args.getlist('entity'):
         other_match = aliased(Match)
         q = q.outerjoin(other_match, match.urn == other_match.urn)
-        q = q.filter(or_(other_match.entity_id == entity_id,
-                         other_match.entity_id == None))
+        q = q.filter(other_match.entity_id == entity_id)
 
     q = q.group_by(main)
     count_field = count(func.distinct(match.urn))
