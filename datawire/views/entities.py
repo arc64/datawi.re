@@ -1,6 +1,6 @@
 from flask import Blueprint, request, url_for
 from sqlalchemy.sql.functions import count
-from sqlalchemy.sql.expression import or_, func
+from sqlalchemy.sql.expression import or_, and_, func
 from sqlalchemy.orm import aliased
 
 from datawire.core import db
@@ -31,24 +31,32 @@ def category_get(key):
 @entities.route('/users/<int:id>/entities')
 def user_index(id):
     require.user_id(id)
-    q = Entity.all().filter_by(user_id=id)
-    count_field = count(func.distinct(Match.urn))
-    q = q.add_column(count_field)
-    q = q.outerjoin(Entity.matches)
-    q = q.group_by(Entity)
+    q = Entity.all()
+    q = q.join(Entity.matches)
+    q = q.join(Match.frame)
+    other_match = aliased(Match)
+    q = q.join(other_match, Frame.urn == other_match.urn)
+    other_entity = aliased(Entity)
+    q = q.join(other_entity, other_match.entity_id == other_entity.id)
+
+    q = q.filter(Entity.user_id == id)
+    q = q.filter(or_(other_entity.user_id == id, other_entity.user_id == None))
+
     if 'category' in request.args:
         q = q.filter(Entity.category == request.args.get('category'))
 
     if 'entity' in request.args:
-        q = q.outerjoin(Match.frame)
-        other_match = aliased(Match)
-        q = q.outerjoin(other_match, Frame.urn == other_match.urn)
-        fq = or_(other_match.entity_id.in_(request.args.get('entity')),
+        entities = request.args.getlist('entity')
+        fq = or_(other_match.entity_id.in_(entities),
                  other_match.entity_id == None)
         q = q.filter(fq)
 
-    q = q.order_by(count_field.desc())
+    q = q.group_by(Entity)
+    count_field = count(func.distinct(Match.urn))
+    q = q.add_column(count_field)
     q = q.order_by(Entity.text.asc())
+
+    print q
 
     def transform_result(result):
         entity_obj, count_ = result
