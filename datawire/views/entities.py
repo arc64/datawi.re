@@ -31,32 +31,35 @@ def category_get(key):
 @entities.route('/users/<int:id>/entities')
 def user_index(id):
     require.user_id(id)
-    q = Entity.all()
-    q = q.join(Entity.matches)
-    q = q.join(Match.frame)
-    other_match = aliased(Match)
-    q = q.join(other_match, Frame.urn == other_match.urn)
-    other_entity = aliased(Entity)
-    q = q.join(other_entity, other_match.entity_id == other_entity.id)
-
-    q = q.filter(Entity.user_id == id)
-    q = q.filter(or_(other_entity.user_id == id, other_entity.user_id == None))
-
+    main = aliased(Entity)
+    q = db.session.query(main)
+    q = q.filter(main.user_id == id)
     if 'category' in request.args:
-        q = q.filter(Entity.category == request.args.get('category'))
+        q = q.filter(main.category == request.args.get('category'))
 
-    if 'entity' in request.args:
-        entities = request.args.getlist('entity')
-        fq = or_(other_match.entity_id.in_(entities),
-                 other_match.entity_id == None)
-        q = q.filter(fq)
+    q2 = q
+    match = aliased(Match)
+    q = q.outerjoin(match, match.entity_id == main.id)
 
-    q = q.group_by(Entity)
-    count_field = count(func.distinct(Match.urn))
+    for entity_id in request.args.getlist('entity'):
+        other_match = aliased(Match)
+        q = q.outerjoin(other_match, match.urn == other_match.urn)
+        q = q.filter(or_(other_match.entity_id == entity_id,
+                         other_match.entity_id == None))
+
+    q = q.group_by(main)
+    count_field = count(func.distinct(match.urn))
     q = q.add_column(count_field)
-    q = q.order_by(Entity.text.asc())
 
-    print q
+    q2 = q2.group_by(main)
+    count_field = count(func.distinct(None))
+    q2 = q2.add_column(count_field)
+
+    q = q.union(q2)
+    q = q.order_by(main.text.asc())
+    q = q.order_by(count_field.desc())
+
+    q = q.distinct(main.text)
 
     def transform_result(result):
         entity_obj, count_ = result
