@@ -24,9 +24,6 @@ class S3Store(Store):
                 self._bucket = self._conn.create_bucket(self.url.hostname,
                                                         location=Location.EU)
             self._bucket.set_acl('public-read')
-            cors_cfg = CORSConfiguration()
-            cors_cfg.add_rule('GET', '*')
-            self._bucket.set_cors(cors_cfg)
         return self._bucket
 
     def get_key(self, urn):
