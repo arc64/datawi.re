@@ -24,34 +24,15 @@ def createdb():
 
 
 @manager.command
-def createservice(filename):
-    """ Load a service configuration form a JSON configuration. """
-    with open(filename, 'rb') as fh:
-        data = json.load(fh)
-        events = data.pop('events', [])
-        editors = data.pop('editors', [1])
-        service = Service.by_key(data.get('key'))
-        if service is not None:
-            raise ValueError("Service already exists: %s" % data.get('key'))
-        service = Service.create(data)
-        for event_data in events:
-            event_data['service'] = service
-            Event.create(event_data)
-        for editor_id in editors:
-            user = User.by_id(editor_id)
-            service.editors.append(user)
-        db.session.commit()
-
-
-@manager.command
-def updateservice(filename):
-    """ Update a service configuration form a JSON configuration. """
+def install(filename):
+    """ Load or update a service configuration form a JSON configuration. """
     with open(filename, 'rb') as fh:
         data = json.load(fh)
         service = Service.by_key(data.get('key'))
         if service is None:
-            raise ValueError("Service doesn't exist: %s" % data.get('key'))
-        service.update(data)
+            service = Service.create(data)
+        else:
+            service.update(data)
         events = []
         for event_data in data.get('events', []):
             event_data['service'] = service
@@ -70,7 +51,7 @@ def updateservice(filename):
 
 
 @manager.command
-def deleteservice(key):
+def delete(key):
     """ Delete a service configuration from the database. """
     service = Service.by_key(key)
     if service is None:
