@@ -51,5 +51,7 @@ class S3Store(Store):
 
     def frame_url(self, urn):
         parts = urn.split(':')[2:]
+        if app.get('ENABLE_FRAMETHROWER'):
+            return 'http://ft-%s.%s/%s' % (parts[-1][:1], self.url.hostname, urn)
         key = '%s.json' % '/'.join(parts)
         return 'http://%s/%s' % (self.url.hostname, key)
