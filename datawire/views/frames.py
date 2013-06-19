@@ -1,6 +1,7 @@
 from flask import Blueprint, request, url_for
 from sqlalchemy.sql.expression import and_
 from sqlalchemy.sql.functions import count
+from sqlalchemy.orm import aliased
 
 from datawire.auth import require
 from datawire.model import Service, Frame, Match, Entity
@@ -28,11 +29,13 @@ def user_index(id):
     q = q.join(Frame.matches)
     q = q.join(Match.entity)
     q = q.filter(Entity.user_id == id)
+
+    for entity_id in request.args.getlist('entity'):
+        match = aliased(Match)
+        q = q.join(match, match.urn == Frame.urn)
+        q = q.filter(match.entity_id == entity_id)
+
     q = q.group_by(Frame)
-    entities = request.args.getlist('entity')
-    if len(entities):
-        q = q.filter(Entity.id.in_(entities))
-        q = q.having(count(Entity.id) == len(entities))
     q = q.order_by(Frame.action_at.desc())
     return query_pager(q, 'frames.user_index', id=id)
 
