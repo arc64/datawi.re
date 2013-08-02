@@ -3,7 +3,7 @@ from sqlalchemy.sql.functions import count
 from sqlalchemy.sql.expression import or_, and_, func
 from sqlalchemy.orm import aliased
 
-from datawire.core import db
+from datawire.core import db, elastic, elastic_index
 from datawire.auth import require
 from datawire.model import Entity, Category, Match, Frame
 from datawire.processing.queue import publish, entity_queue
@@ -30,42 +30,37 @@ def category_get(key):
 
 @entities.route('/users/<int:id>/entities')
 def user_index(id):
-    #res = cls.es.conn.search_raw(q, cls.es.index, cls.__type__)
-
     require.user_id(id)
-    main = aliased(Entity)
-    q = db.session.query(main)
-    q = q.filter(main.user_id == id)
+
+    q = {
+        "query": {
+            "filtered": {
+                "query": {"match_all": {}},
+                "filter": {"and": []}
+            }
+        },
+        "size": 0,
+        "facets": {"entities": {"terms": {"field": "entities"}}}
+    }
+
+    filters = request.args.getlist('entity')
+    for entity_id in filters:
+        fq = {"term": {"entities": entity_id}}
+        q['query']['filtered']['filter']['and'].append(fq)
+    if not len(filters):
+        q['query']['filtered']['filter'] = {"match_all": {}}
+
+    res = elastic.search_raw(q, elastic_index, 'frame')
+    counts = res['facets']['entities']['terms']
+    counts = dict([(int(c['term']), c['count']) for c in counts])
+
+    q = Entity.all().filter(Entity.user_id == id)
     if 'category' in request.args:
-        q = q.filter(main.category == request.args.get('category'))
+        q = q.filter(Entity.category == request.args.get('category'))
 
-    q2 = q
-    match = aliased(Match)
-    q = q.outerjoin(match, match.entity_id == main.id)
-
-    for entity_id in request.args.getlist('entity'):
-        other_match = aliased(Match)
-        q = q.outerjoin(other_match, match.urn == other_match.urn)
-        q = q.filter(other_match.entity_id == entity_id)
-
-    q = q.group_by(main)
-    count_field = count(func.distinct(match.urn))
-    q = q.add_column(count_field)
-
-    q2 = q2.group_by(main)
-    count_field = count(func.distinct(None))
-    q2 = q2.add_column(count_field)
-
-    q = q.union(q2)
-    q = q.order_by(main.text.asc())
-    q = q.order_by(count_field.desc())
-
-    q = q.distinct(main.text)
-
-    def transform_result(result):
-        entity_obj, count_ = result
-        data = entity_obj.to_ref()
-        data['count'] = count_
+    def transform_result(entity):
+        data = entity.to_ref()
+        data['count'] = counts.get(entity.id, 0)
         return data
 
     return query_pager(q, 'entities.user_index', transform=transform_result, id=id)
