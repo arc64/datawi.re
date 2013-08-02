@@ -26,13 +26,16 @@ def prev_url(url, count, offset, limit):
     return url + args(limit, max(offset - limit, 0))
 
 
-def query_pager(q, route, transform=lambda x: x, data=None, **kw):
+def query_pager(q, route, paginate=True, count=None, transform=lambda x: x, data=None, **kw):
     data = data or {}
-    count = q.count()
+    count = count or q.count()
     limit = get_limit()
     offset = get_offset()
+    if paginate:
+        results = q.offset(offset).limit(limit).all()
+    else:
+        results = q
     url = url_for(route, _external=True, **kw)
-    results = q.offset(offset).limit(limit).all()
     data.update({
         'count': count,
         'limit': limit,

@@ -39,8 +39,7 @@ def user_index(id):
     esq = {
         "query": {
             "filtered": {
-                "query": {"match_all": {}},
-                "filter": {"and": []}
+                "query": {"match_all": {}}, "filter": {}
             }
         },
         "size": 0,
@@ -50,12 +49,12 @@ def user_index(id):
     }
 
     filters = request.args.getlist('entity')
-    for entity_id in filters:
-        fq = {"term": {"entities": entity_id}}
-        esq['query']['filtered']['filter']['and'].append(fq)
-
-    if not len(filters):
-        del esq['query']['filtered']['filter']['and']
+    if len(filters):
+        esq['query']['filtered']['filter']['and'] = []
+        for entity_id in filters:
+            fq = {"term": {"entities": entity_id}}
+            esq['query']['filtered']['filter']['and'].append(fq)
+    else:
         esq['query']['filtered']['filter']['or'] = []
         for entity in q:
             fq = {"term": {"entities": entity.id}}
