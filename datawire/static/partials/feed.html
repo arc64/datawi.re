@@ -45,26 +45,42 @@
     </div>
 
     <div class="span4 entities pull-left" ng-controller="EntityCtrl">
+        <div class="toggle-new-form">
+            <a href="#" ng-click="showCreateForm=!showCreateForm"><i ng-class="newFormLinkIcon()"></i>
+            </a>
+        </div>
+        <h3>Your watchlist</h3>
+        <div class="new-form" ng-show="showCreateForm">
+            <form name="form" class="form-inline" ng-submit="create()">
+                <div class="category-selector">  
+                    <div class="btn-group" data-toggle="buttons-radio">
+                        <button type="button" class="btn dark">Category</button>
+                        <button ng-repeat="category in categories"
+                            type="button" class="btn dark"
+                            ng-class="selectedCategory(category.key)"
+                            ng-click="create_form.category=category.key"
+                            ><i ng-class="category.icon"></i></button>
+                    </div>
+                </div>
+                <input type="text" class="input-medium span2" ng-model="create_form.text"
+                    required ng-minlength="3" placeholder="Track a new term">
+
+                <button type="button" ng-click="create()" class="btn dark">Add</button>
+            </form>
+        </div>
+
         <div ng-repeat="category in categories">
-            <h3>{{category.label}}</h3>
+            <h3><i ng-class="category.icon"></i> {{category.label}}</h3>
             <ul>
                 <li ng-repeat="entity in entities[category.key]"
                     ng-class='selectedClass(entity)'>
                     <div class="entity-delete">
                         <a ng-click="remove(category.key, entity.id)"><i class="icon-trash"></i></a>
                     </div>
-                    <i ng-class="category.icon"></i>
                     <a ng-click="toggle(entity.id)">{{entity.text}}</a>
                     <span class="badge badge-important">{{entity.count}}</span>
                 </li>
             </ul>
-            <form name="form" class="form-inline" ng-submit="create(category.key)" >
-                <input type="text" class="input-medium span3" ng-model="_new[category.key]" 
-                    required ng-minlength="3" placeholder="Add {{category.label}}">
-                <a href="#" class="add-entity" ng-click="create(category.key)"><i class="icon-plus-sign-alt"></i></a>
-                <!--button type="submit" class="btn" ng-disabled="form.$invalid">Add</button-->
-            </form>
-
         </div>
     </div>
 

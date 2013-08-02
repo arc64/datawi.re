@@ -45,12 +45,18 @@ datawire.directive('entityref', function ($window) {
         restrict: 'A',
         templateUrl: '/static/partials/ref.html',
         transclude: true,
-        scope: {},
+        //scope: {},
         link: function(scope, element, attrs) {
+          var ref = attrs.entityref;
+          element.bind('click', function() {
+            scope.createEntity(ref);
+          });
+          /*
           scope.entity = attrs.entityref;
           element.bind('click', function() {
             element.find('div').toggleClass('visible');
           });
+          */
         }
     };
 });
