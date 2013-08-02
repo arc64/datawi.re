@@ -30,6 +30,8 @@ def category_get(key):
 
 @entities.route('/users/<int:id>/entities')
 def user_index(id):
+    #res = cls.es.conn.search_raw(q, cls.es.index, cls.__type__)
+
     require.user_id(id)
     main = aliased(Entity)
     q = db.session.query(main)

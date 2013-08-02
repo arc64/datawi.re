@@ -83,6 +83,13 @@ def matchall():
 
 
 @manager.command
+def reindex():
+    """ Re-index all data. """
+    from datawire.processing.indexing import reindex
+    reindex()
+
+
+@manager.command
 def process():
     """ Process background tasks from the queue. """
     from datawire.processing import process
