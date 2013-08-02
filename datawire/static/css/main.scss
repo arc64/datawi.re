@@ -124,6 +124,10 @@ a {
     @include buttonBackground($twitterColor2, $twitterColor);
 }
 
+.btn.dark {
+    @include buttonBackground(lighten($darkBgColor, 10%), $darkBgColor);
+}
+
 /* Housekeeping in extension of bootstrap. */
 input.ng-invalid {
     border-color: #B94A49;
@@ -247,10 +251,25 @@ footer {
             margin-top: 0.2em;
             display: inline-block;
         }
+
+        .category-selector {
+            padding-bottom: 0.4em;
+        }
     }
 
     li, form {
         padding-left: 1em;
+    }
+
+    .toggle-new-form {
+        float: right;
+        padding-right: 1em;
+        padding-top: 0.3em;
+
+        a:hover, a {
+            color: white;
+            text-decoration: none;
+        }
     }
 
     .entity-delete {
