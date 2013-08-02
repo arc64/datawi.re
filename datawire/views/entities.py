@@ -32,7 +32,11 @@ def category_get(key):
 def user_index(id):
     require.user_id(id)
 
-    q = {
+    q = Entity.all().filter(Entity.user_id == id)
+    if 'category' in request.args:
+        q = q.filter(Entity.category == request.args.get('category'))
+
+    esq = {
         "query": {
             "filtered": {
                 "query": {"match_all": {}},
@@ -40,17 +44,24 @@ def user_index(id):
             }
         },
         "size": 0,
-        "facets": {"entities": {"terms": {"field": "entities"}}}
+        "facets": {"entities": {
+            "terms": {"field": "entities"}}
+        }
     }
 
     filters = request.args.getlist('entity')
     for entity_id in filters:
         fq = {"term": {"entities": entity_id}}
-        q['query']['filtered']['filter']['and'].append(fq)
-    if not len(filters):
-        q['query']['filtered']['filter'] = {"match_all": {}}
+        esq['query']['filtered']['filter']['and'].append(fq)
 
-    res = elastic.search_raw(q, elastic_index, 'frame')
+    if not len(filters):
+        del esq['query']['filtered']['filter']['and']
+        esq['query']['filtered']['filter']['or'] = []
+        for entity in q:
+            fq = {"term": {"entities": entity.id}}
+            esq['query']['filtered']['filter']['or'].append(fq)
+
+    res = elastic.search_raw(esq, elastic_index, 'frame')
     counts = res['facets']['entities']['terms']
     counts = dict([(int(c['term']), c['count']) for c in counts])
 
