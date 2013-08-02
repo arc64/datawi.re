@@ -16,6 +16,7 @@ exchange = Exchange(app.config.get('INSTANCE', 'dwre'),
 inbound_queue = Queue('inbound', exchange=exchange, routing_key='inbound.#')
 matching_queue = Queue('matching', exchange=exchange, routing_key='matching.#')
 entity_queue = Queue('entity', exchange=exchange, routing_key='entity.#')
+indexing_queue = Queue('indexing', exchange=exchange, routing_key='indexing.#')
 
 
 def connect():

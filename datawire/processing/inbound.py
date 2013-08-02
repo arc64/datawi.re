@@ -7,6 +7,7 @@ from datawire.model import Service, Event, Frame
 from datawire.model.util import data_hash
 from datawire.store import store_frame
 from datawire.processing.queue import publish, matching_queue
+from datawire.processing.queue import indexing_queue
 from datawire.processing.util import parse_datetime, parse_url
 
 log = logging.getLogger(__name__)
@@ -57,4 +58,6 @@ def generate_frame(service_key, event_key, data):
     log.info("created: %(urn)s (%(hash)s)", frame)
     routing_key = 'matching.%s.%s' % (service_key, event_key)
     publish(matching_queue, routing_key, frame)
+    routing_key = 'indexing.%s.%s' % (service_key, event_key)
+    publish(indexing_queue, routing_key, frame)
     return frame['urn']

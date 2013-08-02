@@ -4,6 +4,7 @@ from datawire.core import db
 from datawire.model import Match, Frame
 from datawire.model.util import itervalues
 from datawire.store import load_frame
+from datawire.processing.queue import publish, indexing_queue
 from datawire.processing.entity import get_filters
 
 log = logging.getLogger(__name__)
@@ -24,6 +25,9 @@ def match(frame, pattern, entity_ids):
                 match = Match.create(frame['urn'], field, entity_id)
                 log.info("match: %s", match)
                 matches.append(match)
+
+                routing_key = 'indexing.%s.%s' % (frame['service'], frame['event'])
+                publish(indexing_queue, routing_key, frame)
     return matches
 
 

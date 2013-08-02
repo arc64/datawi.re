@@ -40,6 +40,11 @@ class Frame(db.Model):
         q = db.session.query(cls).filter_by(hash=hash)
         return q.first()
 
+    @classmethod
+    def by_urn(cls, urn):
+        q = db.session.query(cls).filter_by(urn=urn)
+        return q.first()
+
     def to_ref(self):
         from datawire.store import frame_url
         return {
