@@ -79,7 +79,7 @@
                     </div>
                     <a ng-click="toggle(entity.id)">{{entity.text}}</a>
                     <span ng-hide="entity.total_count!=entity.filtered_count" class="badge badge-important entity-count">
-                        {{entity.total_count}}
+                        {{entity.total_count || 0}}
                     </span>
                     <span ng-hide="entity.total_count==entity.filtered_count" class="badge badge-important entity-count">
                         {{entity.filtered_count}} / {{entity.total_count}}
