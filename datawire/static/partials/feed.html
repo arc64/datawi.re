@@ -2,7 +2,7 @@
 
 <div class="row">
 
-    <div class="span8 feed" ng-controller="FramesCtrl">
+    <div class="col-lg-8 col-sm-8 col-12 feed" ng-controller="FramesCtrl">
         <div class="frame-count">
             {{count}} Events have been found, {{frames.length}} shown.
             <div class="pull-right"><a href='#' ng-click="update()"><i class="icon-refresh"></i> Refresh</a></div>
@@ -34,9 +34,7 @@
                 </span>
                 <span ng-show="frame.source_url">
                     <a ng-href="{{frame.source_url}}">Source</a>
-                    &middot;
                 </span>
-                {{frame.urn}}
             </p>
         </div>
         <div ng-show='hasMore()' class="frame-pagination">
@@ -44,7 +42,7 @@
         </div>
     </div>
 
-    <div class="span4 entities pull-left" ng-controller="EntityCtrl">
+    <div class="col-lg-4 col-sm-4 col-12 entities pull-left" ng-controller="EntityCtrl">
         <div class="toggle-new-form">
             <a href="#" ng-click="showCreateForm=!showCreateForm"><i ng-class="newFormLinkIcon()"></i>
             </a>

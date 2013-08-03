@@ -1,11 +1,11 @@
 
-<div class="hero-unit">
+<div class="jumbotron">
     <h1>a Wire Service for Data</h1>
     <p class="claim">
         We help you stay informed about people, organisations and
         topics that interest you.
     </p>
-    <p>
+    <p class="hidden-sm">
         <a class="btn btn-large twitter" external="{{session.twitter_uri}}">
           <i class="icon-twitter"></i> Login with Twitter
         </a>
@@ -13,10 +13,18 @@
           <i class="icon-facebook"></i> Login with Facebook
         </a>
     </p>
+    <p class="visible-sm">
+        <a class="btn twitter" external="{{session.twitter_uri}}">
+          <i class="icon-twitter"></i> Login with Twitter
+        </a>
+        <a class="btn facebook" external="{{session.facebook_uri}}">
+          <i class="icon-facebook"></i> Login with Facebook
+        </a>
+    </p>
 </div>
 
 <div class="row">
-    <div class="span6">
+    <div class="col-lg-6 col-sm-6">
         <p>
             Automatically keep track a range of data sources and be informed whenever
             an action &mdash; a government contract, company registration, or
@@ -30,7 +38,7 @@
             that you've set up to monitor.
         </p>
     </div>
-    <div class="span6">
+    <div class="col-lg-6 col-sm-6">
         <p>
             <strong>What kind of data do we track?</strong>
         </p>

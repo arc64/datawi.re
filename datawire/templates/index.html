@@ -2,15 +2,14 @@
 <html lang="en" ng-app="datawire">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
     <title>datawi.re</title>
     <meta name="description" content="An act of data journalism.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {% assets filters="scss,cssmin", output="gen/style.%(version)s.css",
-          "vendor/bootstrap/docs/assets/css/bootstrap.css",
-          "vendor/bootstrap/docs/assets/css/bootstrap-responsive.css",
+          "vendor/bootstrap/dist/css/bootstrap.css",
           "css/main.scss" %}
         <link type="text/css" href="{{ ASSET_URL }}" rel="stylesheet">
     {% endassets %}
@@ -25,12 +24,12 @@
       <div id="navigation" class="navbar-inner">
           <div class="container">
             {% raw %}
-              <a class="brand" href="/">data<span>wi.re</span></a>
-              <ul class="nav pull-right" ng-show="session.logged_in">
+              <a class="navbar-brand hidden-sm" href="/">data<span>wi.re</span></a>
+              <ul class="nav navbar-nav pull-right" ng-show="session.logged_in">
                 <li><a href="/profile"><i class="icon-cogs"></i> {{ session.user.name }}</a></li>
                 <li><a external="{{session.logout_uri}}" href=""><i class="icon-signout"></i> Logout</a></li>
               </ul>
-              <ul class="nav pull-right" ng-hide="session.logged_in">
+              <ul class="nav navbar-nav pull-right" ng-hide="session.logged_in">
                 <li><a external="{{session.twitter_uri}}" href=""><i class="icon-twitter"></i> Twitter</a></li>
                 <li><a external="{{session.facebook_uri}}" href=""><i class="icon-facebook"></i> Facebook</a></li>
               </ul>
@@ -54,7 +53,7 @@
   <footer>
     <div class="container">
       <div class="row">
-        <div class="span7">
+        <div class="col-lg-8 col-sm-8">
           <p>
             datawi.re &mdash;
             <a href="/about/intro">Introduction</a> &middot;
@@ -63,7 +62,7 @@
             <a href="/about/contact">Contact</a>
           </p>
         </div>
-        <div class="span5">
+        <div class="col-lg-4 col-sm-4">
           <p>datawi.re is open source and <a href="https://github.com/arc64/datawi.re">available on GitHub</a>.</p>
 
           <p>Part of 

@@ -49,46 +49,6 @@ $defaultRoundedAmount: 5px;
     font-weight: normal !important;
 }
 
-@mixin reset-filter() {
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-}
-
-@mixin vertical($startColor: #555, $endColor: #333) {
-    background-color: mix($startColor, $endColor, 60%);
-    background-image: -moz-linear-gradient(top, $startColor, $endColor); // FF 3.6+
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from($startColor), to($endColor)); // Safari 4+, Chrome 2+
-    background-image: -webkit-linear-gradient(top, $startColor, $endColor); // Safari 5.1+, Chrome 10+
-    background-image: -o-linear-gradient(top, $startColor, $endColor); // Opera 11.10
-    background-image: linear-gradient(to bottom, $startColor, $endColor); // Standard, IE10
-    background-repeat: repeat-x;
-  }
-
-
-@mixin gradientBar($primaryColor, $secondaryColor, $textColor: #fff, $textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
-  color: $textColor;
-  text-shadow: $textShadow;
-  @include vertical($primaryColor, $secondaryColor);
-  border-color: $secondaryColor $secondaryColor darken($secondaryColor, 15%);
-  border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
-}
-
-@mixin buttonBackground($startColor, $endColor, $textColor: #fff, $textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
-  @include gradientBar($startColor, $endColor, $textColor, $textShadow);
-  *background-color: $endColor;
-  @include reset-filter();
-
-  &:hover, &:focus, &:active, &.active, &.disabled, &[disabled] {
-    color: $textColor;
-    background-color: $endColor;
-    *background-color: darken($endColor, 5%);
-  }
-
-  &:active,
-  &.active {
-    background-color: darken($endColor, 10%) e("\9");
-  }
-}
-
 body {
     font-family: OpenSansRegular, sans-serif;
     font-size: 14px;
@@ -117,15 +77,18 @@ a {
 }
 
 .btn.facebook {
-    @include buttonBackground($fbColor2, $fbColor);
+    color: white;
+    background-color: $fbColor;
 }
 
 .btn.twitter {
-    @include buttonBackground($twitterColor2, $twitterColor);
+    color: white;
+    background-color: $twitterColor;
 }
 
 .btn.dark {
-    @include buttonBackground(lighten($darkBgColor, 10%), $darkBgColor);
+    color: white;
+    background-color: $darkBgColor;
 }
 
 /* Housekeeping in extension of bootstrap. */
@@ -134,16 +97,12 @@ input.ng-invalid {
     color: #b94a48;
 }
 
-.navbar-static-top #navigation {
-    @include box-shadow(none);
+.navbar-static-top {
     background: $darkBgColor;
-    min-height: 3em;
+    min-height: 2em;
 
-    .container {
-        padding-top: 3px;
-    }
 
-    .brand {
+    .navbar-brand {
         color: white;
         font-size: 26px;
         span {
@@ -154,11 +113,24 @@ input.ng-invalid {
     li a {
         color: white;
     }
+
+    li a:hover {
+        color: #ddd;   
+    }
 }
 
-.navbar .nav > li > a,
-.navbar .brand {
-    text-shadow: none;
+ul.navbar-nav.pull-right {
+    margin: 0 0 0 0;
+    width: auto;
+}
+
+ul.navbar-nav.pull-right li {
+    display: inline-block;
+    float: none;
+}
+
+.nav-list>.active>a, .nav-list>.active>a:hover, .nav-list>.active>a:focus {
+    color: white;
 }
 
 .alert-bar {
@@ -194,7 +166,7 @@ footer {
 
 /* Home page. */
 
-.hero-unit {
+.jumbotron {
     background-color: $darkBgColor;
     color: white;
 
@@ -218,6 +190,7 @@ footer {
     ul {
         list-style-type: none;
         margin: 0;
+        padding: 0;
 
         li.selected,
         li:hover {
@@ -272,14 +245,21 @@ footer {
         }
     }
 
-    .entity-delete {
+    .entity-delete, .entity-count {
         float: right;
-        padding-right: 1em;
+        margin-right: 1em;
+    }
+
+    .entity-delete {
         display: none;
     }
 
     li:hover .entity-delete {
         display: block;
+    }
+
+    li:hover .entity-count {
+        display: none;
     }
 
     /*
@@ -309,7 +289,7 @@ footer {
 
 .feed {
     @include box-sizing;
-    border: 1px solid $lightBorder;
+    //border: 1px solid $lightBorder;
     border-bottom: none;
     //background: white;
     /*padding: 1em; 

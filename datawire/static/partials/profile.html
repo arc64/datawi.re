@@ -2,35 +2,35 @@
 <h3 class="page-header">Update your user profile</h3>
 
 <div class="row">
-  <div class="span7">
+  <div class="col-lg-8 col-sm-8">
     <form name="form" class="form-horizontal">
-      <div class="control-group">
-        <label class="control-label" for="name">Name</label>
-        <div class="controls">
-          <input ng-model="profile.name" required ng-minlength="3" type="text" id="name" placeholder="Your name">
+      <div class="form-group">
+        <label class="control-label col-lg-2" for="name">Name</label>
+        <div class="col-lg-10">
+          <input class="form-control" ng-model="profile.name" required ng-minlength="3" type="text" id="name" placeholder="Your name">
         </div>
       </div>
-      <div class="control-group">
-        <label class="control-label" for="email">Email</label>
-        <div class="controls">
-          <input ng-model="profile.email" required type="email" id="email" placeholder="Email">
+      <div class="form-group">
+        <label class="control-label col-lg-2" for="email">Email</label>
+        <div class="col-lg-10">
+          <input class="form-control" ng-model="profile.email" required type="email" id="email" placeholder="Email">
         </div>
       </div>
-      <div class="control-group">
-        <label class="control-label" for="api_key">API Key</label>
-        <div class="controls">
-          <input ng-model="profile.api_key" type="text" id="api_key" disabled>
+      <div class="form-group">
+        <label class="control-label col-lg-2" for="api_key">API Key</label>
+        <div class="col-lg-10">
+          <input class="form-control" ng-model="profile.api_key" type="text" id="api_key" disabled>
         </div>
       </div>
-      <div class="control-group">
-        <div class="controls">
-          <button type="submit" class="btn" ng-click="save()" ng-disabled="form.$invalid">Update</button>
+      <div class="form-group">
+        <div class="col-offset-2 col-lg-10">
+          <button type="submit" class="btn btn-default" ng-click="save()" ng-disabled="form.$invalid">Update</button>
         </div>
       </div>
     </form>
   </div>
 
-  <div class="span5">
+  <div class="col-lg-4 col-sm-4">
     <p>
       We need to know <strong>your email</strong> so that we can notify you when new data has been found 
       that relates to your queries. We will not share personal data with other organisations

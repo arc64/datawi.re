@@ -14,5 +14,8 @@
     "underscore": "1.4.4",
     "moment": "~2.0.0",
     "font-awesome": "~3.1.1"
+  },
+  "resolutions": {
+    "bootstrap": "~3.0.0-rc1"
   }
 }
