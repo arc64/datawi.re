@@ -58,11 +58,11 @@
                         <button ng-repeat="category in categories"
                             type="button" class="btn dark"
                             ng-class="selectedCategory(category.key)"
-                            ng-click="create_form.category=category.key"
+                            ng-click="createForm.category=category.key"
                             ><i ng-class="category.icon"></i></button>
                     </div>
                 </div>
-                <input type="text" class="input-medium span2" ng-model="create_form.text"
+                <input type="text" class="input-medium span2" ng-model="createForm.text"
                     required ng-minlength="3" placeholder="Track a new term">
 
                 <button type="button" ng-click="create()" class="btn dark">Add</button>

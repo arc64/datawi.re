@@ -1,14 +1,14 @@
 
 function EntityCtrl($scope, $routeParams, $http, identity) {
     $scope.showCreateForm = false;
-    $scope.create_form = {'category': 'orgs'};
+    $scope.createForm = {'category': 'orgs'};
 
     $scope.selectedClass = function(entity) {
         return $scope.selected(entity.id) ? 'selected' : 'unselected';
     };
 
     $scope.selectedCategory = function(key) {
-        return $scope.create_form.category == key ? 'active' : 'inactive';
+        return $scope.createForm.category == key ? 'active' : 'inactive';
     };
 
     $scope.newFormLinkIcon = function() {
@@ -16,15 +16,15 @@ function EntityCtrl($scope, $routeParams, $http, identity) {
     };
 
     $scope.$watch('_createEntity', function(newValue, oldValue) {
-        $scope.create_form.text = newValue;
+        $scope.createForm.text = newValue;
         $scope.showCreateForm = true;
     });
 
     $scope.create = function() {
-        $http.post('/api/1/entities', $scope.create_form).success(function(data) {
-            $scope.entities[$scope.create_form.category].push(data);
+        $http.post('/api/1/entities', $scope.createForm).success(function(data) {
+            $scope.entities[$scope.createForm.category].push(data);
         });
-        $scope.create_form.text = null;
+        $scope.createForm.text = null;
     };
 
     $scope.remove = function(category, id) {
