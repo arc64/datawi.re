@@ -35,9 +35,7 @@ def user_index(id):
     q = Entity.all().filter(Entity.user_id == id)
     if 'category' in request.args:
         q = q.filter(Entity.category == request.args.get('category'))
-
     all_entities = [{"term": {"entities": e.id}} for e in q]
-    #    esq['query']['filtered']['filter']['or'].append(fq)
 
     esq = {
         "query": {
@@ -67,12 +65,7 @@ def user_index(id):
     else:
         esq['query']['filtered']['filter']['or'] = all_entities
 
-    #esq['facets']['global']['facet_filter'] = esq['query']['filtered']['filter'].copy()
-
     res = elastic.search_raw(esq, elastic_index, 'frame')
-    from pprint import pprint
-    pprint(res)
-
     filtered_counts = res['facets']['entities']['terms']
     filtered_counts = dict([(int(c['term']), c['count']) for c in filtered_counts])
     total_counts = res['facets']['global']['terms']
