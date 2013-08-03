@@ -1,5 +1,5 @@
 
-function EntityCtrl($scope, $routeParams, $http, identity) {
+function EntityCtrl($scope, $rootScope, $routeParams, $http, identity) {
     $scope.showCreateForm = false;
     $scope.createForm = {'category': 'orgs'};
 
@@ -15,9 +15,10 @@ function EntityCtrl($scope, $routeParams, $http, identity) {
         return $scope.showCreateForm ? 'icon-minus-sign' : 'icon-plus-sign';
     };
 
-    $scope.$watch('_createEntity', function(newValue, oldValue) {
-        $scope.createForm.text = newValue;
+    $rootScope.$on('createEntity', function(e, text) {
+        $scope.createForm.text = text;
         $scope.showCreateForm = true;
+        $scope.$apply();
     });
 
     $scope.create = function() {

@@ -1,4 +1,3 @@
-
 function AppCtrl($scope, $window, $routeParams, $location, identity, alertService) {
     identity.session(function(data) {
         $scope.session = data;
@@ -6,10 +5,6 @@ function AppCtrl($scope, $window, $routeParams, $location, identity, alertServic
 
     $scope.alert = alertService.get();
     $scope.hideAlert = alertService.hide;
-
-    $scope.createEntity = function(text) {
-        $scope._createEntity = text;
-    };
 
     $scope.$on("$routeChangeStart", function (event, next, current) {
         if (next && next.$$route.accessPolicy==='user') {

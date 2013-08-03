@@ -47,16 +47,9 @@ datawire.directive('entityref', function ($window) {
         transclude: true,
         //scope: {},
         link: function(scope, element, attrs) {
-          var ref = attrs.entityref;
           element.bind('click', function() {
-            scope.createEntity(ref);
+            scope.$emit('createEntity', attrs.entityref);
           });
-          /*
-          scope.entity = attrs.entityref;
-          element.bind('click', function() {
-            element.find('div').toggleClass('visible');
-          });
-          */
         }
     };
 });
