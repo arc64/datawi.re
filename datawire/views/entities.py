@@ -36,6 +36,9 @@ def user_index(id):
     if 'category' in request.args:
         q = q.filter(Entity.category == request.args.get('category'))
 
+    all_entities = [{"term": {"entities": e.id}} for e in q]
+    #    esq['query']['filtered']['filter']['or'].append(fq)
+
     esq = {
         "query": {
             "filtered": {
@@ -43,8 +46,15 @@ def user_index(id):
             }
         },
         "size": 0,
-        "facets": {"entities": {
-            "terms": {"field": "entities"}}
+        "facets": {
+            "entities": {
+                "terms": {"field": "entities"}
+            },
+            "global": {
+                "terms": {"field": "entities"},
+                "global": True,
+                "facet_filter": {"or": all_entities}
+            }
         }
     }
 
@@ -55,14 +65,18 @@ def user_index(id):
             fq = {"term": {"entities": entity_id}}
             esq['query']['filtered']['filter']['and'].append(fq)
     else:
-        esq['query']['filtered']['filter']['or'] = []
-        for entity in q:
-            fq = {"term": {"entities": entity.id}}
-            esq['query']['filtered']['filter']['or'].append(fq)
+        esq['query']['filtered']['filter']['or'] = all_entities
+
+    #esq['facets']['global']['facet_filter'] = esq['query']['filtered']['filter'].copy()
 
     res = elastic.search_raw(esq, elastic_index, 'frame')
-    counts = res['facets']['entities']['terms']
-    counts = dict([(int(c['term']), c['count']) for c in counts])
+    from pprint import pprint
+    pprint(res)
+
+    filtered_counts = res['facets']['entities']['terms']
+    filtered_counts = dict([(int(c['term']), c['count']) for c in filtered_counts])
+    total_counts = res['facets']['global']['terms']
+    total_counts = dict([(int(c['term']), c['count']) for c in total_counts])
 
     q = Entity.all().filter(Entity.user_id == id)
     if 'category' in request.args:
@@ -70,7 +84,8 @@ def user_index(id):
 
     def transform_result(entity):
         data = entity.to_ref()
-        data['count'] = counts.get(entity.id, 0)
+        data['filtered_count'] = filtered_counts.get(entity.id, 0)
+        data['total_count'] = total_counts.get(entity.id, 0)
         return data
 
     return query_pager(q, 'entities.user_index', transform=transform_result, id=id)

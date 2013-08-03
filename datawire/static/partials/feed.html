@@ -78,7 +78,12 @@
                         <a ng-click="remove(category.key, entity.id)"><i class="icon-trash"></i></a>
                     </div>
                     <a ng-click="toggle(entity.id)">{{entity.text}}</a>
-                    <span class="badge badge-important">{{entity.count}}</span>
+                    <span ng-hide="entity.total_count!=entity.filtered_count" class="badge badge-important entity-count">
+                        {{entity.total_count}}
+                    </span>
+                    <span ng-hide="entity.total_count==entity.filtered_count" class="badge badge-important entity-count">
+                        {{entity.filtered_count}} / {{entity.total_count}}
+                    </span>
                 </li>
             </ul>
         </div>
