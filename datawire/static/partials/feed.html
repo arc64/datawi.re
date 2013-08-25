@@ -44,10 +44,9 @@
 
     <div class="col-lg-4 col-sm-4 col-12 entities pull-left" ng-controller="EntityCtrl">
         <div class="toggle-new-form">
-            <a href="#" ng-click="showCreateForm=!showCreateForm"><i ng-class="newFormLinkIcon()"></i>
-            </a>
+            <a class="btn btn-small" href="#" ng-click="showCreateForm=!showCreateForm"><i ng-class="newFormLinkIcon()"></i> Add...</a>
         </div>
-        <h3>Your watchlist</h3>
+        <h2>Your Watchlist</h2>
         <div class="new-form" ng-show="showCreateForm">
             <form name="form" class="form-inline" ng-submit="create()">
                 <div class="category-selector">  
