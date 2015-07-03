@@ -32,7 +32,7 @@ def query_pager(q, route, paginate=True, count=None, transform=lambda x: x, data
     limit = get_limit()
     offset = get_offset()
     if paginate:
-        results = q.offset(offset).limit(limit).all()
+        results = q.skip(offset).limit(limit).all()
     else:
         results = q
     url = url_for(route, _external=True, **kw)
