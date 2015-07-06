@@ -1,0 +1,3 @@
+https://github.com/RDFLib/OWL-RL/tarball/master
+rdflib
+rdflib-jsonld
