@@ -13,5 +13,6 @@ list/*
 service/*
 
 *.db-journal
+*.sqlite3 
 
 popolo-ld/*.json
