@@ -13,3 +13,5 @@ list/*
 service/*
 
 *.db-journal
+
+popolo-ld/*.json
