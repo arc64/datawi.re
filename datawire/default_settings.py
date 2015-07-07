@@ -1,11 +1,10 @@
 from os import environ as env, path
 
 DEBUG = True
-ASSETS_DEBUG = True
-CACHE = True
+ASSETS_DEBUG = DEBUG
 
-APP_TITLE = 'aleph.grano.local'
-APP_NAME = 'aleph'
+APP_TITLE = 'datawire.local'
+APP_NAME = 'datwire'
 
 SECRET_KEY = env.get('SECRET_KEY', 'banana umbrella')
 
@@ -16,9 +15,6 @@ ALEMBIC_DIR = path.abspath(ALEMBIC_DIR)
 
 TWITTER_API_KEY = None
 TWITTER_API_SECRET = None
-
-FACEBOOK_APP_ID = None
-FACEBOOK_APP_SECRET = None
 
 CELERY_ALWAYS_EAGER = False
 CELERY_TASK_SERIALIZER = 'json'

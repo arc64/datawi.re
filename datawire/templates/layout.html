@@ -3,15 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>{{config.APP_TITLE}}</title>
     
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     {% assets "css" %}
       <link type="text/css" href="{{ ASSET_URL }}" rel="stylesheet">
     {% endassets %}
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-    <link rel="shortcut icon" href="http://www.codeforafrica.org/favicon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="http://assets.pudo.org/img/favicon.ico" type="image/x-icon" />
     <base href="{{url_for('ui')}}">
   </head>
   <body ng-controller="AppCtrl">
@@ -40,17 +39,10 @@
 
         <div id="navbar" class="collapse navbar-collapse navbar-right">
           <ul class="nav navbar-nav">
-            <li ng-show="!session.logged_in && session.logins.twitter" ng-cloak>
+            <li ng-show="!session.logged_in" ng-cloak>
               {% raw %}
-                <a href='{{session.logins.twitter}}' target='_self'>
+                <a href='/api/1/sessions/login' target='_self'>
                   <i class="fa fa-twitter"></i> Sign in
-                </a>
-              {% endraw %}
-            </li>
-            <li ng-show="!session.logged_in && session.logins.facebook" ng-cloak>
-              {% raw %}
-                <a href='{{session.logins.facebook}}' target='_self'>
-                  <i class="fa fa-facebook-official"></i> Sign in
                 </a>
               {% endraw %}
             </li>
@@ -58,7 +50,7 @@
               <a ng-click="editProfile()" ng-bind="session.user.display_name"></a>
             </li>
             <li ng-show="session.logged_in" ng-cloak>
-              <a href="{{url_for('sessions.logout')}}" target="_self">
+              <a href="/api/1/sessions/logout" target="_self">
                 <i class="fa fa-sign-out"></i> Logout
               </a>
             </li>
