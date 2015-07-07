@@ -17,6 +17,12 @@ datawire.controller('AppCtrl', ['$scope', '$rootScope', '$location', '$route', '
     });
   });
 
+  $scope.logoutSession = function() {
+    Session.logout(function(session) {
+      $scope.session = session;
+    });
+  };
+
   $scope.editProfile = function() {
     var d = $modal.open({
         templateUrl: 'templates/users/profile.html',

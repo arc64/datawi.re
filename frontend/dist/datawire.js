@@ -56,6 +56,13 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
     });
   });
 
+  $scope.logoutSession = function() {
+    console.log('FOOOO!');
+    Session.logout(function(session) {
+      $scope.session = session;
+    });
+  };
+
   $scope.editProfile = function() {
     var d = $modal.open({
         templateUrl: 'templates/users/profile.html',
@@ -251,46 +258,55 @@ datawire.controller('EntitiesIndexCtrl', ['$scope', '$location', '$http', '$rout
   // Message flashing.
   var currentMessage = null;
 
-  $rootScope.$on("$routeChangeSuccess", function() {
-    currentMessage = null;
-  });
-
   return {
-    message: function(message, type) {
+    setMessage: function(message, type) {
       currentMessage = [message, type];
       $timeout(function() {
         currentMessage = null;
-      }, 2000);
+      }, 4000);
     },
     getMessage: function() {
-      return currentMessage;
+      if (currentMessage) {
+        return currentMessage[0];
+      }
+    },
+    getType: function() {
+      if (currentMessage) {
+        return currentMessage[1];
+      }
     }
   };
 }]);
-;
-datawire.factory('Session', ['$http', '$q', function($http, $q) {
-    var dfd = null;
+;datawire.factory('Session', ['$http', function($http) {
+  var sessionDfd = null;
 
-    var reset = function() {
-        dfd = null;
-    };
+  var flush = function() {
+    sessionDfd = null;
+  };
 
-    var get = function(cb) {
-        if (dfd === null) {
-            var dt = new Date();
-            var config = {cache: false, params: {'_': dt.getTime()}};
-            dfd = $http.get('/api/1/sessions', config);
-        }
-        dfd.success(function(data) {
-          data.cbq = data.logged_in ? data.user.id : 'anon';
-          cb(data);
-        });
-    };
+  var logout = function(cb) {
+    $http.post('/api/1/sessions/logout').then(function() {
+      console.log('LOGOUTED!');
+      flush();
+      get(cb);
+    });
+  };
 
-    return {
-        get: get,
-        reset: reset
-    };
+  var get = function(cb) {
+    if (sessionDfd === null) {
+      var data = {'_': new Date()}
+      sessionDfd = $http.get('/api/1/sessions', {params: data});
+    }
+    sessionDfd.then(function(res) {
+      cb(res.data);
+    });
+  };
+
+  return {
+    'get': get,
+    'flush': flush,
+    'logout': logout
+  }
 }]);
 ;
 datawire.factory('Validation', ['Flash', function(Flash) {

@@ -1,25 +1,30 @@
+datawire.factory('Session', ['$http', function($http) {
+  var sessionDfd = null;
 
-datawire.factory('Session', ['$http', '$q', function($http, $q) {
-    var dfd = null;
+  var flush = function() {
+    sessionDfd = null;
+  };
 
-    var reset = function() {
-        dfd = null;
-    };
+  var logout = function(cb) {
+    $http.post('/api/1/sessions/logout').then(function() {
+      flush();
+      get(cb);
+    });
+  };
 
-    var get = function(cb) {
-        if (dfd === null) {
-            var dt = new Date();
-            var config = {cache: false, params: {'_': dt.getTime()}};
-            dfd = $http.get('/api/1/sessions', config);
-        }
-        dfd.success(function(data) {
-          data.cbq = data.logged_in ? data.user.id : 'anon';
-          cb(data);
-        });
-    };
+  var get = function(cb) {
+    if (sessionDfd === null) {
+      var data = {'_': new Date()}
+      sessionDfd = $http.get('/api/1/sessions', {params: data});
+    }
+    sessionDfd.then(function(res) {
+      cb(res.data);
+    });
+  };
 
-    return {
-        get: get,
-        reset: reset
-    };
+  return {
+    'get': get,
+    'flush': flush,
+    'logout': logout
+  }
 }]);

@@ -2,19 +2,22 @@ datawire.factory('Flash', ['$rootScope', '$timeout', function($rootScope, $timeo
   // Message flashing.
   var currentMessage = null;
 
-  $rootScope.$on("$routeChangeSuccess", function() {
-    currentMessage = null;
-  });
-
   return {
-    message: function(message, type) {
+    setMessage: function(message, type) {
       currentMessage = [message, type];
       $timeout(function() {
         currentMessage = null;
-      }, 2000);
+      }, 4000);
     },
     getMessage: function() {
-      return currentMessage;
+      if (currentMessage) {
+        return currentMessage[0];
+      }
+    },
+    getType: function() {
+      if (currentMessage) {
+        return currentMessage[1];
+      }
     }
   };
 }]);

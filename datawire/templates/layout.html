@@ -4,69 +4,44 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{config.APP_TITLE}}</title>
-    
+
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link type="text/css" href="{{url_for('static', filename='dist/app.css')}}" rel="stylesheet">
 
     <link rel="shortcut icon" href="http://assets.pudo.org/img/favicon.ico" type="image/x-icon" />
     <base href="{{url_for('ui')}}">
   </head>
-  <body ng-controller="AppCtrl">
-    <nav class="navbar navbar-default navbar-static-top" role="navigation">
-      <div class="container-fluid">
-        <form class="navbar-form navbar-left"
-          role="search" ng-submit="submitSearch(form)">
-          <div class="form-group">
-            <div class="input-group navbar-searchbox">
-              <span class="input-group-addon brand-field">{{config.APP_TITLE}}</span>
-              <input type="text" class="search-query form-control" autofocus
-                ng-model="query.state.q" placeholder="Search people, companies and other entities"
-                typeahead="entity for entity in suggestEntities($viewValue)"
-                typeahead-min-length="2"
-                typeahead-focus-first="false"
-                typeahead-template-url="entity_link.html"
-                typeahead-on-select="acceptSuggestion($item)">
-              
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="clearSearch()">
-                  <i class="fa fa-refresh"></i> Reset</button>
-              </span>
-            </div>
-          </div>
-        </form>
-
-        <div id="navbar" class="collapse navbar-collapse navbar-right">
-          <ul class="nav navbar-nav">
-            <li ng-show="!session.logged_in" ng-cloak>
-              {% raw %}
-                <a href='/api/1/sessions/login' target='_self'>
-                  <i class="fa fa-twitter"></i> Sign in
-                </a>
-              {% endraw %}
-            </li>
-            <li ng-show="session.logged_in" ng-cloak>
-              <a ng-click="editProfile()" ng-bind="session.user.display_name"></a>
-            </li>
-            <li ng-show="session.logged_in" ng-cloak>
-              <a href="/api/1/sessions/logout" target="_self">
-                <i class="fa fa-sign-out"></i> Logout
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
+  <body>
     {% raw %}
-    <div class="container-fluid flashes" ng-cloak>
-      <div class="alert alert-{{flash.getMessage()[1]}} animate slide-down" ng-show="flash.getMessage()">
-        <p>{{flash.getMessage()[0]}}</p>
+      <div ng-controller="AppCtrl">
+          <nav class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+              <a class="navbar-brand" href="/">datawi.re</a>
+              <div id="navbar" class="collapse navbar-collapse navbar-right">
+                <ul class="nav navbar-nav">
+                  <li ng-show="!session.logged_in" ng-cloak>
+                    <a href='/api/1/sessions/login' target='_self'>
+                        <i class="fa fa-twitter"></i> Sign in
+                    </a>
+                  </li>
+                  <li ng-show="session.logged_in" ng-cloak>
+                    <a ng-click="editProfile()" ng-bind="session.user.login"></a>
+                  </li>
+                  <li ng-show="session.logged_in" ng-cloak>
+                    <a ng-click="logoutSession()">
+                      <i class="fa fa-sign-out"></i> Logout
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <div ng-show="flash.getMessage()" class="alert-flash alert alert-{{flash.getType()}}">
+            <p>{{flash.getMessage()}}</p>
+          </div>
+          <div class="container" ng-view></div>
       </div>
-    </div>
     {% endraw %}
-
-    <div id="airlock" class="container-fluid" ng-view></div>
-
     <script src="{{url_for('static', filename='dist/vendor.js')}}"></script>
     {% if config.DEBUG %}
       <script src="{{url_for('static', filename='dist/templates.js')}}"></script>
