@@ -1,19 +1,14 @@
-datawire.controller('UsersProfileCtrl', ['$scope', '$location', '$modalInstance', '$http', 'Session',
-  function($scope, $location, $modalInstance, $http, Session) {
-  $scope.user = {};
-  $scope.session = {};
-
-  Session.get(function(session) {
-    $scope.user = session.user;
-    $scope.session = session;
-  });
+datawire.controller('UsersProfileCtrl', ['$scope', '$location', '$modalInstance', '$http', 'session', 'user',
+  function($scope, $location, $modalInstance, $http, session, user) {
+  $scope.user = user;
+  $scope.session = session;
 
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
 
   $scope.update = function(form) {
-    var res = $http.post('/api/1/users/' + $scope.user.id, $scope.user);
+    var res = $http.post('/api/1/users/' + $scope.user.login, $scope.user);
     res.success(function(data) {
       $scope.user = data;
       $scope.session.user = data;

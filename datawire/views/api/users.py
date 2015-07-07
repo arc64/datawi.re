@@ -33,4 +33,4 @@ def update(login):
     user.update(request_data())
     db.session.add(user)
     db.session.commit()
-    return jsonify(user)
+    return view(login)

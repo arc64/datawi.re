@@ -38,7 +38,7 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
   $locationProvider.html5Mode(true);
 }]);
 ;datawire.controller('AppCtrl', ['$scope', '$rootScope', '$location', '$route', '$http', '$modal', '$q',
-                             'Flash', 'Session',
+                                'Flash', 'Session',
   function($scope, $rootScope, $location, $route, $http, $modal, $q, Flash, Session) {
   $scope.session = {logged_in: false};
   $scope.flash = Flash;
@@ -57,17 +57,22 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
   });
 
   $scope.logoutSession = function() {
-    console.log('FOOOO!');
     Session.logout(function(session) {
       $scope.session = session;
     });
   };
 
   $scope.editProfile = function() {
-    var d = $modal.open({
-        templateUrl: 'templates/users/profile.html',
-        controller: 'UsersProfileCtrl',
-        backdrop: true
+    $http.get('/api/1/users/' + $scope.session.user.login).success(function(user) {
+      var d = $modal.open({
+          templateUrl: 'templates/users/profile.html',
+          controller: 'UsersProfileCtrl',
+          backdrop: true,
+          resolve: {
+            user: function() { return user; },
+            session: function() { return $scope.session; }
+          }
+      });
     });
   };
 
@@ -286,7 +291,6 @@ datawire.controller('EntitiesIndexCtrl', ['$scope', '$location', '$http', '$rout
 
   var logout = function(cb) {
     $http.post('/api/1/sessions/logout').then(function() {
-      console.log('LOGOUTED!');
       flush();
       get(cb);
     });
@@ -337,22 +341,17 @@ datawire.factory('Validation', ['Flash', function(Flash) {
     }
   };
 }]);
-;datawire.controller('UsersProfileCtrl', ['$scope', '$location', '$modalInstance', '$http', 'Session',
-  function($scope, $location, $modalInstance, $http, Session) {
-  $scope.user = {};
-  $scope.session = {};
-
-  Session.get(function(session) {
-    $scope.user = session.user;
-    $scope.session = session;
-  });
+;datawire.controller('UsersProfileCtrl', ['$scope', '$location', '$modalInstance', '$http', 'session', 'user',
+  function($scope, $location, $modalInstance, $http, session, user) {
+  $scope.user = user;
+  $scope.session = session;
 
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
 
   $scope.update = function(form) {
-    var res = $http.post('/api/1/users/' + $scope.user.id, $scope.user);
+    var res = $http.post('/api/1/users/' + $scope.user.login, $scope.user);
     res.success(function(data) {
       $scope.user = data;
       $scope.session.user = data;

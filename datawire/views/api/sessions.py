@@ -30,7 +30,6 @@ def status():
         'logged_in': authz.logged_in(),
         'api_key': current_user.api_key if authz.logged_in() else None,
         'user': current_user if authz.logged_in() else None,
-        'permissions': {},
         'logout': url_for('.logout')
     })
 

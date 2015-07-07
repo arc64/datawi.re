@@ -37,20 +37,11 @@ angular.module("templates/users/profile.html", []).run(["$templateCache", functi
   $templateCache.put("templates/users/profile.html",
     "<div class=\"modal-header\">\n" +
     "  <button type=\"button\" class=\"close\" ng-click=\"cancel()\" aria-hidden=\"true\">&times;</button>\n" +
-    "  <h4 class=\"modal-title\">Profile: {{session.user.display_name}}</h4>\n" +
+    "  <h4 class=\"modal-title\">Profile: {{session.user.login}}</h4>\n" +
     "</div>\n" +
     "\n" +
     "<form class=\"form-horizontal\" role=\"form\" name=\"editUser\" ng-submit=\"update(editUser)\">\n" +
     "  <div class=\"modal-body\">\n" +
-    "    <div class=\"form-group\" ng-class=\"{'has-error': editUser.display_name.$invalid}\">\n" +
-    "      <label class=\"col-sm-2 control-label\" for=\"display_name\">Name</label>\n" +
-    "      <div class=\"col-sm-10\">\n" +
-    "        <input type=\"text\" class=\"form-control\" id=\"display_name\" name=\"display_name\" ng-model=\"user.display_name\"\n" +
-    "          placeholder=\"Your full name\">\n" +
-    "        <p class=\"help-block\" ng-show=\"editUser.full_name.$invalid\" ng-bind=\"editUser.full_name.$message\"></p>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "\n" +
     "    <div class=\"form-group\" ng-class=\"{'has-error': editUser.email.$invalid}\">\n" +
     "      <label class=\"col-sm-2 control-label\" for=\"email\">E-Mail</label>\n" +
     "      <div class=\"col-sm-10\">\n" +

@@ -75,11 +75,11 @@ module.exports = function(grunt) {
         tasks: ['html2js']
       },
       js: {
-        files: ['src/**/*.js'],
+        files: ['js/**/*.js'],
         tasks: ['concat']
       },
       style: {
-        files: ['less/**/*.less'],
+        files: ['style/**/*.less'],
         tasks: ['less']
       },
     }
