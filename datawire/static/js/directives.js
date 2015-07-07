@@ -1,4 +1,4 @@
-aleph.directive('alephPager', ['$timeout', function ($timeout) {
+datawire.directive('alephPager', ['$timeout', function ($timeout) {
     return {
         restrict: 'E',
         scope: {

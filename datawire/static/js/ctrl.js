@@ -1,7 +1,7 @@
 
-aleph.controller('AppCtrl', ['$scope', '$rootScope', '$location', '$route', '$http', '$modal', '$q',
-                             'Flash', 'Session', 'Query', 'QueryContext',
-  function($scope, $rootScope, $location, $route, $http, $modal, $q, Flash, Session, Query, QueryContext) {
+datawire.controller('AppCtrl', ['$scope', '$rootScope', '$location', '$route', '$http', '$modal', '$q',
+                             'Flash', 'Session',
+  function($scope, $rootScope, $location, $route, $http, $modal, $q, Flash, Session) {
   $scope.session = {logged_in: false};
   $scope.flash = Flash;
 
@@ -16,7 +16,6 @@ aleph.controller('AppCtrl', ['$scope', '$rootScope', '$location', '$route', '$ht
         $location.path('/');
       }
     });
-    $scope.query.state = Query.load();
   });
 
   $scope.editProfile = function() {
@@ -30,13 +29,13 @@ aleph.controller('AppCtrl', ['$scope', '$rootScope', '$location', '$route', '$ht
 }]);
 
 
-aleph.controller('IndexCtrl', ['$scope', function($scope) {
+datawire.controller('IndexCtrl', ['$scope', function($scope) {
 
 }]);
 
 
 
-aleph.controller('ProfileCtrl', ['$scope', '$location', '$modalInstance', '$http', 'Session',
+datawire.controller('ProfileCtrl', ['$scope', '$location', '$modalInstance', '$http', 'Session',
   function($scope, $location, $modalInstance, $http, Session) {
   $scope.user = {};
   $scope.session = {};

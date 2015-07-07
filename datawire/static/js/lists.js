@@ -1,5 +1,5 @@
 
-aleph.directive('listsFrame', ['$http', function($http) {
+datawire.directive('listsFrame', ['$http', function($http) {
   return {
     restrict: 'E',
     transclude: true,
@@ -7,7 +7,7 @@ aleph.directive('listsFrame', ['$http', function($http) {
       'list': '=',
       'selected': '@'
     },
-    templateUrl: 'lists_frame.html',
+    templateUrl: 'lists/frame.html',
     link: function (scope, element, attrs, model) {
       $http.get('/api/1/lists').then(function(res) {
         scope.lists = res.data;
@@ -17,7 +17,7 @@ aleph.directive('listsFrame', ['$http', function($http) {
 }]);
 
 
-aleph.controller('ListsEditCtrl', ['$scope', '$location', '$http', '$routeParams', '$modal',
+datawire.controller('ListsEditCtrl', ['$scope', '$location', '$http', '$routeParams', '$modal',
                                    'Flash', 'Validation', 'QueryContext',
   function($scope, $location, $http, $routeParams, $modal, Flash, Validation, QueryContext) {
   
@@ -73,7 +73,7 @@ aleph.controller('ListsEditCtrl', ['$scope', '$location', '$http', '$routeParams
 }]);
 
 
-aleph.controller('ListsNewCtrl', ['$scope', '$location', '$http', '$routeParams',
+datawire.controller('ListsNewCtrl', ['$scope', '$location', '$http', '$routeParams',
                                   'Validation', 'QueryContext',
   function($scope, $location, $http, $routeParams, Validation, QueryContext) {
   $scope.list = {'public': false, 'new': true};
@@ -94,8 +94,8 @@ aleph.controller('ListsNewCtrl', ['$scope', '$location', '$http', '$routeParams'
 }]);
 
 
-aleph.controller('ListsDeleteCtrl', ['$scope', '$location', '$http', '$modalInstance', 'list',
-                                     'Flash', 'QueryContext',
+datawire.controller('ListsDeleteCtrl', ['$scope', '$location', '$http', '$modalInstance', 'list',
+                                        'Flash', 'QueryContext',
   function($scope, $location, $http, $modalInstance, list, Flash, QueryContext) {
   $scope.list = list;
   

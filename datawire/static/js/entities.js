@@ -1,5 +1,5 @@
 
-aleph.controller('ListsEntitiesCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation', 'Flash',
+datawire.controller('ListsEntitiesCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation', 'Flash',
   function($scope, $location, $http, $routeParams, Validation, Flash) {
   
   var apiUrl = '/api/1/lists/' + $routeParams.id;

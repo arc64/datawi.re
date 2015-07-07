@@ -1,7 +1,7 @@
-var aleph = angular.module('aleph', ['ngRoute', 'ngAnimate', 'angular-loading-bar', 'ui.bootstrap',
-                                     'debounce', 'truncate', 'infinite-scroll']);
+var datawire = angular.module('datawire', ['ngRoute', 'ngAnimate', 'angular-loading-bar', 'ui.bootstrap',
+                                           'debounce', 'truncate', 'infinite-scroll']);
 
-aleph.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
+datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
     function($routeProvider, $locationProvider, cfpLoadingBarProvider) {
 
   cfpLoadingBarProvider.includeSpinner = false;
@@ -12,19 +12,19 @@ aleph.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
   });
 
   $routeProvider.when('/lists/new', {
-    templateUrl: 'lists_new.html',
+    templateUrl: 'lists/new.html',
     controller: 'ListsNewCtrl',
     loginRequired: true
   });
 
   $routeProvider.when('/lists/:id', {
-    templateUrl: 'lists_edit.html',
+    templateUrl: 'lists/edit.html',
     controller: 'ListsEditCtrl',
     loginRequired: true
   });
 
   $routeProvider.when('/lists/:id/entities', {
-    templateUrl: 'lists_entities.html',
+    templateUrl: 'lists/entities.html',
     controller: 'ListsEntitiesCtrl',
     reloadOnSearch: false,
     loginRequired: true
@@ -39,14 +39,14 @@ aleph.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
 }]);
 
 
-aleph.directive('entityIcon', ['$http', function($http) {
+datawire.directive('entityIcon', ['$http', function($http) {
   return {
     restrict: 'E',
     transclude: true,
     scope: {
       'category': '='
     },
-    templateUrl: 'entity_icon.html',
+    templateUrl: 'entities/icon.html',
     link: function (scope, element, attrs, model) {
     }
   };

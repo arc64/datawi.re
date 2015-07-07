@@ -1,5 +1,5 @@
 
-aleph.factory('Session', ['$http', '$q', function($http, $q) {
+datawire.factory('Session', ['$http', '$q', function($http, $q) {
     var dfd = null;
 
     var reset = function() {
@@ -25,7 +25,7 @@ aleph.factory('Session', ['$http', '$q', function($http, $q) {
 }]);
 
 
-aleph.factory('Flash', ['$rootScope', '$timeout', function($rootScope, $timeout) {
+datawire.factory('Flash', ['$rootScope', '$timeout', function($rootScope, $timeout) {
   // Message flashing.
   var currentMessage = null;
 
@@ -47,7 +47,7 @@ aleph.factory('Flash', ['$rootScope', '$timeout', function($rootScope, $timeout)
 }]);
 
 
-aleph.factory('Validation', ['Flash', function(Flash) {
+datawire.factory('Validation', ['Flash', function(Flash) {
   // handle server-side form validation errors.
   return {
     handle: function(form) {
