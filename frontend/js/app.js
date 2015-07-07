@@ -8,7 +8,10 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
 
   $routeProvider.when('/', {
     templateUrl: 'templates/watchlists/index.html',
-    controller: 'WatchlistsIndexCtrl'
+    controller: 'WatchlistsIndexCtrl',
+    resolve: {
+      'watchlists': loadWatchlists
+    }
   });
 
   $routeProvider.when('/lists/new', {

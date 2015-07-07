@@ -382,38 +382,36 @@ angular.module("templates/watchlists/index.html", []).run(["$templateCache", fun
 
 angular.module("templates/watchlists/new.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/watchlists/new.html",
-    "<lists-frame list=\"list\">\n" +
-    "  <form class=\"form-horizontal\" role=\"form\" name=\"newList\" ng-submit=\"create(newList)\">\n" +
-    "    <div class=\"row\">\n" +
-    "      <div class=\"col-md-6\">   \n" +
-    "        <div class=\"form-group\" ng-class=\"{'has-error': newList.label.$invalid}\">\n" +
-    "          <label class=\"col-sm-3 control-label\" for=\"label\">Label</label>\n" +
-    "          <div class=\"col-sm-9\">\n" +
-    "            <input type=\"text\" class=\"form-control\" id=\"label\" name=\"label\" ng-model=\"list.label\"\n" +
-    "              placeholder=\"The list's label\">\n" +
-    "            <p class=\"help-block\" ng-show=\"newList.label.$invalid\" ng-bind=\"newList.label.$message\"></p>\n" +
-    "          </div>\n" +
+    "<form class=\"form-horizontal\" role=\"form\" name=\"newList\" ng-submit=\"create(newList)\">\n" +
+    "  <div class=\"row\">\n" +
+    "    <div class=\"col-md-6\">\n" +
+    "      <div class=\"form-group\" ng-class=\"{'has-error': newList.label.$invalid}\">\n" +
+    "        <label class=\"col-sm-3 control-label\" for=\"label\">Label</label>\n" +
+    "        <div class=\"col-sm-9\">\n" +
+    "          <input type=\"text\" class=\"form-control\" id=\"label\" name=\"label\" ng-model=\"list.label\"\n" +
+    "            placeholder=\"The list's label\">\n" +
+    "          <p class=\"help-block\" ng-show=\"newList.label.$invalid\" ng-bind=\"newList.label.$message\"></p>\n" +
     "        </div>\n" +
+    "      </div>\n" +
     "\n" +
-    "        <div class=\"form-group\">\n" +
-    "          <div class=\"col-sm-offset-3 col-sm-9\">\n" +
-    "            <div class=\"checkbox\">\n" +
-    "              <label>\n" +
-    "                <input type=\"checkbox\" ng-model=\"list.public\"> Publicly visible\n" +
-    "              </label>\n" +
-    "            </div>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "\n" +
-    "        <div class=\"form-group\">\n" +
-    "          <div class=\"col-sm-offset-3 col-sm-9\">\n" +
-    "            <button type=\"submit\" class=\"btn btn-primary\"\n" +
-    "              ng-disabled=\"!canCreate()\">Create</button>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <div class=\"col-sm-offset-3 col-sm-9\">\n" +
+    "          <div class=\"checkbox\">\n" +
+    "            <label>\n" +
+    "              <input type=\"checkbox\" ng-model=\"list.public\"> Publicly visible\n" +
+    "            </label>\n" +
     "          </div>\n" +
     "        </div>\n" +
     "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <div class=\"col-sm-offset-3 col-sm-9\">\n" +
+    "          <button type=\"submit\" class=\"btn btn-primary\"\n" +
+    "            ng-disabled=\"!canCreate()\">Create</button>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
     "    </div>\n" +
-    "  </form>\n" +
-    "</lists-frame>\n" +
+    "  </div>\n" +
+    "</form>\n" +
     "");
 }]);
