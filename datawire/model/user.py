@@ -48,6 +48,9 @@ class User(db.Model):
         return {
             'id': self.id,
             'login': self.login,
+            'is_admin': self.is_admin,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
             'api_url': url_for('users.view', login=self.login)
         }
 
@@ -72,7 +75,7 @@ class User(db.Model):
 
     @classmethod
     def all(cls):
-        q = db.session.query(cls).filter_by(active=True)
+        q = db.session.query(cls)
         return q
 
     @classmethod
