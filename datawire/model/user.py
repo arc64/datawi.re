@@ -9,28 +9,25 @@ log = logging.getLogger(__name__)
 
 
 @login_manager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+def load_user(login):
+    return User.by_login(login)
 
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.Unicode(255))
     email = db.Column(db.Unicode, nullable=True)
-    display_name = db.Column(db.Unicode, nullable=True)
-    is_admin = db.Column(db.Boolean, nullable=False, default=False)
-    active = db.Column(db.Boolean, nullable=False, default=True)
-
-    twitter_id = db.Column(db.Unicode)
-    facebook_id = db.Column(db.Unicode)
-
+    oauth_id = db.Column(db.Unicode)
     api_key = db.Column(db.Unicode, default=make_token)
+
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow,
                            onupdate=datetime.utcnow)
 
     def is_active(self):
-        return self.active
+        return True
 
     def is_authenticated(self):
         return True
@@ -39,42 +36,35 @@ class User(db.Model):
         return False
 
     def get_id(self):
-        return unicode(self.id)
+        return self.login
 
     def __repr__(self):
-        return '<User(%r,%r)>' % (self.id, self.email)
+        return '<User(%r,%r)>' % (self.id, self.login)
 
     def __unicode__(self):
-        return self.display_name
+        return self.login
 
     def to_dict(self):
         return {
             'id': self.id,
-            'api_url': url_for('users.view', id=self.id),
-            'email': self.email,
-            'display_name': self.display_name
+            'login': self.login,
+            'api_url': url_for('users.view', login=self.login)
         }
 
     def update(self, data):
         data = UserForm().deserialize(data)
-        self.display_name = data.get('display_name')
         self.email = data.get('email')
 
     @classmethod
     def load(cls, data):
-        user = None
-        if 'twitter_id' in data:
-            user = cls.by_twitter_id(data.get('twitter_id'))
-        elif 'facebook_id' in data:
-            user = cls.by_facebook_id(data.get('facebook_id'))
+        user = cls.by_oauth_id(data.get('oauth_id'))
+
         if user is None:
             user = cls()
+            user.oauth_id = data.get('oauth_id')
 
-        user.twitter_id = data.get('twitter_id')
-        user.facebook_id = data.get('facebook_id')
-        if not user.display_name:
-            user.display_name = data.get('display_name')
-        if not user.email:
+        if data.get('email'):
+            # FIXME: better to overwrite with upstream or keep?
             user.email = data.get('email')
         db.session.add(user)
         return user
@@ -85,8 +75,8 @@ class User(db.Model):
         return q
 
     @classmethod
-    def by_id(cls, id):
-        q = db.session.query(cls).filter_by(id=int(id))
+    def by_login(cls, login):
+        q = db.session.query(cls).filter_by(login=login)
         return q.first()
 
     @classmethod
@@ -95,11 +85,6 @@ class User(db.Model):
         return q.first()
 
     @classmethod
-    def by_twitter_id(cls, twitter_id):
-        q = db.session.query(cls).filter_by(twitter_id=str(twitter_id))
-        return q.first()
-
-    @classmethod
-    def by_facebook_id(cls, facebook_id):
-        q = db.session.query(cls).filter_by(facebook_id=str(facebook_id))
+    def by_oauth_id(cls, oauth_id):
+        q = db.session.query(cls).filter_by(oauth_id=unicode(oauth_id))
         return q.first()
