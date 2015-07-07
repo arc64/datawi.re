@@ -39,12 +39,12 @@ class UserRef(Ref):
 class ListRef(Ref):
 
     def decode(self, cstruct):
-        from aleph.model.list import List
+        from aleph.model.watchlist import Watchlist
 
-        if isinstance(cstruct, List):
+        if isinstance(cstruct, Watchlist):
             return cstruct
         if isinstance(cstruct, (basestring, int)):
-            return List.by_id(cstruct)
+            return Watchlist.by_id(cstruct)
         if isinstance(cstruct, dict):
             return self.decode(cstruct.get('id'))
         return None
@@ -53,17 +53,12 @@ class ListRef(Ref):
 class UserForm(colander.MappingSchema):
     email = colander.SchemaNode(colander.String(),
                                 validator=colander.Email())
-    display_name = colander.SchemaNode(colander.String())
+    login = colander.SchemaNode(colander.String())
 
 
-class ListUsers(colander.SequenceSchema):
-    user = colander.SchemaNode(UserRef())
-
-
-class ListForm(colander.MappingSchema):
-    label = colander.SchemaNode(colander.String())
+class WatchlistForm(colander.MappingSchema):
+    slug = colander.SchemaNode(colander.String())
     public = colander.SchemaNode(colander.Boolean())
-    users = ListUsers()
 
 
 class EntitySelectors(colander.SequenceSchema):
@@ -75,4 +70,4 @@ class EntityForm(colander.MappingSchema):
     category = colander.SchemaNode(colander.String(),
                                    validator=colander.OneOf(CATEGORIES))
     selectors = EntitySelectors()
-    list = colander.SchemaNode(ListRef())
+    watchlist = colander.SchemaNode(ListRef())

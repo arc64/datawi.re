@@ -23,9 +23,9 @@ class Entity(db.Model):
     creator = db.relationship(User, backref=db.backref('entities',
                               lazy='dynamic', cascade='all, delete-orphan'))
 
-    list_id = db.Column(db.Integer(), db.ForeignKey('list.id'))
-    list = db.relationship('List', backref=db.backref('entities',
-                           lazy='dynamic', cascade='all, delete-orphan'))
+    watchlist_id = db.Column(db.Unicode(50), db.ForeignKey('watchlist.id'))
+    watchlist = db.relationship('Watchlist', backref=db.backref('entities',
+                                lazy='dynamic', cascade='all, delete-orphan'))
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow,
@@ -39,7 +39,7 @@ class Entity(db.Model):
             'category': self.category,
             'creator_id': self.creator_id,
             'selectors': [s.text for s in self.selectors],
-            'list_id': self.list_id,
+            'watchlist_id': self.watchlist_id,
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
@@ -65,7 +65,7 @@ class Entity(db.Model):
     def update(self, data):
         data = EntityForm().deserialize(data)
         self.label = data.get('label')
-        self.list = data.get('list')
+        self.watchlist = data.get('watchlist')
         self.category = data.get('category')
 
         selectors = set(data.get('selectors'))

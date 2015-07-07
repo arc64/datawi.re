@@ -3,7 +3,7 @@ from flask.ext.login import current_user
 from werkzeug.exceptions import BadRequest
 from apikit import obj_or_404, jsonify, Pager, request_data
 
-from datawire.model import Entity, List, db
+from datawire.model import Entity, Watchlist, db
 from datawire.model.forms import EntityForm
 from datawire import authz
 
@@ -12,12 +12,11 @@ blueprint = Blueprint('entities', __name__)
 
 @blueprint.route('/api/1/entities', methods=['GET'])
 def index():
-    list_ids = List.user_list_ids(current_user)
-    filter_lists = request.args.getlist('list')
+    watchlist_ids = Watchlist.user_list_ids(current_user)
+    filter_lists = request.args.getlist('watchlist')
     if len(filter_lists):
         try:
-            filter_lists = [int(f) for f in filter_lists]
-            list_ids = [l for l in list_ids if l in filter_lists]
+            list_ids = [l for l in watchlist_ids if l in filter_lists]
         except ValueError:
             raise BadRequest()
 

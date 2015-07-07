@@ -5,14 +5,14 @@ from sqlalchemy import or_
 
 from datawire.core import db, url_for
 from datawire.model.user import User
-from datawire.model.forms import ListForm
+from datawire.model.forms import WatchlistForm
 
 log = logging.getLogger(__name__)
 
 
-class List(db.Model):
+class Watchlist(db.Model):
     id = db.Column(db.Unicode(50), primary_key=True)
-    label = db.Column(db.Unicode)
+    slug = db.Column(db.Unicode(250))
     public = db.Column(db.Boolean, default=False)
 
     owner_id = db.Column(db.Integer(), db.ForeignKey('user.id'),
@@ -26,9 +26,9 @@ class List(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'api_url': url_for('lists.view', id=self.id),
+            'api_url': url_for('watchlists.view', id=self.id),
             'entities_api_url': url_for('entities.index', list=self.id),
-            'label': self.label,
+            'slug': self.slug,
             'public': self.public,
             'owner': self.owner,
             'created_at': self.created_at,
@@ -44,14 +44,10 @@ class List(db.Model):
         return lst
 
     def update(self, data, user):
-        data = ListForm().deserialize(data)
-        self.label = data.get('label')
+        data = WatchlistForm().deserialize(data)
+        self.slug = data.get('slug')
         if data.get('public') is not None:
             self.public = data.get('public')
-        users = set(data.get('users', []))
-        if user is not None:
-            users.add(user)
-        self.users = list(users)
 
     def delete(self):
         # for entity in self.entities:
@@ -59,8 +55,9 @@ class List(db.Model):
         db.session.delete(self)
 
     @classmethod
-    def by_label(cls, label):
-        q = db.session.query(cls).filter_by(label=label)
+    def by_slug(cls, login, slug):
+        q = db.session.query(cls).filter_by(slug=slug)
+        q = q.filter(cls.owner.login == login)
         return q.first()
 
     @classmethod
@@ -69,7 +66,7 @@ class List(db.Model):
         return q.first()
 
     @classmethod
-    def user_list_ids(cls, user=None, include_public=True):
+    def user_list_ids(cls, user, include_public=True):
         logged_in = user is not None and user.is_authenticated()
         q = db.session.query(cls.id)
         conds = []
@@ -96,12 +93,12 @@ class List(db.Model):
         from aleph.model.selector import Selector
         q = db.session.query(Selector.normalized)
         q = q.join(Entity, Entity.id == Selector.entity_id)
-        q = q.filter(Entity.list_id == self.id)
+        q = q.filter(Entity.watchlist_id == self.id)
         q = q.distinct()
         return set([r[0] for r in q])
 
     def __repr__(self):
-        return '<List(%r, %r)>' % (self.id, self.label)
+        return '<Watchlist(%r, %r)>' % (self.id, self.slug)
 
     def __unicode__(self):
-        return self.label
+        return self.slug
