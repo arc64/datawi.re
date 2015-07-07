@@ -3,8 +3,6 @@ from flask.ext.assets import Bundle
 from datawire.core import assets
 
 deps_assets = Bundle(
-    'vendor/jquery/dist/jquery.js',
-    'vendor/d3/d3.js',
     'vendor/angular/angular.js',
     'vendor/ng-debounce/angular-debounce.js',
     'vendor/angular-route/angular-route.js',
@@ -21,15 +19,6 @@ app_assets = Bundle(
     'js/util.js',
     'js/app.js',
     'js/services.js',
-    'js/search/query.js',
-    'js/search/context.js',
-    'js/search/loaders.js',
-    'js/search/frame.js',
-    'js/search/table.js',
-    'js/search/graph.js',
-    'js/search/export.js',
-    'js/crawlers/doccloud.js',
-    'js/sources.js',
     'js/lists.js',
     'js/entities.js',
     'js/directives.js',

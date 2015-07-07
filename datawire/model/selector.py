@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 
 
 class Selector(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Unicode(50), primary_key=True)
     _text = db.Column('text', db.Unicode, index=True)
     normalized = db.Column(db.Unicode, index=True)
 
