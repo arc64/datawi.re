@@ -3,7 +3,6 @@ from flask import Flask
 from flask import url_for as _url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
-from flask.ext.assets import Environment
 from flask.ext.migrate import Migrate
 from flask.ext.oauth import OAuth
 # from kombu import Exchange, Queue
@@ -18,7 +17,7 @@ logging.getLogger('requests').setLevel(logging.WARNING)
 logging.getLogger('urllib3').setLevel(logging.WARNING)
 logging.getLogger('amqp').setLevel(logging.INFO)
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend')
 app.config.from_object(default_settings)
 app.config.from_envvar('DATAWIRE_SETTINGS', silent=True)
 app_name = app.config.get('APP_NAME')
@@ -39,8 +38,6 @@ login_manager.login_view = 'ui'
 
 # celery = Celery(app_name, broker=app.config['CELERY_BROKER_URL'])
 # celery.config_from_object(app.config)
-
-assets = Environment(app)
 
 
 def url_for(*a, **kw):

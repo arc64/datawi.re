@@ -4,7 +4,6 @@ from apikit import jsonify
 
 from datawire.core import app, login_manager
 from datawire.views.ui import ui # noqa
-from datawire.assets import assets # noqa
 from datawire.model import User
 from datawire.views.api.sessions import blueprint as sessions_api
 from datawire.views.api.users import blueprint as users_api

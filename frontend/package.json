@@ -1,0 +1,28 @@
+{
+  "name": "datawire",
+  "version": "0.0.1",
+  "description": "",
+  "main": "js/app.js",
+  "dependencies": {},
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-connect": "^0.10.1",
+    "grunt-contrib-less": "^1.0.1",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-html2js": "^0.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pudo/datawi.re.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pudo/datawi.re/issues"
+  },
+  "homepage": "http://datawi.re"
+}

@@ -8,7 +8,7 @@ APP_NAME = 'datwire'
 
 SECRET_KEY = env.get('SECRET_KEY', 'banana umbrella')
 
-SQLALCHEMY_DATABASE_URI = env.get('DATABASE_URL', 'sqlite:///aleph.sqlite3')
+SQLALCHEMY_DATABASE_URI = env.get('DATABASE_URL', 'sqlite:////Users/fl/Code/datawi.re/db.sqlite3')
 
 ALEMBIC_DIR = path.join(path.dirname(__file__), 'migrate')
 ALEMBIC_DIR = path.abspath(ALEMBIC_DIR)

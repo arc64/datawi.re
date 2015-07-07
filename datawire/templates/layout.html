@@ -6,9 +6,7 @@
     <title>{{config.APP_TITLE}}</title>
     
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    {% assets "css" %}
-      <link type="text/css" href="{{ ASSET_URL }}" rel="stylesheet">
-    {% endassets %}
+    <link type="text/css" href="{{url_for('static', filename='dist/app.css')}}" rel="stylesheet">
 
     <link rel="shortcut icon" href="http://assets.pudo.org/img/favicon.ico" type="image/x-icon" />
     <base href="{{url_for('ui')}}">
@@ -69,16 +67,12 @@
 
     <div id="airlock" class="container-fluid" ng-view></div>
 
-    {% for path, tmpl in templates %}
-      <script id="{{path}}" type="text/ng-template">{{ tmpl | safe }}</script>
-    {% endfor %}
-
-    {% assets "deps" %}
-      <script src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-
-    {% assets "app" %}
-      <script src="{{ ASSET_URL }}"></script>
-    {% endassets %}
+    <script src="{{url_for('static', filename='dist/vendor.js')}}"></script>
+    {% if config.DEBUG %}
+      <script src="{{url_for('static', filename='dist/templates.js')}}"></script>
+      <script src="{{url_for('static', filename='dist/datawire.js')}}"></script>
+    {% else %}
+      <script src="{{url_for('static', filename='dist/datawire.min.js')}}"></script>
+    {% endif %}
   </body>
 </html>

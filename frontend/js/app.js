@@ -1,5 +1,5 @@
 var datawire = angular.module('datawire', ['ngRoute', 'ngAnimate', 'angular-loading-bar', 'ui.bootstrap',
-                                           'debounce', 'truncate', 'infinite-scroll']);
+                                           'debounce', 'truncate', 'infinite-scroll', 'datawire.templates']);
 
 datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
     function($routeProvider, $locationProvider, cfpLoadingBarProvider) {
@@ -7,7 +7,7 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
   cfpLoadingBarProvider.includeSpinner = false;
 
   $routeProvider.when('/', {
-    templateUrl: 'index.html',
+    templateUrl: 'templates/index.html',
     controller: 'IndexCtrl'
   });
 

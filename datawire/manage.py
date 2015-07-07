@@ -1,13 +1,11 @@
 from flask.ext.script import Manager
-from flask.ext.assets import ManageAssets
 from flask.ext.migrate import MigrateCommand
 from flask.ext import migrate
 
 from datawire.model import db
-from datawire.views import app, assets
+from datawire.views import app
 
 manager = Manager(app)
-manager.add_command('assets', ManageAssets(assets))
 manager.add_command('db', MigrateCommand)
 
 
