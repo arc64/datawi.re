@@ -8155,28 +8155,6 @@ a {
   position: absolute;
   right: 1em;
 }
-.result {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: hidden;
-  padding: 0.4em 0 0.4em 0;
-  border-bottom: 1px solid #d7d7d7;
-}
-.result .source {
-  color: #aaa;
-  font-weight: bold;
-}
-.result .archive,
-.result .archive a {
-  color: #aaa;
-}
-.result .summary {
-  color: #d7d7d7;
-  font-size: 0.8em;
-}
-.result .title {
-  font-weight: bold;
-}
 .nav.nav-tabs,
 .search-bar {
   margin-bottom: 1em;
@@ -8212,28 +8190,4 @@ a {
 }
 .entity-icon.Other {
   color: #eb0080;
-}
-#graph .node {
-  stroke: #fff;
-  stroke-width: 1.5px;
-}
-#graph .node.active {
-  stroke: #337ab7;
-  stroke-width: 3px;
-}
-#graph .node.Person {
-  fill: #f15623;
-}
-#graph .node.Company {
-  fill: #95c93d;
-}
-#graph .node.Organization {
-  fill: #00b48d;
-}
-#graph .node.Other {
-  fill: #eb0080;
-}
-#graph .link {
-  stroke: #999;
-  stroke-opacity: .4;
 }

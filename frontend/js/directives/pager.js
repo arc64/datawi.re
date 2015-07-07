@@ -1,11 +1,11 @@
-datawire.directive('alephPager', ['$timeout', function ($timeout) {
+datawire.directive('pager', ['$timeout', function ($timeout) {
     return {
         restrict: 'E',
         scope: {
             'response': '=',
             'load': '&load'
         },
-        templateUrl: 'pager.html',
+        templateUrl: 'templates/directives/pager.html',
         link: function (scope, element, attrs, model) {
             scope.$watch('response', function(e) {
                 scope.showPager = false;

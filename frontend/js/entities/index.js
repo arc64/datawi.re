@@ -1,7 +1,7 @@
 
-datawire.controller('ListsEntitiesCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation', 'Flash',
+datawire.controller('EntitiesIndexCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation', 'Flash',
   function($scope, $location, $http, $routeParams, Validation, Flash) {
-  
+
   var apiUrl = '/api/1/lists/' + $routeParams.id;
   $scope.query = $location.search();
   $scope.list = {};
@@ -22,7 +22,7 @@ datawire.controller('ListsEntitiesCtrl', ['$scope', '$location', '$http', '$rout
       };
     } else if (val) {
       setTimeout(function() {
-        $('#edit-label-' + val).focus();  
+        $('#edit-label-' + val).focus();
       }, 20);
     }
   };

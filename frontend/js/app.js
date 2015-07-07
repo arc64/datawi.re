@@ -7,25 +7,25 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
   cfpLoadingBarProvider.includeSpinner = false;
 
   $routeProvider.when('/', {
-    templateUrl: 'templates/index.html',
-    controller: 'IndexCtrl'
+    templateUrl: 'templates/watchlists/index.html',
+    controller: 'WatchlistsIndexCtrl'
   });
 
   $routeProvider.when('/lists/new', {
-    templateUrl: 'lists/new.html',
-    controller: 'ListsNewCtrl',
+    templateUrl: 'templates/watchlists/new.html',
+    controller: 'WatchlistsNewCtrl',
     loginRequired: true
   });
 
   $routeProvider.when('/lists/:id', {
-    templateUrl: 'lists/edit.html',
-    controller: 'ListsEditCtrl',
+    templateUrl: 'templates/watchlists/edit.html',
+    controller: 'WatchlistsEditCtrl',
     loginRequired: true
   });
 
   $routeProvider.when('/lists/:id/entities', {
-    templateUrl: 'lists/entities.html',
-    controller: 'ListsEntitiesCtrl',
+    templateUrl: 'templates/entities/index.html',
+    controller: 'EntitiesIndexCtrl',
     reloadOnSearch: false,
     loginRequired: true
   });
@@ -36,18 +36,4 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
   });
 
   $locationProvider.html5Mode(true);
-}]);
-
-
-datawire.directive('entityIcon', ['$http', function($http) {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      'category': '='
-    },
-    templateUrl: 'entities/icon.html',
-    link: function (scope, element, attrs, model) {
-    }
-  };
 }]);

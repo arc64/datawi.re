@@ -7,25 +7,25 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
   cfpLoadingBarProvider.includeSpinner = false;
 
   $routeProvider.when('/', {
-    templateUrl: 'templates/index.html',
-    controller: 'IndexCtrl'
+    templateUrl: 'templates/watchlists/index.html',
+    controller: 'WatchlistsIndexCtrl'
   });
 
   $routeProvider.when('/lists/new', {
-    templateUrl: 'lists/new.html',
-    controller: 'ListsNewCtrl',
+    templateUrl: 'templates/watchlists/new.html',
+    controller: 'WatchlistsNewCtrl',
     loginRequired: true
   });
 
   $routeProvider.when('/lists/:id', {
-    templateUrl: 'lists/edit.html',
-    controller: 'ListsEditCtrl',
+    templateUrl: 'templates/watchlists/edit.html',
+    controller: 'WatchlistsEditCtrl',
     loginRequired: true
   });
 
   $routeProvider.when('/lists/:id/entities', {
-    templateUrl: 'lists/entities.html',
-    controller: 'ListsEntitiesCtrl',
+    templateUrl: 'templates/entities/index.html',
+    controller: 'EntitiesIndexCtrl',
     reloadOnSearch: false,
     loginRequired: true
   });
@@ -37,22 +37,7 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
 
   $locationProvider.html5Mode(true);
 }]);
-
-
-datawire.directive('entityIcon', ['$http', function($http) {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      'category': '='
-    },
-    templateUrl: 'entities/icon.html',
-    link: function (scope, element, attrs, model) {
-    }
-  };
-}]);
-;
-datawire.controller('AppCtrl', ['$scope', '$rootScope', '$location', '$route', '$http', '$modal', '$q',
+;datawire.controller('AppCtrl', ['$scope', '$rootScope', '$location', '$route', '$http', '$modal', '$q',
                              'Flash', 'Session',
   function($scope, $rootScope, $location, $route, $http, $modal, $q, Flash, Session) {
   $scope.session = {logged_in: false};
@@ -73,52 +58,33 @@ datawire.controller('AppCtrl', ['$scope', '$rootScope', '$location', '$route', '
 
   $scope.editProfile = function() {
     var d = $modal.open({
-        templateUrl: 'profile.html',
-        controller: 'ProfileCtrl',
+        templateUrl: 'templates/users/profile.html',
+        controller: 'UsersProfileCtrl',
         backdrop: true
     });
   };
 
 }]);
-
-
-datawire.controller('IndexCtrl', ['$scope', function($scope) {
-
-}]);
-
-
-
-datawire.controller('ProfileCtrl', ['$scope', '$location', '$modalInstance', '$http', 'Session',
-  function($scope, $location, $modalInstance, $http, Session) {
-  $scope.user = {};
-  $scope.session = {};
-
-  Session.get(function(session) {
-    $scope.user = session.user;
-    $scope.session = session;
-  });
-
-  $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
+;datawire.directive('entityIcon', ['$http', function($http) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      'category': '='
+    },
+    templateUrl: 'templates/entities/icon.html',
+    link: function (scope, element, attrs, model) {
+    }
   };
-
-  $scope.update = function(form) {
-    var res = $http.post('/api/1/users/' + $scope.user.id, $scope.user);
-    res.success(function(data) {
-      $scope.user = data;
-      $scope.session.user = data;
-      $modalInstance.dismiss('ok');
-    });
-  };  
 }]);
-;datawire.directive('alephPager', ['$timeout', function ($timeout) {
+;datawire.directive('pager', ['$timeout', function ($timeout) {
     return {
         restrict: 'E',
         scope: {
             'response': '=',
             'load': '&load'
         },
-        templateUrl: 'pager.html',
+        templateUrl: 'templates/directives/pager.html',
         link: function (scope, element, attrs, model) {
             scope.$watch('response', function(e) {
                 scope.showPager = false;
@@ -157,10 +123,26 @@ datawire.controller('ProfileCtrl', ['$scope', '$location', '$modalInstance', '$h
         }
     };
 }]);
+;datawire.directive('watchlistFrame', ['$http', function($http) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      'list': '=',
+      'selected': '@'
+    },
+    templateUrl: 'templates/watchlists/frame.html',
+    link: function (scope, element, attrs, model) {
+      $http.get('/api/1/lists').then(function(res) {
+        scope.lists = res.data;
+      })
+    }
+  };
+}]);
 ;
-datawire.controller('ListsEntitiesCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation', 'Flash',
+datawire.controller('EntitiesIndexCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation', 'Flash',
   function($scope, $location, $http, $routeParams, Validation, Flash) {
-  
+
   var apiUrl = '/api/1/lists/' + $routeParams.id;
   $scope.query = $location.search();
   $scope.list = {};
@@ -181,7 +163,7 @@ datawire.controller('ListsEntitiesCtrl', ['$scope', '$location', '$http', '$rout
       };
     } else if (val) {
       setTimeout(function() {
-        $('#edit-label-' + val).focus();  
+        $('#edit-label-' + val).focus();
       }, 20);
     }
   };
@@ -265,120 +247,25 @@ datawire.controller('ListsEntitiesCtrl', ['$scope', '$location', '$http', '$rout
   $scope.loadQuery();
 
 }]);
-;
-datawire.directive('listsFrame', ['$http', function($http) {
+;datawire.factory('Flash', ['$rootScope', '$timeout', function($rootScope, $timeout) {
+  // Message flashing.
+  var currentMessage = null;
+
+  $rootScope.$on("$routeChangeSuccess", function() {
+    currentMessage = null;
+  });
+
   return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      'list': '=',
-      'selected': '@'
+    message: function(message, type) {
+      currentMessage = [message, type];
+      $timeout(function() {
+        currentMessage = null;
+      }, 2000);
     },
-    templateUrl: 'lists/frame.html',
-    link: function (scope, element, attrs, model) {
-      $http.get('/api/1/lists').then(function(res) {
-        scope.lists = res.data;
-      })
+    getMessage: function() {
+      return currentMessage;
     }
   };
-}]);
-
-
-datawire.controller('ListsEditCtrl', ['$scope', '$location', '$http', '$routeParams', '$modal',
-                                   'Flash', 'Validation', 'QueryContext',
-  function($scope, $location, $http, $routeParams, $modal, Flash, Validation, QueryContext) {
-  
-  var apiUrl = '/api/1/lists/' + $routeParams.id;
-  $scope.list = {};
-  $scope.users = {};
-
-  $http.get(apiUrl).then(function(res) {
-    $scope.list = res.data;
-  })
-
-  $http.get('/api/1/users').then(function(res) {
-    $scope.users = res.data;
-  })
-  
-  $scope.canSave = function() {
-    return $scope.list.can_write;
-  };
-
-  $scope.hasUser = function(id) {
-    var users = $scope.list.users || [];
-    return users.indexOf(id) != -1;
-  };
-
-  $scope.toggleUser = function(id) {
-    var idx = $scope.list.users.indexOf(id);
-    if (idx != -1) {
-      $scope.list.users.splice(idx, 1);
-    } else {
-      $scope.list.users.push(id);
-    }
-  };
-
-  $scope.delete = function() {
-    var d = $modal.open({
-        templateUrl: 'lists_delete.html',
-        controller: 'ListsDeleteCtrl',
-        resolve: {
-            list: function () { return $scope.list; }
-        }
-    });
-  }
-
-  $scope.save = function(form) {
-    var res = $http.post(apiUrl, $scope.list);
-    res.success(function(data) {
-      QueryContext.reset();
-      Flash.message('Your changes have been saved.', 'success');
-    });
-    res.error(Validation.handle(form));
-  };
-
-}]);
-
-
-datawire.controller('ListsNewCtrl', ['$scope', '$location', '$http', '$routeParams',
-                                  'Validation', 'QueryContext',
-  function($scope, $location, $http, $routeParams, Validation, QueryContext) {
-  $scope.list = {'public': false, 'new': true};
-  
-  $scope.canCreate = function() {
-    return $scope.session.logged_in;
-  };
-
-  $scope.create = function(form) {
-      var res = $http.post('/api/1/lists', $scope.list);
-      res.success(function(data) {
-        QueryContext.reset();
-        $location.path('/lists/' + data.id + '/entities');
-      });
-      res.error(Validation.handle(form));
-  };
-
-}]);
-
-
-datawire.controller('ListsDeleteCtrl', ['$scope', '$location', '$http', '$modalInstance', 'list',
-                                        'Flash', 'QueryContext',
-  function($scope, $location, $http, $modalInstance, list, Flash, QueryContext) {
-  $scope.list = list;
-  
-  $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
-  };
-
-  $scope.delete = function() {
-    var res = $http.delete($scope.list.api_url);
-    res.then(function(data) {
-        QueryContext.reset();
-        $location.path('/lists');
-        $modalInstance.dismiss('ok');
-    });
-  };
-
 }]);
 ;
 datawire.factory('Session', ['$http', '$q', function($http, $q) {
@@ -405,30 +292,7 @@ datawire.factory('Session', ['$http', '$q', function($http, $q) {
         reset: reset
     };
 }]);
-
-
-datawire.factory('Flash', ['$rootScope', '$timeout', function($rootScope, $timeout) {
-  // Message flashing.
-  var currentMessage = null;
-
-  $rootScope.$on("$routeChangeSuccess", function() {
-    currentMessage = null;
-  });
-
-  return {
-    message: function(message, type) {
-      currentMessage = [message, type];
-      $timeout(function() {
-        currentMessage = null;
-      }, 2000);
-    },
-    getMessage: function() {
-      return currentMessage;
-    }
-  };
-}]);
-
-
+;
 datawire.factory('Validation', ['Flash', function(Flash) {
   // handle server-side form validation errors.
   return {
@@ -436,7 +300,7 @@ datawire.factory('Validation', ['Flash', function(Flash) {
       return function(res) {
         if (res.status == 400 || !form) {
           var errors = [];
-          
+
           for (var field in res.errors) {
             form[field].$setValidity('value', false);
             form[field].$message = res.errors[field];
@@ -457,42 +321,119 @@ datawire.factory('Validation', ['Flash', function(Flash) {
     }
   };
 }]);
+;datawire.controller('UsersProfileCtrl', ['$scope', '$location', '$modalInstance', '$http', 'Session',
+  function($scope, $location, $modalInstance, $http, Session) {
+  $scope.user = {};
+  $scope.session = {};
 
-;function forEachSorted(obj, iterator, context) {
-    var keys = sortedKeys(obj);
-    for (var i = 0; i < keys.length; i++) {
-        iterator.call(context, obj[keys[i]], keys[i]);
-    }
-    return keys;
-}
+  Session.get(function(session) {
+    $scope.user = session.user;
+    $scope.session = session;
+  });
 
-function sortedKeys(obj) {
-    var keys = [];
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            keys.push(key);
-        }
-    }
-    return keys.sort();
-}
+  $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
 
-function queryString(params) {
-    var parts = [];
-    forEachSorted(params, function(value, key) {
-      if (value === null || angular.isUndefined(value)) return;
-      if (!angular.isArray(value)) value = [value];
-
-      angular.forEach(value, function(v) {
-        if (angular.isObject(v)) {
-          if (angular.isDate(v)) {
-            v = v.toISOString();
-          } else {
-            v = angular.toJson(v);
-          }
-        }
-        parts.push(encodeURIComponent(key) + '=' +
-                   encodeURIComponent(v));
-      });
+  $scope.update = function(form) {
+    var res = $http.post('/api/1/users/' + $scope.user.id, $scope.user);
+    res.success(function(data) {
+      $scope.user = data;
+      $scope.session.user = data;
+      $modalInstance.dismiss('ok');
     });
-    return parts.join('&');
-}
+  };
+}]);
+;;datawire.controller('WatchlistsDeleteCtrl', ['$scope', '$location', '$http', '$modalInstance', 'list',
+                                        'Flash', 'QueryContext',
+  function($scope, $location, $http, $modalInstance, list, Flash, QueryContext) {
+  $scope.list = list;
+
+  $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
+
+  $scope.delete = function() {
+    var res = $http.delete($scope.list.api_url);
+    res.then(function(data) {
+        QueryContext.reset();
+        $location.path('/');
+        $modalInstance.dismiss('ok');
+    });
+  };
+
+}]);
+;datawire.controller('WatchlistsEditCtrl', ['$scope', '$location', '$http', '$routeParams', '$modal',
+                                          'Flash', 'Validation', 'QueryContext',
+  function($scope, $location, $http, $routeParams, $modal, Flash, Validation, QueryContext) {
+
+  var apiUrl = '/api/1/lists/' + $routeParams.id;
+  $scope.list = {};
+  $scope.users = {};
+
+  $http.get(apiUrl).then(function(res) {
+    $scope.list = res.data;
+  })
+
+  $http.get('/api/1/users').then(function(res) {
+    $scope.users = res.data;
+  })
+
+  $scope.canSave = function() {
+    return $scope.list.can_write;
+  };
+
+  $scope.hasUser = function(id) {
+    var users = $scope.list.users || [];
+    return users.indexOf(id) != -1;
+  };
+
+  $scope.toggleUser = function(id) {
+    var idx = $scope.list.users.indexOf(id);
+    if (idx != -1) {
+      $scope.list.users.splice(idx, 1);
+    } else {
+      $scope.list.users.push(id);
+    }
+  };
+
+  $scope.delete = function() {
+    var d = $modal.open({
+        templateUrl: 'templates/watchlists/delete.html',
+        controller: 'WatchlistsDeleteCtrl',
+        resolve: {
+            list: function () { return $scope.list; }
+        }
+    });
+  }
+
+  $scope.save = function(form) {
+    var res = $http.post(apiUrl, $scope.list);
+    res.success(function(data) {
+      QueryContext.reset();
+      Flash.message('Your changes have been saved.', 'success');
+    });
+    res.error(Validation.handle(form));
+  };
+
+}]);
+;datawire.controller('WatchlistsIndexCtrl', ['$scope', function($scope) {
+
+}]);
+;datawire.controller('WatchlistsNewCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation',
+  function($scope, $location, $http, $routeParams, Validation, QueryContext) {
+  $scope.list = {'public': false, 'new': true};
+
+  $scope.canCreate = function() {
+    return $scope.session.logged_in;
+  };
+
+  $scope.create = function(form) {
+      var res = $http.post('/api/1/lists', $scope.list);
+      res.success(function(data) {
+        $location.path('/lists/' + data.id + '/entities');
+      });
+      res.error(Validation.handle(form));
+  };
+
+}]);

@@ -19,21 +19,23 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        files: [{
-          src: ['dist/<%= pkg.name %>.js', 'dist/templates.js'],
-          dest: 'dist/<%= pkg.name %>.min.js'
-        },
-        {
-          src: ['bower_components/angular/angular.js',
-                'bower_components/ng-debounce/angular-debounce.js',
-                'bower_components/angular-route/angular-route.js',
-                'bower_components/angular-animate/angular-animate.js',
-                'bower_components/angular-loading-bar/build/loading-bar.js',
-                'bower_components/angular-truncate/src/truncate.js',
-                'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-                'bower_components/nginfinitescroll/build/ng-infinite-scroll.js'],
-          dest: 'dist/vendor.js'
-        }]
+        files: [
+            {
+                src: ['dist/<%= pkg.name %>.js', 'dist/templates.js'],
+                dest: 'dist/<%= pkg.name %>.min.js'
+            },
+            {
+                src: ['bower_components/angular/angular.js',
+                      'bower_components/ng-debounce/angular-debounce.js',
+                      'bower_components/angular-route/angular-route.js',
+                      'bower_components/angular-animate/angular-animate.js',
+                      'bower_components/angular-loading-bar/build/loading-bar.js',
+                      'bower_components/angular-truncate/src/truncate.js',
+                      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+                      'bower_components/nginfinitescroll/build/ng-infinite-scroll.js'],
+                dest: 'dist/vendor.js'
+            }
+        ]
       }
     },
     concat: {
@@ -70,15 +72,15 @@ module.exports = function(grunt) {
     watch: {
       templates: {
         files: ['templates/**/*.html'],
-        tasks: ['html2js']  
+        tasks: ['html2js']
       },
       js: {
         files: ['src/**/*.js'],
-        tasks: ['concat', 'uglify']  
+        tasks: ['concat', 'uglify']
       },
       style: {
         files: ['less/**/*.less'],
-        tasks: ['less']  
+        tasks: ['less']
       },
     }
   });

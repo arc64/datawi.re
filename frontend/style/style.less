@@ -157,35 +157,6 @@ a {
 }
 
 
-// Search results 
-.result {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: hidden;
-    padding: 0.4em 0 0.4em 0;
-    border-bottom: 1px solid @border-color;
-    //max-width: 90px;
-
-    .source {
-        color: #aaa;
-        font-weight: bold;
-    }
-
-    .archive, .archive a {
-        color: #aaa;
-    }
-
-    .summary {
-        color: @border-color;
-        font-size: 0.8em;
-    }
-
-    .title {
-        font-weight: bold;
-    }
-}
-
-
 // List entities page 
 .nav.nav-tabs, .search-bar {
     margin-bottom: 1em;
@@ -234,39 +205,5 @@ a {
 
     &.Other {
         color: @color-other;
-    }
-}
-
-
-#graph {
-    .node {
-        stroke: #fff;
-        stroke-width: 1.5px;
-
-        &.active {
-            stroke: @brand-primary;
-            stroke-width: 3px;
-        }
-
-        &.Person {
-            fill: @color-person;
-        }
-
-        &.Company {
-            fill: @color-company;
-        }
-
-        &.Organization {
-            fill: @color-organization;
-        }
-
-        &.Other {
-            fill: @color-other;
-        }
-    }
-
-    .link {
-        stroke: #999;
-        stroke-opacity: .4;
     }
 }

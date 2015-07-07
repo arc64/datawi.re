@@ -1,4 +1,16 @@
-angular.module('datawire.templates', ['templates/entities/icon.html', 'templates/entities/link.html', 'templates/index.html', 'templates/lists/delete.html', 'templates/lists/edit.html', 'templates/lists/entities.html', 'templates/lists/frame.html', 'templates/lists/new.html', 'templates/pager.html', 'templates/profile.html']);
+angular.module('datawire.templates', ['templates/directives/pager.html', 'templates/entities/icon.html', 'templates/entities/link.html', 'templates/users/profile.html', 'templates/watchlists/delete.html', 'templates/watchlists/edit.html', 'templates/watchlists/entities.html', 'templates/watchlists/frame.html', 'templates/watchlists/index.html', 'templates/watchlists/new.html']);
+
+angular.module("templates/directives/pager.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/directives/pager.html",
+    "<ul ng-show=\"showPager\" class=\"pagination pagination-sm pagination-cursors\">\n" +
+    "  <li ng-class=\"{'disabled': response.prev_url==null}\"><a ng-click=\"load({url: response.prev_url})\">&laquo;</a></li>\n" +
+    "  <li ng-repeat=\"page in pages\" ng-class=\"{'active': page.current}\">\n" +
+    "    <a ng-click=\"load({url: page.url})\">{{page.page}}</a>\n" +
+    "  </li>\n" +
+    "  <li ng-class=\"{'disabled': response.next_url==null}\"><a ng-click=\"load({url: response.next_url})\">&raquo;</a></li>\n" +
+    "</ul>\n" +
+    "");
+}]);
 
 angular.module("templates/entities/icon.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/entities/icon.html",
@@ -21,14 +33,54 @@ angular.module("templates/entities/link.html", []).run(["$templateCache", functi
     "");
 }]);
 
-angular.module("templates/index.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("templates/index.html",
-    "huhu\n" +
+angular.module("templates/users/profile.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/users/profile.html",
+    "<div class=\"modal-header\">\n" +
+    "  <button type=\"button\" class=\"close\" ng-click=\"cancel()\" aria-hidden=\"true\">&times;</button>\n" +
+    "  <h4 class=\"modal-title\">Profile: {{session.user.display_name}}</h4>\n" +
+    "</div>\n" +
+    "\n" +
+    "<form class=\"form-horizontal\" role=\"form\" name=\"editUser\" ng-submit=\"update(editUser)\">\n" +
+    "  <div class=\"modal-body\">\n" +
+    "    <div class=\"form-group\" ng-class=\"{'has-error': editUser.display_name.$invalid}\">\n" +
+    "      <label class=\"col-sm-2 control-label\" for=\"display_name\">Name</label>\n" +
+    "      <div class=\"col-sm-10\">\n" +
+    "        <input type=\"text\" class=\"form-control\" id=\"display_name\" name=\"display_name\" ng-model=\"user.display_name\"\n" +
+    "          placeholder=\"Your full name\">\n" +
+    "        <p class=\"help-block\" ng-show=\"editUser.full_name.$invalid\" ng-bind=\"editUser.full_name.$message\"></p>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"form-group\" ng-class=\"{'has-error': editUser.email.$invalid}\">\n" +
+    "      <label class=\"col-sm-2 control-label\" for=\"email\">E-Mail</label>\n" +
+    "      <div class=\"col-sm-10\">\n" +
+    "        <input type=\"text\" class=\"form-control\" id=\"email\" name=\"email\" ng-model=\"user.email\"\n" +
+    "          placeholder=\"Your E-Mail\">\n" +
+    "        <p class=\"help-block\" ng-show=\"editUser.email.$invalid\" ng-bind=\"editUser.email.$message\"></p>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"form-group\">\n" +
+    "      <label class=\"col-sm-2 control-label\" for=\"api_key\">API Key</label>\n" +
+    "      <div class=\"col-sm-10\">\n" +
+    "        <input type=\"text\" class=\"form-control\" id=\"api_key\" name=\"api_key\" ng-model=\"session.api_key\"\n" +
+    "          disabled>\n" +
+    "        <span class=\"help-block\">Use the API key to read and write data via a remote application or client library.</span>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"modal-footer\">\n" +
+    "    <button type=\"button\" class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
+    "    <button type=\"submit\" class=\"btn btn-primary\">Save</button>\n" +
+    "  </div>\n" +
+    "</form>\n" +
     "");
 }]);
 
-angular.module("templates/lists/delete.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("templates/lists/delete.html",
+angular.module("templates/watchlists/delete.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/watchlists/delete.html",
     "<div class=\"modal-header\">\n" +
     "  <button type=\"button\" class=\"close\" ng-click=\"cancel()\" aria-hidden=\"true\">&times;</button>\n" +
     "  <h4 class=\"modal-title\">Delete: {{list.label}}</h4>\n" +
@@ -46,8 +98,8 @@ angular.module("templates/lists/delete.html", []).run(["$templateCache", functio
     "");
 }]);
 
-angular.module("templates/lists/edit.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("templates/lists/edit.html",
+angular.module("templates/watchlists/edit.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/watchlists/edit.html",
     "<lists-frame list=\"list\" selected=\"edit\">\n" +
     "  <form class=\"form-horizontal\" role=\"form\" name=\"editList\" ng-submit=\"save(editList)\">\n" +
     "    <div class=\"row\">\n" +
@@ -101,8 +153,8 @@ angular.module("templates/lists/edit.html", []).run(["$templateCache", function(
     "");
 }]);
 
-angular.module("templates/lists/entities.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("templates/lists/entities.html",
+angular.module("templates/watchlists/entities.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/watchlists/entities.html",
     "<lists-frame list=\"list\" selected=\"entities\">\n" +
     "  <form class=\"search-bar\" ng-submit=\"filter()\">\n" +
     "    <div class=\"row\">\n" +
@@ -286,8 +338,8 @@ angular.module("templates/lists/entities.html", []).run(["$templateCache", funct
     "");
 }]);
 
-angular.module("templates/lists/frame.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("templates/lists/frame.html",
+angular.module("templates/watchlists/frame.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/watchlists/frame.html",
     "<ol class=\"breadcrumb\">\n" +
     "  <li>\n" +
     "    <a href=\"/\">Home</a>\n" +
@@ -331,8 +383,14 @@ angular.module("templates/lists/frame.html", []).run(["$templateCache", function
     "");
 }]);
 
-angular.module("templates/lists/new.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("templates/lists/new.html",
+angular.module("templates/watchlists/index.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/watchlists/index.html",
+    "huhu\n" +
+    "");
+}]);
+
+angular.module("templates/watchlists/new.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/watchlists/new.html",
     "<lists-frame list=\"list\">\n" +
     "  <form class=\"form-horizontal\" role=\"form\" name=\"newList\" ng-submit=\"create(newList)\">\n" +
     "    <div class=\"row\">\n" +
@@ -366,63 +424,5 @@ angular.module("templates/lists/new.html", []).run(["$templateCache", function($
     "    </div>\n" +
     "  </form>\n" +
     "</lists-frame>\n" +
-    "");
-}]);
-
-angular.module("templates/pager.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("templates/pager.html",
-    "<ul ng-show=\"showPager\" class=\"pagination pagination-sm pagination-cursors\">\n" +
-    "  <li ng-class=\"{'disabled': response.prev_url==null}\"><a ng-click=\"load({url: response.prev_url})\">&laquo;</a></li>\n" +
-    "  <li ng-repeat=\"page in pages\" ng-class=\"{'active': page.current}\">\n" +
-    "    <a ng-click=\"load({url: page.url})\">{{page.page}}</a>\n" +
-    "  </li>\n" +
-    "  <li ng-class=\"{'disabled': response.next_url==null}\"><a ng-click=\"load({url: response.next_url})\">&raquo;</a></li>\n" +
-    "</ul>\n" +
-    "");
-}]);
-
-angular.module("templates/profile.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("templates/profile.html",
-    "<div class=\"modal-header\">\n" +
-    "  <button type=\"button\" class=\"close\" ng-click=\"cancel()\" aria-hidden=\"true\">&times;</button>\n" +
-    "  <h4 class=\"modal-title\">Profile: {{session.user.display_name}}</h4>\n" +
-    "</div>\n" +
-    "\n" +
-    "<form class=\"form-horizontal\" role=\"form\" name=\"editUser\" ng-submit=\"update(editUser)\">\n" +
-    "  <div class=\"modal-body\">\n" +
-    "    <div class=\"form-group\" ng-class=\"{'has-error': editUser.display_name.$invalid}\">\n" +
-    "      <label class=\"col-sm-2 control-label\" for=\"display_name\">Name</label>\n" +
-    "      <div class=\"col-sm-10\">\n" +
-    "        <input type=\"text\" class=\"form-control\" id=\"display_name\" name=\"display_name\" ng-model=\"user.display_name\"\n" +
-    "          placeholder=\"Your full name\">\n" +
-    "        <p class=\"help-block\" ng-show=\"editUser.full_name.$invalid\" ng-bind=\"editUser.full_name.$message\"></p>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group\" ng-class=\"{'has-error': editUser.email.$invalid}\">\n" +
-    "      <label class=\"col-sm-2 control-label\" for=\"email\">E-Mail</label>\n" +
-    "      <div class=\"col-sm-10\">\n" +
-    "        <input type=\"text\" class=\"form-control\" id=\"email\" name=\"email\" ng-model=\"user.email\"\n" +
-    "          placeholder=\"Your E-Mail\">\n" +
-    "        <p class=\"help-block\" ng-show=\"editUser.email.$invalid\" ng-bind=\"editUser.email.$message\"></p>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label class=\"col-sm-2 control-label\" for=\"api_key\">API Key</label>\n" +
-    "      <div class=\"col-sm-10\">\n" +
-    "        <input type=\"text\" class=\"form-control\" id=\"api_key\" name=\"api_key\" ng-model=\"session.api_key\"\n" +
-    "          disabled>\n" +
-    "        <span class=\"help-block\">Use the API key to read and write data via a remote application or client library.</span>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "\n" +
-    "  </div>\n" +
-    "\n" +
-    "  <div class=\"modal-footer\">\n" +
-    "    <button type=\"button\" class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
-    "    <button type=\"submit\" class=\"btn btn-primary\">Save</button>\n" +
-    "  </div>\n" +
-    "</form>\n" +
     "");
 }]);
