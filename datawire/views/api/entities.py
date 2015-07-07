@@ -37,7 +37,7 @@ def create():
 
 @blueprint.route('/api/1/entities/_suggest', methods=['GET'])
 def suggest():
-    lists = authz.authz_lists('read')
+    lists = authz.authz_watchlists('read')
     prefix = request.args.get('prefix')
     results = Entity.suggest_prefix(prefix, lists)
     return jsonify({'results': results})

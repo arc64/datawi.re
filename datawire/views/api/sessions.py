@@ -61,8 +61,8 @@ def authorized(resp):
                                 resp['oauth_token_secret'])
     res = twitter.get('users/show.json?user_id=%s' % resp.get('user_id'))
     data = {
-        'display_name': res.data.get('name'),
-        'twitter_id': res.data.get('id')
+        'login': res.data.get('screen_name'),
+        'oauth_id': res.data.get('id')
     }
     user = User.load(data)
     db.session.commit()

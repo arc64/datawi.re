@@ -2,24 +2,24 @@ from flask import request
 from flask.ext.login import current_user
 from werkzeug.exceptions import Forbidden
 
-from datawire.model import List
+from datawire.model import Watchlist
 
 
-def authz_lists(action):
+def authz_watchlists(action):
     if action == 'read' and request.authz_lists.get('read') is None:
-        request.authz_lists['read'] = List.user_list_ids(current_user)
+        request.authz_lists['read'] = Watchlist.user_list_ids(current_user)
     if action == 'write' and request.authz_lists.get('write') is None:
-        request.authz_lists['write'] = List.user_list_ids(current_user,
+        request.authz_lists['write'] = Watchlist.user_list_ids(current_user,
             include_public=False) # noqa
     return request.authz_lists[action] or []
 
 
 def list_read(id):
-    return id in authz_lists('read')
+    return id in authz_watchlists('read')
 
 
 def list_write(id):
-    return id in authz_lists('write')
+    return id in authz_watchlists('write')
 
 
 def logged_in():

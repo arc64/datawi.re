@@ -8,12 +8,12 @@ from datawire.assets import assets # noqa
 from datawire.model import User
 from datawire.views.api.sessions import blueprint as sessions_api
 from datawire.views.api.users import blueprint as users_api
-from datawire.views.api.lists import blueprint as lists_api
+from datawire.views.api.watchlists import blueprint as watchlists_api
 from datawire.views.api.entities import blueprint as entities_api
 
 app.register_blueprint(sessions_api)
 app.register_blueprint(users_api)
-app.register_blueprint(lists_api)
+app.register_blueprint(watchlists_api)
 app.register_blueprint(entities_api)
 
 

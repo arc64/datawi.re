@@ -61,6 +61,7 @@ class User(db.Model):
 
         if user is None:
             user = cls()
+            user.login = data.get('login')
             user.oauth_id = data.get('oauth_id')
 
         if data.get('email'):
