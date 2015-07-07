@@ -23,9 +23,9 @@ class Entity(db.Model):
     creator = db.relationship(User, backref=db.backref('entities',
                               lazy='dynamic', cascade='all, delete-orphan'))
 
-    watchlist_id = db.Column(db.Unicode(50), db.ForeignKey('watchlist.id'))
-    watchlist = db.relationship('Watchlist', backref=db.backref('entities',
-                                lazy='dynamic', cascade='all, delete-orphan'))
+    collection_id = db.Column(db.Unicode(50), db.ForeignKey('collection.id'))
+    collection = db.relationship('Collection', backref=db.backref('entities',
+                                 lazy='dynamic', cascade='all, delete-orphan'))
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow,
@@ -39,7 +39,7 @@ class Entity(db.Model):
             'category': self.category,
             'creator_id': self.creator_id,
             'selectors': [s.text for s in self.selectors],
-            'watchlist_id': self.watchlist_id,
+            'collection_id': self.collection_id,
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
@@ -65,7 +65,7 @@ class Entity(db.Model):
     def update(self, data):
         data = EntityForm().deserialize(data)
         self.label = data.get('label')
-        self.watchlist = data.get('watchlist')
+        self.collection = data.get('collection')
         self.category = data.get('category')
 
         selectors = set(data.get('selectors'))
@@ -84,9 +84,9 @@ class Entity(db.Model):
             db.session.add(sel)
 
     @classmethod
-    def by_normalized_label(cls, label, lst):
+    def by_normalized_label(cls, label, collection):
         q = db.session.query(cls)
-        q = q.filter_by(list=lst)
+        q = q.filter_by(collection=collection)
         q = q.filter(db_compare(cls.label, label))
         return q.first()
 
@@ -96,9 +96,9 @@ class Entity(db.Model):
         return q.first()
 
     @classmethod
-    def by_lists(cls, lists, prefix=None):
+    def by_collections(cls, collections, prefix=None):
         q = db.session.query(cls)
-        q = q.filter(cls.list_id.in_(lists))
+        q = q.filter(cls.collection_id.in_(collections))
         if prefix is not None and len(prefix):
             q = q.join(Selector, cls.id == Selector.entity_id)
             q = cls.apply_filter(q, Selector.normalized, prefix)
@@ -123,15 +123,12 @@ class Entity(db.Model):
                             col.like('%% %s%%' % prefix)))
 
     @classmethod
-    def suggest_prefix(cls, prefix, lists, limit=10):
-        from aleph.model import EntityTag
+    def suggest_prefix(cls, prefix, collections, limit=10):
         ent = aliased(Entity)
         sel = aliased(Selector)
-        tag = aliased(EntityTag)
         q = db.session.query(ent.id, ent.label, ent.category)
         q = q.join(sel, ent.id == sel.entity_id)
-        q = q.join(tag, ent.id == tag.entity_id)
-        q = q.filter(ent.list_id.in_(lists))
+        q = q.filter(ent.collection_id.in_(collections))
         if prefix is None or not len(prefix):
             return []
         q = cls.apply_filter(q, sel.normalized, prefix)

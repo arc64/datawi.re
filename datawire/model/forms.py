@@ -36,12 +36,12 @@ class UserRef(Ref):
         return None
 
 
-class ListRef(Ref):
+class CollectionRef(Ref):
 
     def decode(self, cstruct):
-        from aleph.model.watchlist import Watchlist
+        from datawire.model.collection import Collection
 
-        if isinstance(cstruct, Watchlist):
+        if isinstance(cstruct, Collection):
             return cstruct
         if isinstance(cstruct, (basestring, int)):
             return Watchlist.by_id(cstruct)
@@ -56,7 +56,7 @@ class UserForm(colander.MappingSchema):
     login = colander.SchemaNode(colander.String())
 
 
-class WatchlistForm(colander.MappingSchema):
+class CollectionForm(colander.MappingSchema):
     slug = colander.SchemaNode(colander.String())
     public = colander.SchemaNode(colander.Boolean())
 
@@ -70,4 +70,4 @@ class EntityForm(colander.MappingSchema):
     category = colander.SchemaNode(colander.String(),
                                    validator=colander.OneOf(CATEGORIES))
     selectors = EntitySelectors()
-    watchlist = colander.SchemaNode(ListRef())
+    collection = colander.SchemaNode(CollectionRef())

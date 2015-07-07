@@ -26,7 +26,7 @@ def upgrade():
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('watchlist',
+    op.create_table('collection',
         sa.Column('id', sa.Unicode(length=50), nullable=False),
         sa.Column('slug', sa.Unicode(length=250), nullable=True),
         sa.Column('public', sa.Boolean(), nullable=True),
@@ -41,11 +41,11 @@ def upgrade():
         sa.Column('label', sa.Unicode(), nullable=True),
         sa.Column('category', sa.Enum('Person', 'Company', 'Organization', 'Other', name='entity_categories'), nullable=False),
         sa.Column('creator_id', sa.Integer(), nullable=True),
-        sa.Column('watchlist_id', sa.Unicode(length=50), nullable=True),
+        sa.Column('collection_id', sa.Unicode(length=50), nullable=True),
         sa.Column('created_at', sa.DateTime(), nullable=True),
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.ForeignKeyConstraint(['creator_id'], ['user.id'], ),
-        sa.ForeignKeyConstraint(['watchlist_id'], ['watchlist.id'], ),
+        sa.ForeignKeyConstraint(['collection_id'], ['collection.id'], ),
         sa.PrimaryKeyConstraint('id')
     )
     op.create_table('selector',

@@ -7,30 +7,28 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
   cfpLoadingBarProvider.includeSpinner = false;
 
   $routeProvider.when('/', {
-    templateUrl: 'templates/watchlists/index.html',
-    controller: 'WatchlistsIndexCtrl',
+    templateUrl: 'templates/collections/index.html',
+    controller: 'CollectionsIndexCtrl',
     resolve: {
-      'watchlists': loadWatchlists
+      'collections': loadCollections
     }
   });
 
-  $routeProvider.when('/lists/new', {
-    templateUrl: 'templates/watchlists/new.html',
-    controller: 'WatchlistsNewCtrl',
+  $routeProvider.when('/collections/new', {
+    templateUrl: 'templates/collections/new.html',
+    controller: 'CollectionsNewCtrl',
     loginRequired: true
   });
 
-  $routeProvider.when('/lists/:id', {
-    templateUrl: 'templates/watchlists/edit.html',
-    controller: 'WatchlistsEditCtrl',
-    loginRequired: true
+  $routeProvider.when('/collections/:id', {
+    templateUrl: 'templates/collections/edit.html',
+    controller: 'CollectionsEditCtrl'
   });
 
-  $routeProvider.when('/lists/:id/entities', {
+  $routeProvider.when('/collections/:id/entities', {
     templateUrl: 'templates/entities/index.html',
     controller: 'EntitiesIndexCtrl',
-    reloadOnSearch: false,
-    loginRequired: true
+    reloadOnSearch: false
   });
 
   $routeProvider.otherwise({
@@ -77,6 +75,107 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
           }
       });
     });
+  };
+
+}]);
+;datawire.controller('CollectionsDeleteCtrl', ['$scope', '$location', '$http', '$modalInstance', 'list',
+                                        'Flash', 'QueryContext',
+  function($scope, $location, $http, $modalInstance, list, Flash, QueryContext) {
+  $scope.list = list;
+
+  $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  };
+
+  $scope.delete = function() {
+    var res = $http.delete($scope.list.api_url);
+    res.then(function(data) {
+        QueryContext.reset();
+        $location.path('/');
+        $modalInstance.dismiss('ok');
+    });
+  };
+
+}]);
+;datawire.controller('CollectionsEditCtrl', ['$scope', '$location', '$http', '$routeParams', '$modal',
+                                          'Flash', 'Validation', 'QueryContext',
+  function($scope, $location, $http, $routeParams, $modal, Flash, Validation, QueryContext) {
+
+  var apiUrl = '/api/1/lists/' + $routeParams.id;
+  $scope.list = {};
+  $scope.users = {};
+
+  $http.get(apiUrl).then(function(res) {
+    $scope.list = res.data;
+  })
+
+  $http.get('/api/1/users').then(function(res) {
+    $scope.users = res.data;
+  })
+
+  $scope.canSave = function() {
+    return $scope.list.can_write;
+  };
+
+  $scope.hasUser = function(id) {
+    var users = $scope.list.users || [];
+    return users.indexOf(id) != -1;
+  };
+
+  $scope.toggleUser = function(id) {
+    var idx = $scope.list.users.indexOf(id);
+    if (idx != -1) {
+      $scope.list.users.splice(idx, 1);
+    } else {
+      $scope.list.users.push(id);
+    }
+  };
+
+  $scope.delete = function() {
+    var d = $modal.open({
+        templateUrl: 'templates/watchlists/delete.html',
+        controller: 'WatchlistsDeleteCtrl',
+        resolve: {
+            list: function () { return $scope.list; }
+        }
+    });
+  }
+
+  $scope.save = function(form) {
+    var res = $http.post(apiUrl, $scope.list);
+    res.success(function(data) {
+      QueryContext.reset();
+      Flash.message('Your changes have been saved.', 'success');
+    });
+    res.error(Validation.handle(form));
+  };
+
+}]);
+;var loadCollections = ['$http', '$q', '$location', function($http, $q, $location) {
+  var params = {limit: 100}, dfd = $q.defer();
+  $http.get('/api/1/collections', {params: params}).then(function(res) {
+    dfd.resolve(res.data);
+  });
+  return dfd.promise;
+}];
+
+datawire.controller('CollectionsIndexCtrl', ['$scope', 'collections', function($scope, collections) {
+  $scope.collections = collections;
+}]);
+;datawire.controller('CollectionsNewCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation',
+  function($scope, $location, $http, $routeParams, Validation) {
+  $scope.list = {'public': false, 'new': true};
+
+  $scope.canCreate = function() {
+    return $scope.session.logged_in;
+  };
+
+  $scope.create = function(form) {
+      var res = $http.post('/api/1/lists', $scope.list);
+      res.success(function(data) {
+        $location.path('/lists/' + data.id + '/entities');
+      });
+      res.error(Validation.handle(form));
   };
 
 }]);
@@ -137,22 +236,6 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
             });
         }
     };
-}]);
-;datawire.directive('watchlistFrame', ['$http', function($http) {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {
-      'list': '=',
-      'selected': '@'
-    },
-    templateUrl: 'templates/watchlists/frame.html',
-    link: function (scope, element, attrs, model) {
-      $http.get('/api/1/lists').then(function(res) {
-        scope.lists = res.data;
-      })
-    }
-  };
 }]);
 ;
 datawire.controller('EntitiesIndexCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation', 'Flash',
@@ -363,104 +446,4 @@ datawire.factory('Validation', ['Flash', function(Flash) {
     });
   };
 }]);
-;;datawire.controller('WatchlistsDeleteCtrl', ['$scope', '$location', '$http', '$modalInstance', 'list',
-                                        'Flash', 'QueryContext',
-  function($scope, $location, $http, $modalInstance, list, Flash, QueryContext) {
-  $scope.list = list;
-
-  $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
-  };
-
-  $scope.delete = function() {
-    var res = $http.delete($scope.list.api_url);
-    res.then(function(data) {
-        QueryContext.reset();
-        $location.path('/');
-        $modalInstance.dismiss('ok');
-    });
-  };
-
-}]);
-;datawire.controller('WatchlistsEditCtrl', ['$scope', '$location', '$http', '$routeParams', '$modal',
-                                          'Flash', 'Validation', 'QueryContext',
-  function($scope, $location, $http, $routeParams, $modal, Flash, Validation, QueryContext) {
-
-  var apiUrl = '/api/1/lists/' + $routeParams.id;
-  $scope.list = {};
-  $scope.users = {};
-
-  $http.get(apiUrl).then(function(res) {
-    $scope.list = res.data;
-  })
-
-  $http.get('/api/1/users').then(function(res) {
-    $scope.users = res.data;
-  })
-
-  $scope.canSave = function() {
-    return $scope.list.can_write;
-  };
-
-  $scope.hasUser = function(id) {
-    var users = $scope.list.users || [];
-    return users.indexOf(id) != -1;
-  };
-
-  $scope.toggleUser = function(id) {
-    var idx = $scope.list.users.indexOf(id);
-    if (idx != -1) {
-      $scope.list.users.splice(idx, 1);
-    } else {
-      $scope.list.users.push(id);
-    }
-  };
-
-  $scope.delete = function() {
-    var d = $modal.open({
-        templateUrl: 'templates/watchlists/delete.html',
-        controller: 'WatchlistsDeleteCtrl',
-        resolve: {
-            list: function () { return $scope.list; }
-        }
-    });
-  }
-
-  $scope.save = function(form) {
-    var res = $http.post(apiUrl, $scope.list);
-    res.success(function(data) {
-      QueryContext.reset();
-      Flash.message('Your changes have been saved.', 'success');
-    });
-    res.error(Validation.handle(form));
-  };
-
-}]);
-;var loadWatchlists = ['$http', '$q', '$location', function($http, $q, $location) {
-  var params = {limit: 100}, dfd = $q.defer();
-  $http.get('/api/1/watchlists', {params: params}).then(function(res) {
-    dfd.resolve(res.data);
-  });
-  return dfd.promise;
-}];
-
-datawire.controller('WatchlistsIndexCtrl', ['$scope', 'watchlists', function($scope, watchlists) {
-  $scope.watchlists = watchlists;
-}]);
-;datawire.controller('WatchlistsNewCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation',
-  function($scope, $location, $http, $routeParams, Validation, QueryContext) {
-  $scope.list = {'public': false, 'new': true};
-
-  $scope.canCreate = function() {
-    return $scope.session.logged_in;
-  };
-
-  $scope.create = function(form) {
-      var res = $http.post('/api/1/lists', $scope.list);
-      res.success(function(data) {
-        $location.path('/lists/' + data.id + '/entities');
-      });
-      res.error(Validation.handle(form));
-  };
-
-}]);
+;

@@ -3,16 +3,16 @@ from flask import request
 from apikit import jsonify
 
 from datawire.core import app, login_manager
-from datawire.views.ui import ui # noqa
+from datawire.views.ui import ui  # noqa
 from datawire.model import User
 from datawire.views.api.sessions import blueprint as sessions_api
 from datawire.views.api.users import blueprint as users_api
-from datawire.views.api.watchlists import blueprint as watchlists_api
+from datawire.views.api.collections import blueprint as collections_api
 from datawire.views.api.entities import blueprint as entities_api
 
 app.register_blueprint(sessions_api)
 app.register_blueprint(users_api)
-app.register_blueprint(watchlists_api)
+app.register_blueprint(collections_api)
 app.register_blueprint(entities_api)
 
 

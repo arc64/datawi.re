@@ -1,4 +1,4 @@
-datawire.controller('WatchlistsDeleteCtrl', ['$scope', '$location', '$http', '$modalInstance', 'list',
+datawire.controller('CollectionsDeleteCtrl', ['$scope', '$location', '$http', '$modalInstance', 'list',
                                         'Flash', 'QueryContext',
   function($scope, $location, $http, $modalInstance, list, Flash, QueryContext) {
   $scope.list = list;

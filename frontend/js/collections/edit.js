@@ -1,4 +1,4 @@
-datawire.controller('WatchlistsEditCtrl', ['$scope', '$location', '$http', '$routeParams', '$modal',
+datawire.controller('CollectionsEditCtrl', ['$scope', '$location', '$http', '$routeParams', '$modal',
                                           'Flash', 'Validation', 'QueryContext',
   function($scope, $location, $http, $routeParams, $modal, Flash, Validation, QueryContext) {
 

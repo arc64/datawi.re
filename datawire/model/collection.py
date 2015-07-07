@@ -5,12 +5,12 @@ from sqlalchemy import or_
 
 from datawire.core import db, url_for
 from datawire.model.user import User
-from datawire.model.forms import WatchlistForm
+from datawire.model.forms import CollectionForm
 
 log = logging.getLogger(__name__)
 
 
-class Watchlist(db.Model):
+class Collection(db.Model):
     id = db.Column(db.Unicode(50), primary_key=True)
     slug = db.Column(db.Unicode(250))
     public = db.Column(db.Boolean, default=False)
@@ -26,7 +26,7 @@ class Watchlist(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'api_url': url_for('watchlists.view', id=self.id),
+            'api_url': url_for('collections.view', id=self.id),
             'entities_api_url': url_for('entities.index', list=self.id),
             'slug': self.slug,
             'public': self.public,
@@ -44,7 +44,7 @@ class Watchlist(db.Model):
         return lst
 
     def update(self, data, user):
-        data = WatchlistForm().deserialize(data)
+        data = CollectionForm().deserialize(data)
         self.slug = data.get('slug')
         if data.get('public') is not None:
             self.public = data.get('public')
@@ -66,7 +66,7 @@ class Watchlist(db.Model):
         return q.first()
 
     @classmethod
-    def user_list_ids(cls, user, include_public=True):
+    def user_ids(cls, user, include_public=True):
         logged_in = user is not None and user.is_authenticated()
         q = db.session.query(cls.id)
         conds = []
@@ -83,7 +83,7 @@ class Watchlist(db.Model):
     @classmethod
     def all_by_user(cls, user):
         q = db.session.query(cls)
-        q = q.filter(cls.id.in_(cls.user_list_ids(user)))
+        q = q.filter(cls.id.in_(cls.user_ids(user)))
         q = q.order_by(cls.id.desc())
         return q
 

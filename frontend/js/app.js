@@ -7,30 +7,28 @@ datawire.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
   cfpLoadingBarProvider.includeSpinner = false;
 
   $routeProvider.when('/', {
-    templateUrl: 'templates/watchlists/index.html',
-    controller: 'WatchlistsIndexCtrl',
+    templateUrl: 'templates/collections/index.html',
+    controller: 'CollectionsIndexCtrl',
     resolve: {
-      'watchlists': loadWatchlists
+      'collections': loadCollections
     }
   });
 
-  $routeProvider.when('/lists/new', {
-    templateUrl: 'templates/watchlists/new.html',
-    controller: 'WatchlistsNewCtrl',
+  $routeProvider.when('/collections/new', {
+    templateUrl: 'templates/collections/new.html',
+    controller: 'CollectionsNewCtrl',
     loginRequired: true
   });
 
-  $routeProvider.when('/lists/:id', {
-    templateUrl: 'templates/watchlists/edit.html',
-    controller: 'WatchlistsEditCtrl',
-    loginRequired: true
+  $routeProvider.when('/collections/:id', {
+    templateUrl: 'templates/collections/edit.html',
+    controller: 'CollectionsEditCtrl'
   });
 
-  $routeProvider.when('/lists/:id/entities', {
+  $routeProvider.when('/collections/:id/entities', {
     templateUrl: 'templates/entities/index.html',
     controller: 'EntitiesIndexCtrl',
-    reloadOnSearch: false,
-    loginRequired: true
+    reloadOnSearch: false
   });
 
   $routeProvider.otherwise({

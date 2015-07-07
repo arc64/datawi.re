@@ -1,5 +1,5 @@
-datawire.controller('WatchlistsNewCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation',
-  function($scope, $location, $http, $routeParams, Validation, QueryContext) {
+datawire.controller('CollectionsNewCtrl', ['$scope', '$location', '$http', '$routeParams', 'Validation',
+  function($scope, $location, $http, $routeParams, Validation) {
   $scope.list = {'public': false, 'new': true};
 
   $scope.canCreate = function() {
